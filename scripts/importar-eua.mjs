@@ -46,7 +46,9 @@ const ids = new Set();
 
 for (const f of lista) {
   const p = f.properties ?? {};
-  const loc = p.location ?? {};
+  // Formato atual: p.places (lista). Formato antigo: p.location. Prefere o lugar que tem cidade.
+  const lugares = Array.isArray(p.places) ? p.places : p.location ? [p.location] : [];
+  const loc = lugares.find((l) => l?.localized?.en?.locality) ?? lugares[0] ?? {};
   const pais = loc.iso3166_1Alpha2 ?? loc.localized?.en?.country;
   if (pais !== 'US' && pais !== 'United States') { motivos.pais++; continue; }
   if (p.status && p.status !== 'operating') { motivos.status++; continue; }
@@ -64,7 +66,7 @@ for (const f of lista) {
   const max = num(est.maxElevation) ?? num(est.runs?.maxElevation) ?? num(est.lifts?.maxElevation);
   if (min == null || max == null || max <= min) { motivos.altitude++; continue; }
   if (kmTotal < 0.5 && lifts === 0) { motivos.tamanho++; continue; }
-  const c = centro(f.geometry);
+  const c = Array.isArray(p.viewportHint?.center) ? p.viewportHint.center : centro(f.geometry);
   if (!c) { motivos.local++; continue; }
 
   const estado = (loc.iso3166_2 ?? '').replace('US-', '') || null;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { buscarDestino, destinos, paises } from '../data/destinos';
+import { buscarDestino, gruposDeDestinos } from '../data/destinos';
 import { CabecalhoVolta } from '../components/Nav';
 import { viagens, type Atividade, type DiaViagem, type Viagem as TViagem } from '../lib/storage';
 import { MAX_DIAS, ajustarDias, atividadeLabel, custoPasses, dataCurta, distribuirDias, textoDoRoteiro } from '../lib/viagem';
@@ -59,7 +59,6 @@ export function Viagem({ id }: { id: string }) {
     }
   };
 
-  const disponiveis = destinos.filter((d) => !v.destinos.includes(d.id));
   const custo = custoPasses(v);
   const datasInvalidas = v.ida && v.volta && v.volta < v.ida;
 
@@ -154,15 +153,13 @@ export function Viagem({ id }: { id: string }) {
       <div className="linha-form">
         <select value={novoDestino} onChange={(e) => setNovoDestino(e.target.value)} aria-label="Escolher destino" className="campo">
           <option value="">Escolher destino…</option>
-          {paises.map((pais) => (
-            <optgroup key={pais} label={pais}>
-              {disponiveis
-                .filter((d) => d.pais === pais)
-                .map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.nome}
-                  </option>
-                ))}
+          {gruposDeDestinos((d) => !v.destinos.includes(d.id)).map((g) => (
+            <optgroup key={g.rotulo} label={g.rotulo}>
+              {g.itens.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.nome}
+                </option>
+              ))}
             </optgroup>
           ))}
         </select>

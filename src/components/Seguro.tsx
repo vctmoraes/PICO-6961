@@ -10,7 +10,7 @@ export function Seguro() {
       <ul>
         <li>Acidente durante a prática de ski e snowboard</li>
         <li>Resgate na montanha</li>
-        <li>Despesa médica no Chile e na Argentina</li>
+        <li>Despesa médica no país da viagem. Nos EUA, o atendimento médico é muito caro: escolha uma cobertura alta</li>
         <li>Equipamento perdido ou quebrado, se você levar o seu</li>
       </ul>
       {config.seguroUrl && (

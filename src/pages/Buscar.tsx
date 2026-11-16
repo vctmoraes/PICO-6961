@@ -31,7 +31,9 @@ export function Buscar() {
     const ordenados = [...destinos].sort(
       (x, y) =>
         ordem(x.pais) - ordem(y.pais) ||
-        (x.pais === 'Estados Unidos' ? x.regiao.localeCompare(y.regiao, 'pt-BR') || x.nome.localeCompare(y.nome) : y.lat - x.lat)
+        (x.pais === 'Estados Unidos'
+          ? (regiaoDoFiltro(x) ?? '').localeCompare(regiaoDoFiltro(y) ?? '', 'pt-BR') || x.nome.localeCompare(y.nome)
+          : y.lat - x.lat)
     );
     return ordenados.filter(
       (d) =>

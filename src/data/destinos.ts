@@ -859,3 +859,20 @@ export const nivelLabel: Record<Nivel, string> = {
 export function buscarDestino(id: string): Destino | undefined {
   return destinos.find((d) => d.id === id);
 }
+
+/**
+ * Grupos para as listas de escolha (<optgroup>): Chile, Argentina e, nos EUA, um grupo por estado.
+ * `incluir` filtra os destinos (ex.: tirar os que já estão no roteiro).
+ */
+export function gruposDeDestinos(incluir: (d: Destino) => boolean = () => true): { rotulo: string; itens: Destino[] }[] {
+  const grupos = new Map<string, Destino[]>();
+  for (const d of destinos) {
+    if (!incluir(d)) continue;
+    const rotulo = d.pais === 'Estados Unidos' ? `EUA · ${d.regiao.split(', ').pop()}` : d.pais;
+    grupos.set(rotulo, [...(grupos.get(rotulo) ?? []), d]);
+  }
+  const ordem = (r: string) => (r === 'Chile' ? 0 : r === 'Argentina' ? 1 : 2);
+  return [...grupos.entries()]
+    .sort(([a], [b]) => ordem(a) - ordem(b) || a.localeCompare(b, 'pt-BR'))
+    .map(([rotulo, itens]) => ({ rotulo, itens: [...itens].sort((x, y) => x.nome.localeCompare(y.nome)) }));
+}
