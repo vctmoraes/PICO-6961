@@ -14,6 +14,7 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Nunca invente avaliação, relato ou número de usuário.
 - O guia "Primeira vez na neve" (`src/pages/Guia.tsx`) não tem preço nem número inventado. Regra de documento de viagem: sempre mande conferir no site oficial.
 - Todo texto do app em português do Brasil, com frase curta e voz ativa.
+- Perfil do viajante (LGPD): pergunte só o que o app usa, diga para que serve cada pergunta, nunca guarde número de documento, e mantenha "Baixar", "Mostrar" e "Apagar todos os meus dados" no Perfil. Toda chave nova do `localStorage` entra no objeto `K` de `src/lib/storage.ts`, para a exportação e a exclusão pegarem a chave.
 
 ## Técnica
 
@@ -23,7 +24,8 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Conteúdo curado: `src/data/destinos.ts`. O agente de atualização edita só este arquivo (ver `docs/agente-atualizacao.md`).
 - Condição de neve e tempo: API Open-Meteo (`src/lib/clima.ts`). Licença CC BY 4.0: mantenha o crédito na tela.
 - Dados do usuário (roteiro, checklist, relatos): `localStorage`, em `src/lib/storage.ts`. Na fase 2, troque a implementação por um servidor e mantenha a mesma interface.
-- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist`, `#roteiro-<id>`, `#comparar-<id>--<id>`, `#guia`, `#mapa` (`src/lib/rota.ts`).
+- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist`, `#roteiro-<id>`, `#comparar-<id>--<id>`, `#guia`, `#mapa`, `#questionario` (`src/lib/rota.ts`).
+- Perfil e personalização: questionário em `src/pages/Questionario.tsx` (tipo `PerfilViajante`); nota "Combina X% com você" em `src/lib/combina.ts` (só motivos que vêm de dado do destino); checklist recebe o perfil (`checklistDoDestino(d, perfil)`); Passaporte de Picos em `src/components/PassaportePicos.tsx` (soma a altitude dos topos rumo aos 6.961 m).
 - Roteiro de viagem: tipo `Viagem` em `src/lib/storage.ts`; regras (dias, distribuição, custo, texto) em `src/lib/viagem.ts`. O marcador do destino é outra coisa: "Destinos salvos" (`salvos`).
 - Cotação do real: AwesomeAPI (`src/lib/moeda.ts`). Sem cotação, o app esconde o valor em real. Nunca use cotação fixa.
 - Mapas: Google Maps embutido na tela do destino (`src/components/MapaGoogle.tsx`, 1 lugar por mapa). Mapa com vários pontos (todos os destinos, roteiro): Leaflet + OpenStreetMap (`src/components/Mapa.tsx`, carregado sob demanda). Chaves e provedor do mapa no `.env`.

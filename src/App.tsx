@@ -9,6 +9,7 @@ import { Viagem } from './pages/Viagem';
 import { Comparar } from './pages/Comparar';
 import { Guia } from './pages/Guia';
 import { MapaDestinos } from './pages/MapaDestinos';
+import { Questionario } from './pages/Questionario';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -50,9 +51,10 @@ export function App() {
     termos: <Termos />,
     creditos: <Creditos />,
     guia: <Guia />,
-    mapa: <MapaDestinos />
+    mapa: <MapaDestinos />,
+    questionario: <Questionario />
   };
-  const navAtual = ['termos', 'creditos'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
+  const navAtual = ['termos', 'creditos', 'questionario'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
 
   return (
     <div className="app">

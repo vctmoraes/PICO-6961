@@ -104,7 +104,8 @@ function paraDestino(a: AreaEua, i: number): Destino {
     nota: partes.length ? partes.join(' · ') : estado,
     dicas: [],
     cor: cores[i % cores.length],
-    fonteDados: 'openskimap'
+    fonteDados: 'openskimap',
+    aeroporto: aero.codigo
   };
 }
 

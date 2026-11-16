@@ -68,6 +68,8 @@ export interface Destino {
    * Antes de pôr uma foto, confirme autor e licença. Ver docs/fotos-e-licencas.md.
    */
   foto?: { url: string; autor: string; licenca: string; fonte: string } | null;
+  /** Código do aeroporto de chegada mais usado (para a busca de voo). */
+  aeroporto?: string;
   /** Passe de temporada que vale neste resort (EUA). */
   rede?: 'Epic Pass' | 'Ikon Pass';
   /** Texto sobre o preço do passe quando o preço é dinâmico (sem valor fixo). */
@@ -850,8 +852,17 @@ const curados: Destino[] = [
   }
 ];
 
+// Aeroporto de chegada de cada destino curado (o mesmo do texto "Como chegar").
+const aeroportoDe: Record<string, string> = {
+  'valle-nevado': 'SCL', 'la-parva': 'SCL', 'el-colorado': 'SCL', portillo: 'SCL', lagunillas: 'SCL', 'chapa-verde': 'SCL',
+  'nevados-de-chillan': 'CCP', antuco: 'CCP', corralco: 'ZCO', 'las-araucarias': 'ZCO', 'ski-pucon': 'ZCO', antillanca: 'ZOS',
+  'volcan-osorno': 'PMC', 'el-fraile': 'BBA', 'cerro-mirador': 'PUQ', 'cerro-catedral': 'BRC', 'cerro-bayo': 'BRC',
+  'cerro-perito-moreno': 'BRC', chapelco: 'CPC', 'lago-hermoso': 'CPC', 'las-lenas': 'MDZ', 'los-puquios': 'MDZ',
+  caviahue: 'NQN', 'batea-mahuida': 'NQN', 'la-hoya': 'EQS', 'cerro-castor': 'USH', 'cerro-martial': 'USH'
+};
+
 /** Todos os destinos: curados (Chile e Argentina) + importados (Estados Unidos). */
-export const destinos: Destino[] = [...curados, ...destinosEua];
+export const destinos: Destino[] = [...curados.map((d) => ({ ...d, aeroporto: d.aeroporto ?? aeroportoDe[d.id] })), ...destinosEua];
 
 /** Países com pelo menos 1 destino, na ordem dos filtros e das listas. */
 export const paises: Pais[] = (['Chile', 'Argentina', 'Estados Unidos'] as Pais[]).filter((p) => destinos.some((d) => d.pais === p));

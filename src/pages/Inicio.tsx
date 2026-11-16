@@ -5,6 +5,7 @@ import { Icone } from '../components/Icone';
 import { Logo } from '../components/Logo';
 import { perfil } from '../lib/storage';
 import { NeveNosDestinos } from '../components/NeveNosDestinos';
+import { ParaVoce } from '../components/ParaVoce';
 import { rota } from '../lib/rota';
 
 const esportesEmBreve = ['Surf', 'Escalada', 'Mountain bike', 'Kite', 'Parapente'];
@@ -45,6 +46,8 @@ export function Inicio() {
           </span>
         ))}
       </div>
+
+      <ParaVoce />
 
       <NeveNosDestinos />
 

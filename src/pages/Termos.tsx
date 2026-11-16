@@ -25,7 +25,8 @@ export function Termos() {
       <p>Não publique conteúdo de outra pessoa sem permissão. Não publique conteúdo ofensivo ou falso.</p>
 
       <h2>5. Privacidade</h2>
-      <p>Nesta versão de teste, seu nome, seus roteiros, seus destinos salvos, seu checklist e seus relatos ficam salvos só neste aparelho. O PICO 6961 não recebe esses dados.</p>
+      <p>Nesta versão de teste, seu nome, seu perfil de viagem, seus roteiros, seus destinos salvos, seu checklist, seus relatos e o seu Passaporte de Picos ficam salvos só neste aparelho. O PICO 6961 não recebe esses dados.</p>
+      <p>O perfil de viagem tem só o que o app usa para recomendar destinos e montar o checklist. O app não pede número de documento. Você pode baixar, ver e apagar os seus dados na tela Perfil.</p>
       <p>O app pode medir o número de visitas de forma anônima, sem cookie e sem dado pessoal.</p>
     </main>
   );

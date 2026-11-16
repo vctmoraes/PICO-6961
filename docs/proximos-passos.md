@@ -18,6 +18,7 @@
 - Cartão de seguro viagem com ski, no destino, no roteiro e no guia. O botão de cotação aparece quando `VITE_SEGURO_URL` estiver preenchido.
 - Mapas: Google Maps (satélite ou mapa) na tela do destino, com botões Google Maps e Apple Maps; tela "Mapa" com os 27 destinos (filtro por país e nível); mapa do roteiro com os destinos numerados e botão "Abrir a rota no Google Maps".
 - Estados Unidos preparado: script de importação do OpenSkiMap (`npm run importar:eua`), filtro por país e por estado, busca com páginas de 40 destinos, época do hemisfério norte, checklist com passaporte e visto americano, aeroporto mais perto de cada área. Importação feita em 16/11/2026: 523 áreas de ski em 37 estados. Curadoria feita em 11 destinos: Vail, Breckenridge, Aspen Snowmass, Aspen Mountain, Park City, Deer Valley, Jackson Hole, Mammoth, Palisades Tahoe, Heavenly e Big Sky (texto, dicas, como chegar, Epic ou Ikon Pass e faixa de preço com fonte).
+- Perfil personalizado (Etapa 1, sem servidor): questionário de 9 perguntas, "Para você" no Início, "Combina X% com você" nos cards e no destino, busca de voo com o aeroporto do perfil, checklist personalizado (esporte, equipamento, família, aula, visto, passe), Passaporte de Picos e controles de dados (baixar, mostrar, apagar).
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -47,6 +48,8 @@
 - Moderação de relato.
 - Mais países com a skill `importar-pais`: o script já funciona para qualquer país (teste com o Canadá: 257 áreas).
 - Alerta de neve nova para os destinos do roteiro.
+- Conta (Etapa 2 do perfil): login com Google, Apple e e-mail (link mágico), no modo misto (o app funciona sem conta). Sugestão: Supabase. Antes, atualizar termos de uso e política de privacidade.
+- Perfil público opcional, selos ("Primeira descida", "3 países", "Andes completo") e grupo de viagem com voto no destino.
 - Roteiro compartilhado: o grupo edita o mesmo roteiro (precisa de servidor).
 - Custo da viagem completo: hospedagem, voo e aluguel de equipamento, além do passe.
 

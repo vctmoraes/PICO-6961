@@ -4,7 +4,7 @@
 import type { Destino } from './destinos';
 
 export type Curadoria = Partial<
-  Pick<Destino, 'resumo' | 'destaques' | 'comoChegar' | 'hospedagem' | 'dicas' | 'nota' | 'temporada' | 'regiao' | 'cidadeBase' | 'rede' | 'passeInfo'>
+  Pick<Destino, 'resumo' | 'destaques' | 'comoChegar' | 'hospedagem' | 'dicas' | 'nota' | 'temporada' | 'regiao' | 'cidadeBase' | 'rede' | 'passeInfo' | 'aeroporto'>
 > & {
   /** Data da revisão do texto (AAAA-MM-DD). */
   revisadoEm: string;
@@ -15,6 +15,7 @@ const PRECO_DINAMICO = 'Preço dinâmico: muda com a data e com a antecedência 
 export const curadoriaEua: Record<string, Curadoria> = {
   'vail-co': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'DEN',
     nota: 'Back Bowls e vila alpina',
     resumo: 'Um dos maiores resorts dos EUA, nas Montanhas Rochosas do Colorado. A vila tem estilo alpino, com lojas e restaurantes no pé da pista.',
     destaques: ['Back Bowls: área enorme de neve aberta', 'Vila de pedestres no pé da pista', 'Ônibus grátis na cidade'],
@@ -35,6 +36,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'breckenridge-ski-resort-co': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'DEN',
     nota: 'Cidade histórica a 2.900 m',
     regiao: 'Breckenridge, Colorado',
     resumo:
@@ -55,6 +57,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'aspen-snowmass-co': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'ASE',
     nota: '4 montanhas, 1 passe',
     resumo:
       'Snowmass é a maior das 4 montanhas de Aspen Snowmass. O mesmo passe vale em Aspen Mountain, Aspen Highlands e Buttermilk. Destino muito procurado por brasileiros.',
@@ -75,6 +78,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'aspen-mountain-co': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'ASE',
     nota: 'Gôndola no centro de Aspen',
     resumo: 'A montanha no centro da cidade de Aspen. Não tem pista para iniciante: só pista intermediária e avançada.',
     destaques: ['Gôndola sai do centro de Aspen', 'Mesmo passe das outras 3 montanhas de Aspen Snowmass', 'Sem pista para iniciante'],
@@ -86,6 +90,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'park-city-mountain-resort-ut': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'SLC',
     nota: 'Enorme e perto de Salt Lake City',
     resumo:
       'Um dos maiores resorts dos EUA em área esquiável. Fica ao lado da cidade de Park City, a cerca de 45 min do aeroporto de Salt Lake City.',
@@ -101,6 +106,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'deer-valley-resort-ut': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'SLC',
     nota: 'Só ski, serviço de luxo',
     resumo: 'Resort famoso pelo serviço e pela pista bem preparada. Só aceita ski: o snowboard é proibido. Fica ao lado de Park City.',
     destaques: ['Só ski (snowboard proibido)', 'Pistas bem preparadas', 'Sede de provas dos Jogos Olímpicos de Inverno de 2002'],
@@ -112,6 +118,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'jackson-hole-mountain-resort-wy': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'JAC',
     nota: 'Íngreme e lendária',
     resumo: 'Montanha íngreme e famosa entre esquiadores avançados. Fica em Teton Village, perto do Parque Nacional Grand Teton.',
     destaques: ['Bondinho (Aerial Tram) até o topo', "Corbet's Couloir, uma das descidas mais famosas dos EUA", 'Muito terreno para avançado'],
@@ -130,6 +137,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'mammoth-mountain-ca': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'LAX',
     nota: 'Temporada longa e muito sol',
     temporada: 'Em geral, de novembro a maio. Em ano de muita neve, vai até junho ou julho',
     resumo: 'Resort num antigo vulcão da Califórnia, com uma das temporadas mais longas dos EUA. Tem muito sol e muita neve.',
@@ -143,6 +151,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'palisades-tahoe-olympic-valley-ca': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'RNO',
     nota: 'Sede olímpica no lago Tahoe',
     regiao: 'Olympic Valley, Califórnia',
     cidadeBase: 'Olympic Valley',
@@ -157,6 +166,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'heavenly-mountain-resort-nv': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'RNO',
     nota: 'Vista do lago Tahoe',
     regiao: 'South Lake Tahoe, Califórnia e Nevada',
     cidadeBase: 'South Lake Tahoe',
@@ -170,6 +180,7 @@ export const curadoriaEua: Record<string, Curadoria> = {
   },
   'big-sky-resort-mt': {
     revisadoEm: '2026-11-16',
+    aeroporto: 'BZN',
     nota: 'Enorme e com pouca fila',
     resumo: 'Um dos maiores resorts dos EUA em área, em Montana. Tem pouca fila e um bondinho até o topo do Lone Peak.',
     destaques: ['Área enorme e pouca fila', 'Bondinho até o topo do Lone Peak', 'Perto do Parque Nacional de Yellowstone'],

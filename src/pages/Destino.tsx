@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { buscarDestino, nivelLabel, type Destino as TDestino } from '../data/destinos';
 import { checklistDoDestino } from '../data/checklist';
 import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } from '../lib/clima';
-import { checklistMarcados, perfil, relatos, salvos, viagens, type Relato } from '../lib/storage';
+import { checklistMarcados, perfil, perfilViajante, relatos, salvos, viagens, visitados, type Relato } from '../lib/storage';
+import { combinar } from '../lib/combina';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
 import { Seguro } from '../components/Seguro';
 import { linksNavegacao } from '../components/MapaPreguicoso';
@@ -92,6 +93,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </div>
       </div>
 
+      <CombinaComVoce d={d} />
+
       <div className="acoes">
         {d.passe.urlOficial && (
         <a className="acao primaria" href={linkOficial(d.passe.urlOficial)} target="_blank" rel="noopener sponsored">
@@ -111,6 +114,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
           </div>
           <Icone nome="seta" tamanho={16} cor="#5B6660" />
         </a>
+        <BuscaVoo d={d} />
         {(d.montanha?.cameras || d.montanha?.boletim) && (
           <div className="acoes-montanha">
             {d.montanha.cameras && (
@@ -173,6 +177,68 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
       </div>
       {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
     </div>
+  );
+}
+
+/** Nota de combinação com o perfil, os motivos e o botão do Passaporte de Picos. */
+function CombinaComVoce({ d }: { d: TDestino }) {
+  const p = perfilViajante.ler();
+  const [visitei, setVisitei] = useState(() => visitados.tem(d.id));
+  const tem = perfilViajante.temRespostas(p);
+  const c = tem ? combinar(d, p) : null;
+  return (
+    <div className="combina-bloco">
+      {c ? (
+        <div className={`combina-cartao ${c.nota >= 70 ? 'alta' : c.nota >= 45 ? 'media' : 'baixa'}`}>
+          <strong>Combina {c.nota}% com você</strong>
+          {c.aFavor.length > 0 && (
+            <ul>
+              {c.aFavor.slice(0, 3).map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          )}
+          {c.atencao.length > 0 && (
+            <ul className="atencao">
+              {c.atencao.map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ) : (
+        <a className="link-perfil" href={rota.questionario}>
+          Faça o seu perfil e veja se {d.nome} combina com você →
+        </a>
+      )}
+      <button
+        type="button"
+        className={`botao-visita ${visitei ? 'ativo' : ''}`}
+        aria-pressed={visitei}
+        onClick={() => setVisitei(visitados.alternar(d.id))}
+      >
+        {visitei ? '✓ Já esquiei aqui' : 'Já esquiei aqui'}
+      </button>
+    </div>
+  );
+}
+
+/** Busca de voo no Google Voos, do aeroporto do perfil até o aeroporto do destino. */
+function BuscaVoo({ d }: { d: TDestino }) {
+  const saida = perfilViajante.ler().saida;
+  if (!saida || !d.aeroporto) return null;
+  const url = `https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${saida} to ${d.aeroporto}`)}&hl=pt-BR&curr=BRL`;
+  return (
+    <a className="acao secundaria" href={url} target="_blank" rel="noopener">
+      <Icone nome="aviao" tamanho={18} cor="#13394A" />
+      <div>
+        <div className="t">
+          Ver voos {saida} → {d.aeroporto}
+        </div>
+        <div className="s">No Google Voos, com o aeroporto do seu perfil</div>
+      </div>
+      <Icone nome="seta" tamanho={16} cor="#5B6660" />
+    </a>
   );
 }
 
@@ -401,7 +467,7 @@ function VisaoGeral({ d }: { d: TDestino }) {
 }
 
 function Checklist({ d }: { d: TDestino }) {
-  const grupos = checklistDoDestino(d);
+  const grupos = checklistDoDestino(d, perfilViajante.ler());
   const [marcados, setMarcados] = useState(() => checklistMarcados.listar(d.id));
   const total = grupos.reduce((s, g) => s + g.itens.length, 0);
   const feitos = grupos.reduce((s, g) => s + g.itens.filter((i) => marcados.includes(i)).length, 0);
