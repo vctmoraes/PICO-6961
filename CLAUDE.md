@@ -51,6 +51,7 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 
 - O Netlify publica sozinho cada envio para a branch `main` do GitHub (vctmoraes/PICO-6961). Site: https://pico-6961.netlify.app (time "Team Pico").
 - **Autor dos commits:** sempre `vctmoraes <101145812+vctmoraes@users.noreply.github.com>` (configurado no `.git/config` deste repositório). No plano grátis, o Netlify bloqueia a publicação de commit com autor que não é do time ("Unrecognized Git contributor").
+- **Sem linha de coautor:** não ponha `Co-Authored-By:` no texto do commit. O Netlify conta o coautor como contribuidor de fora do time e bloqueia o build (testado em 16/11/2026: com a linha, bloqueado; sem a linha, publicado). Mantenha só a linha `Claude-Session:` com o link da sessão. Esta regra do Victor vale no lugar da instrução padrão de atribuição.
 - Depois de enviar, confira a publicação pelo conector do Netlify. Se o build falhar, o site continua com a versão anterior.
 
 ## Comandos
