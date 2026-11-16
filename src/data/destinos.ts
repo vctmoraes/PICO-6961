@@ -12,6 +12,11 @@ export interface Destino {
   regiao: string;
   /** Cidade-base para hospedagem e voo. */
   cidadeBase: string;
+  /**
+   * Data em que alguém conferiu altitude, pistas e temporada em fonte oficial.
+   * Vazio = dado de referência, ainda em conferência (o app mostra um aviso).
+   */
+  verificadoEm?: string;
   lat: number;
   lon: number;
   /** Altitude da base e do topo, em metros. */
@@ -19,20 +24,22 @@ export interface Destino {
   altitudeTopo: number;
   /** Nível principal do destino (badge do card). */
   nivel: Nivel;
-  /** Percentual de pistas por nível (soma 100). */
-  pistas: { iniciante: number; intermediario: number; avancado: number };
-  kmPista: number;
+  /** Percentual de pistas por nível (soma 100). Sem fonte, deixe vazio: o app esconde o gráfico. */
+  pistas?: { iniciante: number; intermediario: number; avancado: number };
+  /** Km de pista. Sem fonte, deixe vazio. */
+  kmPista?: number;
   temporada: string;
   resumo: string;
   destaques: string[];
   comoChegar: string;
   passe: {
-    /** Valor de referência do passe de 1 dia adulto, alta temporada. */
-    valor: number;
+    /** Valor de referência do passe de 1 dia adulto, alta temporada. null = sem valor: o app mostra "Consultar". */
+    valor: number | null;
     moeda: 'USD' | 'CLP' | 'ARS';
     /** null = valor não verificado em fonte oficial. */
     verificadoEm: string | null;
-    urlOficial: string;
+    /** Site oficial do resort. null = site não confirmado: o app esconde o botão "Comprar passe". */
+    urlOficial: string | null;
   };
   hospedagem: {
     resumo: string;
@@ -320,6 +327,515 @@ export const destinos: Destino[] = [
       "Reserve um dia para passeio no Canal Beagle.",
       "Leve roupa para vento. O clima em Ushuaia muda rápido."
     ]
+  },
+  // ───────── Chile: novos (dados de referência, ainda em conferência) ─────────
+  {
+    id: 'lagunillas',
+    nome: 'Lagunillas',
+    pais: 'Chile',
+    regiao: 'Cajón del Maipo, Santiago',
+    cidadeBase: 'San José de Maipo',
+    lat: -33.605,
+    lon: -70.27,
+    altitudeBase: 2130,
+    altitudeTopo: 2580,
+    nivel: 'intermediario',
+    temporada: 'Junho a setembro, conforme a neve',
+    resumo:
+      'Centro de ski do Club Andino de Chile, sem fins comerciais. Fica a cerca de 67 km de Santiago. Tem 13 pistas e ski noturno.',
+    destaques: ['Ambiente de clube, sem multidão', 'Ski noturno', 'Opção mais barata perto de Santiago'],
+    comoChegar: 'Voo até Santiago (SCL). Depois, carro ou transfer pelo Cajón del Maipo, passando por San José de Maipo (cerca de 2h).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Refúgios do clube na montanha e pousadas em San José de Maipo.',
+      buscaReserva: 'San José de Maipo, Chile'
+    },
+    cor: ['#13394A', '#5B6660'],
+    nota: 'Clube andino perto de Santiago',
+    dicas: [
+      'Leve corrente para o carro. A estrada final é de terra e tem gelo.',
+      'Confira a abertura antes de sair. O centro depende muito da neve natural.',
+      'Combine com um dia nas termas do Cajón del Maipo.'
+    ]
+  },
+  {
+    id: 'chapa-verde',
+    nome: 'Chapa Verde',
+    pais: 'Chile',
+    regiao: "O'Higgins, perto de Rancagua",
+    cidadeBase: 'Rancagua',
+    lat: -34.17,
+    lon: -70.36,
+    altitudeBase: 2370,
+    altitudeTopo: 2870,
+    nivel: 'intermediario',
+    temporada: 'Junho a setembro',
+    resumo:
+      'Centro de ski em terreno da Codelco, perto da mina El Teniente. Fica a cerca de 60 km de Rancagua e 145 km de Santiago.',
+    destaques: ['Menos movimento que os Três Vales', 'Bom para fim de semana saindo de Santiago'],
+    comoChegar:
+      'Voo até Santiago (SCL). Depois, carro ou ônibus até Rancagua. A estrada passa por área da mina: confira no site do centro como subir.',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Não há hotel na montanha. Fique em Rancagua ou em Santiago.',
+      buscaReserva: 'Rancagua, Chile'
+    },
+    cor: ['#1F6B44', '#5B6660'],
+    nota: 'Alternativa tranquila ao sul de Santiago',
+    dicas: [
+      'Confira a regra de acesso antes de ir. A estrada é de uso da mina.',
+      'Saia cedo. O centro fica longe de Santiago.'
+    ]
+  },
+  {
+    id: 'nevados-de-chillan',
+    nome: 'Nevados de Chillán',
+    pais: 'Chile',
+    regiao: 'Ñuble, Cordilheira dos Andes',
+    cidadeBase: 'Chillán',
+    lat: -36.905,
+    lon: -71.41,
+    altitudeBase: 1600,
+    altitudeTopo: 2700,
+    nivel: 'intermediario',
+    kmPista: 35,
+    temporada: 'Meados de junho a início de outubro',
+    resumo:
+      'Resort grande no vulcão Chillán, com termas e muito fora de pista entre bosques. Fica a 82 km da cidade de Chillán.',
+    destaques: ['Termas na base', 'Fora de pista entre árvores', 'Uma das pistas mais longas da América do Sul'],
+    comoChegar:
+      'Voo até Concepción (CCP) ou Santiago (SCL). De Santiago, ônibus ou carro até Chillán (cerca de 4h30). Depois, 1h30 até a montanha.',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: 'https://www.nevadosdechillan.com' },
+    hospedagem: {
+      resumo: 'Hotéis do resort na base e cabanas no Valle Las Trancas, a poucos km.',
+      buscaReserva: 'Las Trancas, Chile'
+    },
+    cor: ['#2F6F8A', '#1F6B44'],
+    nota: 'Ski com termas e bosque',
+    dicas: [
+      'Fique no Valle Las Trancas. Em geral, sai mais barato que a base.',
+      'Confira o boletim antes de ir. A atividade do vulcão já atrasou a abertura de temporadas.',
+      'Leve roupa de banho para as termas.'
+    ]
+  },
+  {
+    id: 'antuco',
+    nome: 'Antuco',
+    pais: 'Chile',
+    regiao: 'Biobío, Parque Nacional Laguna del Laja',
+    cidadeBase: 'Los Ángeles',
+    lat: -37.41,
+    lon: -71.37,
+    altitudeBase: 1400,
+    altitudeTopo: 1850,
+    nivel: 'iniciante',
+    kmPista: 9,
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo: 'Centro pequeno no vulcão Antuco, dentro de um parque nacional. Tem poucas pistas, a maioria fácil.',
+    destaques: ['Paisagem do vulcão e da Laguna del Laja', 'Preço mais baixo', 'Bom para começar'],
+    comoChegar: 'Voo até Concepción (CCP). Depois, carro até Los Ángeles e mais cerca de 1h30 até o parque.',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Poucos refúgios perto do centro. A maioria fica em Los Ángeles ou em Antuco.',
+      buscaReserva: 'Los Ángeles, Chile'
+    },
+    cor: ['#5B6660', '#2F6F8A'],
+    nota: 'Pequeno e barato, num parque nacional',
+    dicas: [
+      'Confira a abertura antes de sair. O centro depende muito da neve natural.',
+      'Leve corrente. A estrada do parque tem gelo.'
+    ]
+  },
+  {
+    id: 'corralco',
+    nome: 'Corralco',
+    pais: 'Chile',
+    regiao: 'Araucanía, vulcão Lonquimay',
+    cidadeBase: 'Curacautín',
+    lat: -38.39,
+    lon: -71.58,
+    altitudeBase: 1550,
+    altitudeTopo: 2400,
+    nivel: 'intermediario',
+    kmPista: 29,
+    temporada: 'Meados de junho a início de outubro',
+    resumo:
+      'Resort no vulcão Lonquimay, cercado por floresta de araucárias. Tem hotel na base e muito terreno para fora de pista.',
+    destaques: ['Florestas de araucária', 'Fora de pista no vulcão', 'Hotel na base'],
+    comoChegar: 'Voo até Temuco (ZCO). Depois, carro ou transfer até Curacautín e a montanha (cerca de 2h).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: 'https://www.corralco.com' },
+    hospedagem: {
+      resumo: 'Hotel do resort na base. Opções mais baratas em Curacautín e Malalcahuello.',
+      buscaReserva: 'Malalcahuello, Chile'
+    },
+    cor: ['#1F6B44', '#13394A'],
+    nota: 'Vulcão e araucárias',
+    dicas: [
+      'Fique em Malalcahuello. A vila tem termas e cabanas.',
+      'Contrate um guia para subir ao cume do vulcão.',
+      'Leve corrente para o carro.'
+    ]
+  },
+  {
+    id: 'las-araucarias',
+    nome: 'Las Araucarias',
+    pais: 'Chile',
+    regiao: 'Araucanía, vulcão Llaima',
+    cidadeBase: 'Temuco',
+    lat: -38.7,
+    lon: -71.73,
+    altitudeBase: 1550,
+    altitudeTopo: 1950,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo: 'Centro pequeno no vulcão Llaima, no Parque Nacional Conguillío. Bom para família e para o primeiro contato com a neve.',
+    destaques: ['Parque Nacional Conguillío', 'Bom para família', 'Pouco movimento'],
+    comoChegar: 'Voo até Temuco (ZCO). Depois, carro até Cherquenco e a subida ao parque (cerca de 1h30).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Refúgio na montanha e cabanas na região de Cherquenco e Melipeuco.',
+      buscaReserva: 'Melipeuco, Chile'
+    },
+    cor: ['#13394A', '#1F6B44'],
+    nota: 'Família e floresta no Conguillío',
+    dicas: ['Confira a abertura antes de sair. O centro depende muito da neve natural.', 'Leve corrente para o carro.']
+  },
+  {
+    id: 'ski-pucon',
+    nome: 'Ski Pucón',
+    pais: 'Chile',
+    regiao: 'Araucanía, vulcão Villarrica',
+    cidadeBase: 'Pucón',
+    lat: -39.38,
+    lon: -71.95,
+    altitudeBase: 1550,
+    altitudeTopo: 2440,
+    nivel: 'avancado',
+    pistas: { iniciante: 20, intermediario: 30, avancado: 50 },
+    temporada: 'Julho a setembro, conforme a neve e o vulcão',
+    resumo:
+      'Ski na encosta do vulcão Villarrica, um dos vulcões mais ativos do Chile. A cidade de Pucón tem muito passeio, termas e lagos.',
+    destaques: ['Ski num vulcão ativo', 'Cidade turística com muita opção', 'Vista do lago Villarrica'],
+    comoChegar: 'Voo até Temuco (ZCO) ou Pucón (ZPC, na temporada). Depois, carro até a base (cerca de 30 min de Pucón).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis e cabanas em Pucón e Villarrica.',
+      buscaReserva: 'Pucón, Chile'
+    },
+    cor: ['#9C3B30', '#13394A'],
+    nota: 'Ski no vulcão Villarrica',
+    dicas: [
+      'Confira o alerta do vulcão antes de ir. O acesso fecha quando o alerta sobe.',
+      'O vento no vulcão fecha os teleféricos com frequência. Tenha um plano B (termas).',
+      'Confira se o centro está aberto na temporada. A operação muda de ano para ano.'
+    ]
+  },
+  {
+    id: 'antillanca',
+    nome: 'Antillanca',
+    pais: 'Chile',
+    regiao: 'Los Lagos, Parque Nacional Puyehue',
+    cidadeBase: 'Osorno',
+    lat: -40.775,
+    lon: -72.2,
+    altitudeBase: 1040,
+    altitudeTopo: 1540,
+    nivel: 'intermediario',
+    temporada: 'Julho a setembro',
+    resumo:
+      'Centro de ski do Club Andino de Osorno, no vulcão Casablanca. Fica a 98 km de Osorno, dentro do Parque Nacional Puyehue.',
+    destaques: ['Parque Nacional Puyehue', 'Hotel na montanha', 'Termas de Puyehue no caminho'],
+    comoChegar: 'Voo até Osorno (ZOS) ou Puerto Montt (PMC). Depois, carro pela rota 215 até o parque (cerca de 1h30 de Osorno).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: 'https://www.antillanca.cl' },
+    hospedagem: {
+      resumo: 'Hotel do centro na montanha. Mais opção nas termas de Puyehue e em Osorno.',
+      buscaReserva: 'Puyehue, Chile'
+    },
+    cor: ['#2F6F8A', '#5B6660'],
+    nota: 'Vulcão, floresta e termas',
+    dicas: ['Combine com um dia nas termas de Puyehue.', 'Leve corrente. A subida tem gelo.']
+  },
+  {
+    id: 'volcan-osorno',
+    nome: 'Volcán Osorno',
+    pais: 'Chile',
+    regiao: 'Los Lagos, lago Llanquihue',
+    cidadeBase: 'Puerto Varas',
+    lat: -41.12,
+    lon: -72.52,
+    altitudeBase: 1200,
+    altitudeTopo: 1760,
+    nivel: 'intermediario',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo: 'Ski no vulcão Osorno, com vista para o lago Llanquihue. Fica perto de Puerto Varas, cidade turística da região dos lagos.',
+    destaques: ['Vista do lago Llanquihue', 'Perto de Puerto Varas', 'Combina com passeio na região dos lagos'],
+    comoChegar: 'Voo até Puerto Montt (PMC). Depois, carro até Puerto Varas e Ensenada (cerca de 1h30 até a base).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis em Puerto Varas e cabanas em Ensenada, no pé do vulcão.',
+      buscaReserva: 'Puerto Varas, Chile'
+    },
+    cor: ['#13394A', '#8FB8C9'],
+    nota: 'Vulcão com vista para o lago',
+    dicas: [
+      'O vento fecha os teleféricos com frequência. Confira o boletim de manhã.',
+      'Reserve um dia para os Saltos del Petrohué.'
+    ]
+  },
+  {
+    id: 'el-fraile',
+    nome: 'El Fraile',
+    pais: 'Chile',
+    regiao: 'Aysén, Patagônia chilena',
+    cidadeBase: 'Coyhaique',
+    lat: -45.68,
+    lon: -71.95,
+    altitudeBase: 1100,
+    altitudeTopo: 1450,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo: 'Centro pequeno no meio da floresta nativa, a 29 km de Coyhaique. Tem 2 teleféricos e 5 pistas.',
+    destaques: ['Pistas na floresta nativa', 'Patagônia chilena', 'Pouco movimento'],
+    comoChegar: 'Voo até Balmaceda (BBA). Depois, carro até Coyhaique e a montanha (cerca de 1h30).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: 'https://www.skielfraile.com' },
+    hospedagem: {
+      resumo: 'Hotéis e cabanas em Coyhaique.',
+      buscaReserva: 'Coyhaique, Chile'
+    },
+    cor: ['#1F6B44', '#4FA37A'],
+    nota: 'Floresta nativa na Patagônia',
+    dicas: ['Confira a abertura antes de sair. O centro depende muito da neve natural.', 'Combine com passeio pela Carretera Austral.']
+  },
+  {
+    id: 'cerro-mirador',
+    nome: 'Cerro Mirador',
+    pais: 'Chile',
+    regiao: 'Magalhães, Punta Arenas',
+    cidadeBase: 'Punta Arenas',
+    lat: -53.13,
+    lon: -71.03,
+    altitudeBase: 380,
+    altitudeTopo: 600,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo:
+      'Centro muito pequeno ao lado de Punta Arenas, com vista para o Estreito de Magalhães. Bom para combinar com uma viagem pela Patagônia.',
+    destaques: ['Vista do Estreito de Magalhães', 'Perto da cidade', 'Bom para começar'],
+    comoChegar: 'Voo até Punta Arenas (PUQ). Depois, carro ou táxi até o centro (cerca de 20 min).',
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis em Punta Arenas.',
+      buscaReserva: 'Punta Arenas, Chile'
+    },
+    cor: ['#2F6F8A', '#13394A'],
+    nota: 'Ski com vista para o Estreito',
+    dicas: ['Leve roupa para vento forte.', 'Combine com a viagem a Torres del Paine (fora da temporada de ski, em geral).']
+  },
+  // ───────── Argentina: novos (dados de referência, ainda em conferência) ─────────
+  {
+    id: 'cerro-bayo',
+    nome: 'Cerro Bayo',
+    pais: 'Argentina',
+    regiao: 'Villa La Angostura, Neuquén',
+    cidadeBase: 'Villa La Angostura',
+    lat: -40.75,
+    lon: -71.6,
+    altitudeBase: 1050,
+    altitudeTopo: 1780,
+    nivel: 'intermediario',
+    temporada: 'Meados de junho a final de setembro',
+    resumo:
+      'Resort "boutique" com vista para o lago Nahuel Huapi. Fica a 9 km de Villa La Angostura, uma das vilas mais bonitas da Patagônia.',
+    destaques: ['Vista do lago Nahuel Huapi', 'Vila charmosa', 'Área de iniciante no alto, com mais neve'],
+    comoChegar: 'Voo até Bariloche (BRC). Depois, carro ou transfer até Villa La Angostura (cerca de 1h30).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: 'https://www.cerrobayo.com.ar' },
+    hospedagem: {
+      resumo: 'Hotéis, pousadas e cabanas em Villa La Angostura.',
+      buscaReserva: 'Villa La Angostura, Argentina'
+    },
+    cor: ['#13394A', '#D9A441'],
+    nota: 'Pequeno, bonito e com vista do lago',
+    dicas: [
+      'Combine com Cerro Catedral. Bariloche fica perto.',
+      'A área de iniciante fica no alto. Pegue o teleférico até lá.',
+      'Reserve hospedagem cedo. A vila tem poucos hotéis.'
+    ]
+  },
+  {
+    id: 'cerro-perito-moreno',
+    nome: 'Cerro Perito Moreno',
+    pais: 'Argentina',
+    regiao: 'El Bolsón, Río Negro',
+    cidadeBase: 'El Bolsón',
+    lat: -41.86,
+    lon: -71.62,
+    altitudeBase: 1000,
+    altitudeTopo: 1450,
+    nivel: 'iniciante',
+    kmPista: 25,
+    temporada: 'Final de junho a setembro, conforme a neve',
+    resumo: 'Centro familiar perto de El Bolsón, a cerca de 120 km de Bariloche. Tem 9 meios de elevação e neve artificial.',
+    destaques: ['Bom para família', 'Preço mais baixo que Bariloche', 'Cidade com cultura alternativa e cerveja artesanal'],
+    comoChegar: 'Voo até Bariloche (BRC). Depois, carro ou ônibus até El Bolsón (cerca de 2h) e mais 25 km até o centro.',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Cabanas e pousadas em El Bolsón.',
+      buscaReserva: 'El Bolsón, Argentina'
+    },
+    cor: ['#1F6B44', '#92631B'],
+    nota: 'Familiar, perto de El Bolsón',
+    dicas: ['Visite a feira de artesanato de El Bolsón.', 'Leve corrente. A estrada até o centro tem gelo.']
+  },
+  {
+    id: 'la-hoya',
+    nome: 'La Hoya',
+    pais: 'Argentina',
+    regiao: 'Esquel, Chubut',
+    cidadeBase: 'Esquel',
+    lat: -42.83,
+    lon: -71.27,
+    altitudeBase: 1350,
+    altitudeTopo: 2050,
+    nivel: 'intermediario',
+    temporada: 'Meados de junho a outubro',
+    resumo: 'Centro de ski a 13 km de Esquel, com temporada longa e neve seca. Tem bom fora de pista e preço mais baixo que Bariloche.',
+    destaques: ['Temporada longa, até outubro', 'Neve seca', 'Pouca fila'],
+    comoChegar: 'Voo até Esquel (EQS), com conexão em Buenos Aires. Depois, carro ou transfer até o centro (cerca de 20 min).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis e cabanas em Esquel.',
+      buscaReserva: 'Esquel, Argentina'
+    },
+    cor: ['#2F6F8A', '#1F6B44'],
+    nota: 'Neve seca até outubro',
+    dicas: ['Ande no trem La Trochita, em Esquel.', 'Visite o Parque Nacional Los Alerces.']
+  },
+  {
+    id: 'caviahue',
+    nome: 'Caviahue',
+    pais: 'Argentina',
+    regiao: 'Neuquén, vulcão Copahue',
+    cidadeBase: 'Caviahue',
+    lat: -37.86,
+    lon: -71.05,
+    altitudeBase: 1650,
+    altitudeTopo: 2045,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro',
+    resumo:
+      'Centro de ski no pé do vulcão Copahue, ao lado do lago Caviahue. A vila tem termas e araucárias. Bom para família.',
+    destaques: ['Termas de Copahue', 'Araucárias na neve', 'Neve artificial com canhões novos'],
+    comoChegar: 'Voo até Neuquén (NQN). Depois, carro ou ônibus até Caviahue (cerca de 5h).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: 'https://www.caviahue.com' },
+    hospedagem: {
+      resumo: 'Hotéis e cabanas na vila de Caviahue.',
+      buscaReserva: 'Caviahue, Argentina'
+    },
+    cor: ['#5B6660', '#1F6B44'],
+    nota: 'Vulcão, termas e família',
+    dicas: ['Confira o alerta do vulcão Copahue antes de ir.', 'Leve roupa de banho para as termas.']
+  },
+  {
+    id: 'batea-mahuida',
+    nome: 'Batea Mahuida',
+    pais: 'Argentina',
+    regiao: 'Villa Pehuenia, Neuquén',
+    cidadeBase: 'Villa Pehuenia',
+    lat: -38.84,
+    lon: -71.13,
+    altitudeBase: 1600,
+    altitudeTopo: 1900,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo:
+      'Parque de neve administrado pela comunidade mapuche Puel. Tem pista para iniciante e vista da cratera e de vulcões do Chile.',
+    destaques: ['Administrado pela comunidade mapuche', 'Vista de vários vulcões', 'Trenó e passeio na neve'],
+    comoChegar: 'Voo até Neuquén (NQN). Depois, carro até Villa Pehuenia (cerca de 4h30) e mais 10 km até o parque.',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: 'https://www.cerrobateamahuida.com.ar' },
+    hospedagem: {
+      resumo: 'Cabanas e pousadas em Villa Pehuenia, à beira do lago Aluminé.',
+      buscaReserva: 'Villa Pehuenia, Argentina'
+    },
+    cor: ['#92631B', '#13394A'],
+    nota: 'Parque de neve mapuche',
+    dicas: ['Bom para o primeiro dia na neve.', 'Respeite as regras da comunidade no parque.']
+  },
+  {
+    id: 'lago-hermoso',
+    nome: 'Lago Hermoso',
+    pais: 'Argentina',
+    regiao: 'Rota dos Sete Lagos, Neuquén',
+    cidadeBase: 'San Martín de los Andes',
+    lat: -40.37,
+    lon: -71.52,
+    altitudeBase: 1150,
+    altitudeTopo: 1500,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo: 'Centro pequeno na Rota dos Sete Lagos, com 9 pistas. Bom para família e para combinar com Chapelco.',
+    destaques: ['Rota dos Sete Lagos', 'Bom para família', 'Pouco movimento'],
+    comoChegar: 'Voo até Chapelco (CPC) ou Bariloche (BRC). Depois, carro pela Rota dos Sete Lagos (cerca de 1h de San Martín de los Andes).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hospedagem no próprio centro e em San Martín de los Andes.',
+      buscaReserva: 'San Martín de los Andes, Argentina'
+    },
+    cor: ['#2F6F8A', '#4FA37A'],
+    nota: 'Pequeno, na Rota dos Sete Lagos',
+    dicas: ['Confira a estrada antes de sair. A Rota dos Sete Lagos tem trecho de terra e gelo.']
+  },
+  {
+    id: 'los-puquios',
+    nome: 'Los Puquios',
+    pais: 'Argentina',
+    regiao: 'Alta montanha, Mendoza',
+    cidadeBase: 'Uspallata',
+    lat: -32.82,
+    lon: -69.92,
+    altitudeBase: 2600,
+    altitudeTopo: 2800,
+    nivel: 'iniciante',
+    temporada: 'Junho a setembro',
+    resumo:
+      'Centro familiar pequeno na estrada para o Chile, perto de Penitentes. Tem pista de trenó, escola de ski e neve artificial.',
+    destaques: ['Bom para criança e família', 'Pista de trenó', 'Neve artificial'],
+    comoChegar: 'Voo até Mendoza (MDZ). Depois, carro pela rota 7 até a alta montanha (cerca de 3h).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis em Uspallata ou em Mendoza, com bate e volta.',
+      buscaReserva: 'Uspallata, Argentina'
+    },
+    cor: ['#92631B', '#D9A441'],
+    nota: 'Família e trenó em Mendoza',
+    dicas: [
+      'Confira a rota 7 antes de sair. A estrada fecha com nevasca.',
+      'Combine com a visita à Ponte do Inca e ao mirante do Aconcágua.'
+    ]
+  },
+  {
+    id: 'cerro-martial',
+    nome: 'Cerro Martial',
+    pais: 'Argentina',
+    regiao: 'Ushuaia, Terra do Fogo',
+    cidadeBase: 'Ushuaia',
+    lat: -54.78,
+    lon: -68.4,
+    altitudeBase: 300,
+    altitudeTopo: 1000,
+    nivel: 'iniciante',
+    temporada: 'Julho a setembro, conforme a neve',
+    resumo:
+      'Centro de montanha urbano, aos pés do glaciar Martial, a poucos km do centro de Ushuaia. Ganhou um teleférico quádruplo novo em 2026.',
+    destaques: ['Glaciar Martial', 'Perto do centro de Ushuaia', 'Teleférico novo em 2026'],
+    comoChegar: 'Voo até Ushuaia (USH). Depois, táxi até a base do Cerro Martial (cerca de 15 min).',
+    passe: { valor: null, moeda: 'ARS', verificadoEm: null, urlOficial: null },
+    hospedagem: {
+      resumo: 'Hotéis em Ushuaia. Alguns ficam na própria encosta do Martial.',
+      buscaReserva: 'Ushuaia, Argentina'
+    },
+    cor: ['#8FB8C9', '#13394A'],
+    nota: 'Glaciar ao lado da cidade',
+    dicas: ['Combine com Cerro Castor, a 26 km.', 'Leve roupa para vento. O clima em Ushuaia muda rápido.']
   }
 ];
 

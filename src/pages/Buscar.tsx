@@ -14,12 +14,14 @@ export function Buscar() {
 
   const lista = useMemo(() => {
     const q = semAcento(texto.trim());
-    return destinos.filter(
+    // Ordem: por país e de norte a sul (latitude), como o viajante planeja a rota.
+    const ordenados = [...destinos].sort((x, y) => x.pais.localeCompare(y.pais) || y.lat - x.lat);
+    return ordenados.filter(
       (d) =>
         (!q || semAcento(`${d.nome} ${d.regiao} ${d.pais} ${d.cidadeBase}`).includes(q)) &&
         (!nivel || d.nivel === nivel) &&
         (!pais || d.pais === pais) &&
-        (!orcamento || d.passe.valor <= orcamento)
+        (!orcamento || (d.passe.valor != null && d.passe.valor <= orcamento))
     );
   }, [texto, nivel, pais, orcamento]);
 

@@ -2,7 +2,11 @@
 
 ## Feito nesta etapa
 
-- MVP em PWA com 8 destinos (4 no Chile, 4 na Argentina).
+- MVP em PWA com 27 destinos: 15 no Chile e 12 na Argentina.
+  - Primeira lista (8): Valle Nevado, La Parva, El Colorado, Portillo, Cerro Catedral, Chapelco, Las Leñas, Cerro Castor.
+  - Chile, novos (11): Lagunillas, Chapa Verde, Nevados de Chillán, Antuco, Corralco, Las Araucarias, Ski Pucón, Antillanca, Volcán Osorno, El Fraile, Cerro Mirador.
+  - Argentina, novos (8): Cerro Bayo, Cerro Perito Moreno, La Hoya, Caviahue, Batea Mahuida, Lago Hermoso, Los Puquios, Cerro Martial.
+  - Fora da lista: Vallecitos (teleféricos fechados), Penitentes (só reabriu como parque de montanha), Primeros Pinos e Cerro Wayle (sem fonte confiável). Parque Farellones (parque de neve) e Ski Arpa (ski com snowcat) também ficaram fora.
 - API de condição de neve escolhida: Open-Meteo (grátis, sem chave, licença CC BY 4.0).
 - Telas do mockup: Início, Buscar, Detalhe do destino (Visão geral, Dicas, Checklist, Avaliações).
 - Telas novas: Roteiros, Perfil, Termos de uso (rascunho), Créditos.
@@ -17,10 +21,11 @@
 4. **Registrar o domínio.** Consulte `picotrip.com.br` no registro.br e `picotrip.com` num registrador internacional. Confira também o nome @picotrip no Instagram e no TikTok.
 5. **Cadastrar no programa de afiliados** do Booking.com. Ponha o ID no `.env` (`VITE_BOOKING_AID`). Veja também se os resorts têm programa de afiliado.
 6. **Ligar a métrica de usuário ativo:** crie uma conta no Plausible (pago, sem cookie) ou no Umami (tem plano grátis). Ponha o domínio no `.env`.
-7. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 5 destinos uma página de câmeras ou de boletim.
-8. **Verificar as fotos** do mockup (ver `docs/fotos-e-licencas.md`).
-9. **Pedir revisão dos termos de uso** a um advogado antes do lançamento público.
-10. **Recrutar o grupo de teste** (mensagem pronta abaixo).
+7. **Conferir os 19 destinos novos.** Os dados vieram de busca na web e de sites de terceiros. Para cada destino: confira altitude, temporada e site oficial, e preencha `verificadoEm`. Hoje, 12 destinos não têm site oficial confirmado e não mostram o botão "Comprar passe". Nenhum dos 19 tem preço de passe: o app mostra "Consultar".
+8. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 5 destinos uma página de câmeras ou de boletim.
+9. **Verificar as fotos** do mockup (ver `docs/fotos-e-licencas.md`).
+10. **Pedir revisão dos termos de uso** a um advogado antes do lançamento público.
+11. **Recrutar o grupo de teste** (mensagem pronta abaixo).
 
 ## Fase 2 (depois do teste)
 

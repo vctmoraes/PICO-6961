@@ -19,8 +19,9 @@ const abas: { id: Aba; rotulo: string }[] = [
 const corNivel = { iniciante: 'var(--ini-texto)', intermediario: 'var(--int-texto)', avancado: 'var(--ava-texto)' };
 
 function precoPasse(d: TDestino): string {
+  if (d.passe.valor == null) return 'Consultar';
   const simbolo = { USD: 'US$', CLP: 'CLP$', ARS: 'AR$' }[d.passe.moeda];
-  return `${simbolo} ${d.passe.valor.toLocaleString('pt-BR')}`;
+  return `${simbolo} ${d.passe.valor.toLocaleString('pt-BR')}*`;
 }
 
 function melhorEpoca(d: TDestino): string {
@@ -78,11 +79,12 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </div>
         <div className="bloco">
           <small>Passe (dia)</small>
-          <strong>{precoPasse(d)}*</strong>
+          <strong>{precoPasse(d)}</strong>
         </div>
       </div>
 
       <div className="acoes">
+        {d.passe.urlOficial && (
         <a className="acao primaria" href={linkOficial(d.passe.urlOficial)} target="_blank" rel="noopener sponsored">
           <Icone nome="ticket" tamanho={18} cor="#D9480F" />
           <div>
@@ -91,6 +93,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
           </div>
           <Icone nome="seta" tamanho={16} cor="#5B6660" />
         </a>
+        )}
         <a className="acao secundaria" href={linkHospedagem(d.hospedagem.buscaReserva)} target="_blank" rel="noopener sponsored">
           <Icone nome="cama" tamanho={18} cor="#13394A" />
           <div>
@@ -254,7 +257,6 @@ function CondicaoAgora({ d }: { d: TDestino }) {
 }
 
 function VisaoGeral({ d }: { d: TDestino }) {
-  const { iniciante, intermediario, avancado } = d.pistas;
   return (
     <>
       <CondicaoAgora d={d} />
@@ -265,19 +267,23 @@ function VisaoGeral({ d }: { d: TDestino }) {
         </div>
       ))}
 
-      <h3>Pistas</h3>
-      <div className="barra-pistas" aria-hidden="true">
-        <div style={{ width: `${iniciante}%`, background: 'var(--ini-texto)' }} />
-        <div style={{ width: `${intermediario}%`, background: '#D9A441' }} />
-        <div style={{ width: `${avancado}%`, background: 'var(--ava-texto)' }} />
-      </div>
-      <div className="legenda-pistas">
-        <span><i style={{ background: 'var(--ini-texto)' }} />Iniciante {iniciante}%</span>
-        <span><i style={{ background: '#D9A441' }} />Intermediário {intermediario}%</span>
-        <span><i style={{ background: 'var(--ava-texto)' }} />Avançado {avancado}%</span>
-      </div>
+      <h3>A montanha</h3>
+      {d.pistas && (
+        <>
+          <div className="barra-pistas" aria-hidden="true">
+            <div style={{ width: `${d.pistas.iniciante}%`, background: 'var(--ini-texto)' }} />
+            <div style={{ width: `${d.pistas.intermediario}%`, background: '#D9A441' }} />
+            <div style={{ width: `${d.pistas.avancado}%`, background: 'var(--ava-texto)' }} />
+          </div>
+          <div className="legenda-pistas">
+            <span><i style={{ background: 'var(--ini-texto)' }} />Iniciante {d.pistas.iniciante}%</span>
+            <span><i style={{ background: '#D9A441' }} />Intermediário {d.pistas.intermediario}%</span>
+            <span><i style={{ background: 'var(--ava-texto)' }} />Avançado {d.pistas.avancado}%</span>
+          </div>
+        </>
+      )}
       <p className="legenda">
-        Cerca de {d.kmPista} km de pista · Altitude de {d.altitudeBase.toLocaleString('pt-BR')} m a {d.altitudeTopo.toLocaleString('pt-BR')} m ·
+        {d.kmPista ? `Cerca de ${d.kmPista} km de pista · ` : ''}Altitude de {d.altitudeBase.toLocaleString('pt-BR')} m a {d.altitudeTopo.toLocaleString('pt-BR')} m ·
         Temporada: {d.temporada.toLowerCase()}
       </p>
 
@@ -287,13 +293,25 @@ function VisaoGeral({ d }: { d: TDestino }) {
       <h3>Onde ficar</h3>
       <p>{d.hospedagem.resumo}</p>
 
-      <p className="aviso">
-        <strong>* Preço do passe:</strong>{' '}
-        {d.passe.verificadoEm
-          ? `valor de referência, verificado em ${new Date(d.passe.verificadoEm).toLocaleDateString('pt-BR')}.`
-          : 'valor estimado, ainda não confirmado no site oficial.'}{' '}
-        O preço muda com a data e a temporada. Confira no site oficial antes de comprar.
-      </p>
+      {!d.verificadoEm && (
+        <p className="aviso">
+          <strong>Dados em conferência:</strong> altitude, pistas e temporada são valores de referência. Confira no site oficial
+          antes de viajar.
+        </p>
+      )}
+      {d.passe.valor != null ? (
+        <p className="aviso">
+          <strong>* Preço do passe:</strong>{' '}
+          {d.passe.verificadoEm
+            ? `valor de referência, verificado em ${new Date(d.passe.verificadoEm).toLocaleDateString('pt-BR')}.`
+            : 'valor estimado, ainda não confirmado no site oficial.'}{' '}
+          O preço muda com a data e a temporada. Confira no site oficial antes de comprar.
+        </p>
+      ) : (
+        <p className="aviso">
+          <strong>Preço do passe:</strong> ainda sem valor de referência. Consulte o centro de ski.
+        </p>
+      )}
       <p className="aviso">
         O Pico Trip só informa. A decisão de praticar o esporte é sua. Ver os <a href={rota.termos}>termos de uso</a>.
       </p>
