@@ -47,6 +47,12 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Links de afiliado (hospedagem e seguro): `src/config.ts`. As chaves ficam no `.env` (ver `.env.example`).
 - Tokens visuais: `src/styles.css`, no `:root`. Use as variáveis. Não escreva cor solta no componente.
 
+## Publicação
+
+- O Netlify publica sozinho cada envio para a branch `main` do GitHub (vctmoraes/PICO-6961). Site: https://pico-6961.netlify.app (time "Team Pico").
+- **Autor dos commits:** sempre `vctmoraes <101145812+vctmoraes@users.noreply.github.com>` (configurado no `.git/config` deste repositório). No plano grátis, o Netlify bloqueia a publicação de commit com autor que não é do time ("Unrecognized Git contributor").
+- Depois de enviar, confira a publicação pelo conector do Netlify. Se o build falhar, o site continua com a versão anterior.
+
 ## Comandos
 
 - `npm install` — instala as dependências.
