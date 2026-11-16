@@ -22,11 +22,10 @@
 - Custo do dia: cartão "Quanto custa 1 dia na montanha" (passe + aluguel de equipamento + aluguel de roupa, em real, ajustado ao perfil), "Custo de montanha" no roteiro, linha de aluguel na comparação e aviso no checklist. Aluguel com fonte em 16 destinos: Valle Nevado, La Parva, El Colorado, Lagunillas, Nevados de Chillán, Corralco, Ski Pucón, Antillanca, Cerro Catedral, Cerro Castor, Las Leñas, Chapelco, Park City, Breckenridge, Vail e Aspen (2 montanhas). Las Leñas, Chapelco, Antillanca, Vail e Aspen têm fonte sem data confirmada.
 - Ponte com o WhatsApp: "Mandar no WhatsApp" no roteiro (com link que importa o roteiro) e no destino.
 - Grupos (Etapa 1): login por e-mail, grupo com convite (código, link e WhatsApp), chat com cartões do app (destino, comparação, votação, roteiro), roteiro do grupo editado por todos, votação (com sugestão dos destinos do roteiro), denúncia, bloqueio, sair do grupo, apagar mensagem e apagar conta. Funciona em modo demonstração até ligar o Supabase.
-- Medição de uso (Plausible, sem cookie): 11 eventos, ver `docs/medicao.md`.
+- Medição de uso (Plausible, sem cookie): 10 eventos, ver `docs/medicao.md`.
 - Calendário de lotação (aproximado) no destino, no roteiro, nos avisos e no "Monte minha viagem".
 - Avisos para você no Início: visto americano, lembrete do passe (4 semanas antes nos EUA), lotação e neve prevista durante a viagem.
 - "Monte minha viagem": datas, pessoas, orçamento, país e 1 ou 2 destinos → até 3 roteiros prontos, com custo de montanha em real e criação do roteiro em 1 toque.
-- Loja PICO 6961: lista de espera com 4 peças (boné, camiseta, moletom, gorro), consentimento de e-mail e opção "só interesse" (conta pela medição).
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -38,7 +37,7 @@
 4. **Registrar a marca PICO 6961.** Consulte `pico6961.com.br` no registro.br e `pico6961.com` num registrador internacional. Confira @pico6961 no Instagram e no TikTok. Pesquise "PICO 6961" e "PICO" no INPI (busca.inpi.gov.br) nas classes 9, 42, 39 e 25, e peça o registro cedo. Antes, teste o nome com o grupo de ski: fale o nome e peça para a pessoa escrever.
 5. **Cadastrar no programa de afiliados** de um comparador de seguro viagem brasileiro. Ponha o link no `.env` (`VITE_SEGURO_URL`). Sem o link, o app mostra só as dicas de seguro.
 5b. **Cadastrar no programa de afiliados** do Booking.com. Ponha o ID no `.env` (`VITE_BOOKING_AID`). Veja também se os resorts têm programa de afiliado.
-6. **Ligar a medição:** siga `docs/medicao.md` (conta no Plausible, domínio no Netlify e metas dos 11 eventos).
+6. **Ligar a medição:** siga `docs/medicao.md` (conta no Plausible, domínio no Netlify e metas dos 10 eventos).
 7. **Conferir os 19 destinos novos.** Os dados vieram de busca na web e de sites de terceiros. Para cada destino: confira altitude, temporada e site oficial, e preencha `verificadoEm`. Hoje, 12 destinos não têm site oficial confirmado e não mostram o botão "Comprar passe". Nenhum dos 19 tem preço de passe: o app mostra "Consultar".
 8. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 24 destinos uma página de câmeras ou de boletim.
 7b. **Completar o aluguel** dos destinos que mostram "Consultar" (ex.: Portillo, Chapa Verde, Cerro Bayo, La Hoya, Deer Valley, Jackson Hole, Mammoth). Ligue ou mande mensagem para 1 ou 2 lojas de cada região. Depois, pense numa parceria de afiliado com lojas de aluguel (botão "Reservar aluguel").
@@ -58,6 +57,7 @@
 - Moderação de relato.
 - Mais países com a skill `importar-pais`: o script já funciona para qualquer país (teste com o Canadá: 257 áreas).
 - Notificação no celular para os avisos (neve, passe, lotação): precisa do Supabase e de push.
+- Marca de roupa PICO 6961: fora do app por decisão do Victor (16/11/2026). A tela da lista de espera está no commit `51e1196`, para quando a marca voltar à pauta.
 - Grupos, Etapa 2: quem leva o quê, racha de custos e alerta de neve para o grupo. Etapa 3: fotos, login com Google e Apple, e notificações.
 - Sincronizar o perfil, os roteiros e o Passaporte de Picos na conta (hoje ficam no aparelho).
 - Perfil público opcional, selos ("Primeira descida", "3 países", "Andes completo") e grupo de viagem com voto no destino.

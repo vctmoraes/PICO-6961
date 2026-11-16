@@ -20,7 +20,6 @@ export type Evento =
   | 'Entrou em grupo'
   | 'Mensagem enviada'
   | 'Monte minha viagem'
-  | 'Lista de espera'
   | 'Aviso tocado';
 
 export function medir(evento: Evento, props?: Props): void {

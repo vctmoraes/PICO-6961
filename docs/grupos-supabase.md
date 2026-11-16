@@ -16,8 +16,6 @@ Sem o Supabase, os grupos funcionam em **modo demonstração**: tudo fica só no
 
 O arquivo cria as tabelas e liga as regras de segurança: cada pessoa só lê e escreve nos grupos de que participa.
 
-4. Repita com o arquivo `supabase/migrations/0002_lista_espera.sql`. Esse arquivo cria a lista de espera da loja. Para ver a lista: **Table Editor → lista_espera**.
-
 ## 3. Configure o login por e-mail
 
 1. Abra **Authentication → Sign In / Providers**. Confirme que **Email** está ligado.

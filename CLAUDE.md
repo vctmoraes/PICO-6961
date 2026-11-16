@@ -2,7 +2,7 @@
 
 Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de produto, de marca e de design.
 
-**Nome da marca: PICO 6961** (antes: Pico Trip; troca em 16/11/2026). Escreva sempre "PICO 6961", em maiúsculas. 6.961 m é a altitude do Aconcágua (valor do IGN da Argentina: 6.960,8 m). A marca vai virar também marca de roupa e de outros produtos. As chaves internas do `localStorage` continuam com o prefixo `pt.`: não mude essas chaves, para não apagar os dados dos usuários.
+**Nome da marca: PICO 6961** (antes: Pico Trip; troca em 16/11/2026). Escreva sempre "PICO 6961", em maiúsculas. 6.961 m é a altitude do Aconcágua (valor do IGN da Argentina: 6.960,8 m). A marca pode virar também marca de roupa no futuro, mas o Victor tirou a loja do app em 16/11/2026 ("vamos ver depois"): não ponha loja, lista de espera ou roupa no app sem o Victor pedir. O código da lista de espera está no commit `51e1196`. As chaves internas do `localStorage` continuam com o prefixo `pt.`: não mude essas chaves, para não apagar os dados dos usuários.
 
 ## Regras do produto (não mudar sem o Victor pedir)
 
@@ -25,7 +25,7 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Conteúdo curado: `src/data/destinos.ts`. O agente de atualização edita só este arquivo (ver `docs/agente-atualizacao.md`).
 - Condição de neve e tempo: API Open-Meteo (`src/lib/clima.ts`). Licença CC BY 4.0: mantenha o crédito na tela.
 - Dados do usuário (roteiro, checklist, relatos): `localStorage`, em `src/lib/storage.ts`. Na fase 2, troque a implementação por um servidor e mantenha a mesma interface.
-- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist`, `#roteiro-<id>`, `#comparar-<id>--<id>`, `#guia`, `#mapa`, `#questionario`, `#grupos`, `#grupo-<id>`, `#convite-<codigo>`, `#importar-<dados>`, `#planejar`, `#loja` (`src/lib/rota.ts`).
+- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist`, `#roteiro-<id>`, `#comparar-<id>--<id>`, `#guia`, `#mapa`, `#questionario`, `#grupos`, `#grupo-<id>`, `#convite-<codigo>`, `#importar-<dados>`, `#planejar` (`src/lib/rota.ts`).
 - Perfil e personalização: questionário em `src/pages/Questionario.tsx` (tipo `PerfilViajante`); nota "Combina X% com você" em `src/lib/combina.ts` (só motivos que vêm de dado do destino); checklist recebe o perfil (`checklistDoDestino(d, perfil)`); Passaporte de Picos em `src/components/PassaportePicos.tsx` (soma a altitude dos topos rumo aos 6.961 m).
 - Roteiro de viagem: tipo `Viagem` em `src/lib/storage.ts`; regras (dias, distribuição, custo, texto) em `src/lib/viagem.ts`. O marcador do destino é outra coisa: "Destinos salvos" (`salvos`).
 - Aluguel de equipamento e roupa: faixa por dia, com moeda, onde alugar, mês e fonte, em `src/data/aluguel.ts` (por `id`). Sem fonte, o destino fica sem aluguel e o app mostra "Consultar". Fonte sem data: `confianca: 'baixa'`. O cartão "Quanto custa 1 dia na montanha" e o "Custo de montanha" do roteiro usam `src/lib/custo.ts` e respeitam o perfil (esporte e equipamento).
@@ -35,7 +35,6 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Calendário de lotação: `src/data/lotacao.ts` (datas aproximadas, com Carnaval e feriados dos EUA calculados). Sempre diga "aproximado" na tela.
 - Avisos do Início (`src/components/Avisos.tsx`): visto, lembrete do passe, lotação e neve durante a viagem. Só dentro do app; notificação no celular precisa de servidor.
 - "Monte minha viagem": `src/lib/planejar.ts` e `src/pages/Planejar.tsx`. Só sugere destinos curados ou revisados.
-- Loja PICO 6961 (lista de espera): `src/pages/Loja.tsx`; tabela `lista_espera` em `supabase/migrations/0002_lista_espera.sql` (só inserção, com consentimento; ninguém lê pelo app).
 - Cotação do real: AwesomeAPI (`src/lib/moeda.ts`). Sem cotação, o app esconde o valor em real. Nunca use cotação fixa.
 - Mapas: Google Maps embutido na tela do destino (`src/components/MapaGoogle.tsx`, 1 lugar por mapa). Mapa com vários pontos (todos os destinos, roteiro): Leaflet + OpenStreetMap (`src/components/Mapa.tsx`, carregado sob demanda). Chaves e provedor do mapa no `.env`.
 - Links de afiliado (hospedagem e seguro): `src/config.ts`. As chaves ficam no `.env` (ver `.env.example`).

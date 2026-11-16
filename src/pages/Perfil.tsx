@@ -200,15 +200,6 @@ export function Perfil() {
       <Conta />
 
 
-      <a className="acao primaria" href={rota.loja}>
-        <Icone nome="marcador" tamanho={18} cor="#D9480F" />
-        <div>
-          <div className="t">Loja PICO 6961 · em breve</div>
-          <div className="s">Boné, camiseta, moletom e gorro. Entre na lista de espera</div>
-        </div>
-        <Icone nome="seta" tamanho={16} cor="#5B6660" />
-      </a>
-
       <section className="cartao-seguro" aria-labelledby="titulo-nome">
         <h3 id="titulo-nome">Por que 6961?</h3>
         <p>

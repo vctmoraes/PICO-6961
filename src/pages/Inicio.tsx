@@ -95,10 +95,6 @@ export function Inicio() {
         </>
       )}
 
-      <a className="banner-loja" href={rota.loja}>
-        <strong>PICO 6961 vai virar marca de roupa.</strong> Entre na lista de espera da primeira coleção →
-      </a>
-
       <p className="legenda" style={{ textAlign: 'center' }}>
         Mais esportes em breve · Esta versão é só de ski e snowboard
       </p>

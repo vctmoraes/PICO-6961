@@ -15,7 +15,6 @@ interface Dados {
   roteiros: Record<string, { viagem: Viagem; atualizadoEm: string }>;
   enquetes: Enquete[];
   bloqueados: string[];
-  listaEspera?: { peca: string; tamanho?: string; em: string }[];
 }
 
 const vazio = (): Dados => ({ logado: false, nome: '', idadeOk: false, grupos: [], mensagens: [], roteiros: {}, enquetes: [], bloqueados: [] });
@@ -162,10 +161,6 @@ export function criarBackendDemo(): BackendGrupos {
       if (!ouvintes.has(grupoId)) ouvintes.set(grupoId, new Set());
       ouvintes.get(grupoId)!.add(cb);
       return () => ouvintes.get(grupoId)?.delete(cb);
-    },
-    async entrarNaListaDeEspera({ peca, tamanho }) {
-      // Modo demonstração: guarda só a peça e o tamanho, sem o e-mail.
-      mudar((d) => (d.listaEspera = [...(d.listaEspera ?? []), { peca, tamanho, em: new Date().toISOString() }]));
     },
     async apagarConta() {
       gravar(vazio());

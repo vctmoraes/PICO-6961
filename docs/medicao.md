@@ -24,7 +24,6 @@ O app também conta automaticamente as telas visitadas e os cliques em links de 
 | Entrou em grupo | Entrada por código ou por convite | `via` |
 | Mensagem enviada | Mensagem no chat do grupo | `tipo`: texto ou cartão |
 | Monte minha viagem | O usuário pede sugestões | `sugestoes`, `destinos`, `pais` |
-| Lista de espera | Entrada na lista da loja ou interesse sem e-mail | `peca`, `tamanho`, `email` (sim ou não) |
 | Aviso tocado | Toque num aviso do Início | `tipo` |
 
 **Regra:** nunca mande e-mail, nome, texto de mensagem ou outro dado pessoal nas propriedades.
@@ -34,5 +33,4 @@ O app também conta automaticamente as telas visitadas e os cliques em links de 
 - **Usuário ativo** (métrica do briefing): visitantes únicos por semana.
 - **Ativação:** quantos visitantes fazem "Perfil concluído" ou "Roteiro criado".
 - **Receita futura:** "Link de afiliado" por tipo. Mostra onde vale buscar parceria.
-- **Marca:** "Lista de espera" por peça. Mostra qual peça produzir primeiro.
 - **Grupos:** "Grupo criado", "Entrou em grupo" e "Mensagem enviada". Mostram se o chat pega.

@@ -404,17 +404,3 @@ textarea.campo { min-height: 90px; resize: vertical; }
 .custo-plano { margin: 0; font-size: 13px; }
 .custo-plano strong { color: var(--acao); font-family: var(--fonte-titulo); font-size: 15px; }
 
-/* Loja */
-.hero-loja { background: var(--marca); color: #fff; border-radius: var(--raio); padding: 18px; display: flex; flex-direction: column; gap: 8px; }
-.hero-loja h2 { font-size: 22px; text-wrap: balance; }
-.hero-loja p { margin: 0; font-size: 14px; line-height: 1.5; opacity: 0.92; }
-.selo-em-breve { align-self: flex-start; background: var(--acao); color: #fff; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 999px; padding: 3px 10px; opacity: 1 !important; }
-.pecas { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.peca { background: var(--cartao); border: 1.5px solid var(--borda); border-radius: 14px; padding: 10px; display: flex; flex-direction: column; gap: 4px; text-align: left; font: inherit; color: var(--texto); }
-.peca.ativa { border-color: var(--acao); }
-.peca strong { font-size: 13px; }
-.peca small { font-size: 11px; color: var(--texto-2); line-height: 1.35; }
-.desenho-peca { width: 100%; height: 80px; background: var(--fundo); border-radius: 10px; }
-.confirmado { background: var(--ini-fundo); color: var(--ini-texto); border-radius: 12px; padding: 14px; font-size: 14px; line-height: 1.45; }
-.banner-loja { display: block; background: var(--marca); color: #fff; border-radius: 12px; padding: 12px 14px; font-size: 13px; line-height: 1.45; }
-.banner-loja:hover { color: #fff; }
