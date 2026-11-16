@@ -6,6 +6,7 @@ import { MAX_DIAS, ajustarDias, atividadeLabel, custoPasses, dataCurta, distribu
 import { rota } from '../lib/rota';
 import { emReal, useCotacoes } from '../lib/moeda';
 import { Seguro } from '../components/Seguro';
+import { MapaPreguicoso, linkRotaGoogle } from '../components/MapaPreguicoso';
 
 export function Viagem({ id }: { id: string }) {
   const [v, setV] = useState<TViagem | undefined>(() => viagens.obter(id));
@@ -130,6 +131,26 @@ export function Viagem({ id }: { id: string }) {
           );
         })}
       </ol>
+      {v.destinos.length > 0 && (
+        <MapaPreguicoso
+          pontos={v.destinos.map(buscarDestino).filter((d): d is NonNullable<typeof d> => d !== undefined)}
+          ordem
+          altura={220}
+        />
+      )}
+      {v.destinos.length > 1 && (
+        <a
+          className="acao secundaria compacta"
+          href={linkRotaGoogle(v.destinos.map(buscarDestino).filter((d): d is NonNullable<typeof d> => d !== undefined))}
+          target="_blank"
+          rel="noopener"
+        >
+          <div>
+            <div className="t">Abrir a rota no Google Maps</div>
+            <div className="s">De carro, na ordem da viagem</div>
+          </div>
+        </a>
+      )}
       <div className="linha-form">
         <select value={novoDestino} onChange={(e) => setNovoDestino(e.target.value)} aria-label="Escolher destino" className="campo">
           <option value="">Escolher destino…</option>

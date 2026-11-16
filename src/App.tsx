@@ -8,6 +8,7 @@ import { Roteiros } from './pages/Roteiros';
 import { Viagem } from './pages/Viagem';
 import { Comparar } from './pages/Comparar';
 import { Guia } from './pages/Guia';
+import { MapaDestinos } from './pages/MapaDestinos';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -48,9 +49,10 @@ export function App() {
     perfil: <Perfil />,
     termos: <Termos />,
     creditos: <Creditos />,
-    guia: <Guia />
+    guia: <Guia />,
+    mapa: <MapaDestinos />
   };
-  const navAtual = ['termos', 'creditos'].includes(pagina) ? 'perfil' : pagina === 'inicio' ? '' : pagina;
+  const navAtual = ['termos', 'creditos'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
 
   return (
     <div className="app">

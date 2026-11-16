@@ -36,6 +36,7 @@ export const rota = {
   creditos: '#creditos',
   viagem: (id: string) => `#roteiro-${id}`,
   guia: '#guia',
+  mapa: '#mapa',
   /** ex.: #comparar-portillo--la-parva */
   comparar: (ids: string[]) => (ids.length ? `#comparar-${ids.join('--')}` : '#comparar'),
   /** aba opcional: dicas, checklist ou avaliacoes (ex.: #destino-portillo--checklist). */

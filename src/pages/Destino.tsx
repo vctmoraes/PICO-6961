@@ -5,6 +5,8 @@ import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } fro
 import { checklistMarcados, perfil, relatos, salvos, viagens, type Relato } from '../lib/storage';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
 import { Seguro } from '../components/Seguro';
+import { linksNavegacao } from '../components/MapaPreguicoso';
+import { MapaGoogle } from '../components/MapaGoogle';
 import { emReal, useCotacoes } from '../lib/moeda';
 import { linkHospedagem, linkOficial } from '../config';
 import { rota } from '../lib/rota';
@@ -299,6 +301,24 @@ function VisaoGeral({ d }: { d: TDestino }) {
         {d.kmPista ? `Cerca de ${d.kmPista} km de pista · ` : ''}Altitude de {d.altitudeBase.toLocaleString('pt-BR')} m a {d.altitudeTopo.toLocaleString('pt-BR')} m ·
         Temporada: {d.temporada.toLowerCase()}
       </p>
+
+      <h3>Onde fica</h3>
+      <MapaGoogle destino={d} />
+      <p className="legenda">Arraste e use 2 dedos para dar zoom. <a href={rota.mapa}>Ver todos os destinos no mapa</a>.</p>
+      <div className="acoes-montanha">
+        <a className="acao secundaria compacta" href={linksNavegacao(d.nome, d.regiao, d.pais).google} target="_blank" rel="noopener">
+          <Icone nome="pino" tamanho={18} cor="#13394A" />
+          <div>
+            <div className="t">Google Maps</div>
+          </div>
+        </a>
+        <a className="acao secundaria compacta" href={linksNavegacao(d.nome, d.regiao, d.pais).waze} target="_blank" rel="noopener">
+          <Icone nome="carro" tamanho={18} cor="#13394A" />
+          <div>
+            <div className="t">Ir com o Waze</div>
+          </div>
+        </a>
+      </div>
 
       <h3>Como chegar</h3>
       <p>{d.comoChegar}</p>

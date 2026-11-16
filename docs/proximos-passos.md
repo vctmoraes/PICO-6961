@@ -16,6 +16,7 @@
 - "Neve nos seus destinos" no Início: condição dos destinos salvos e dos destinos dos roteiros.
 - Guia "Primeira vez na neve" (`#guia`).
 - Cartão de seguro viagem com ski, no destino, no roteiro e no guia. O botão de cotação aparece quando `VITE_SEGURO_URL` estiver preenchido.
+- Mapas: Google Maps (satélite ou mapa) na tela do destino, com botões Google Maps e Waze; tela "Mapa" com os 27 destinos (filtro por país e nível); mapa do roteiro com os destinos numerados e botão "Abrir a rota no Google Maps".
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -30,6 +31,10 @@
 6. **Ligar a métrica de usuário ativo:** crie uma conta no Plausible (pago, sem cookie) ou no Umami (tem plano grátis). Ponha o domínio no `.env`.
 7. **Conferir os 19 destinos novos.** Os dados vieram de busca na web e de sites de terceiros. Para cada destino: confira altitude, temporada e site oficial, e preencha `verificadoEm`. Hoje, 12 destinos não têm site oficial confirmado e não mostram o botão "Comprar passe". Nenhum dos 19 tem preço de passe: o app mostra "Consultar".
 8. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 24 destinos uma página de câmeras ou de boletim.
+8b. **Configurar os mapas antes do lançamento.**
+   - Crie uma chave grátis da Google Maps Embed API no Google Cloud, restrita ao domínio do app. Ponha a chave em `VITE_GOOGLE_MAPS_KEY`. Sem chave, o app usa a incorporação clássica do Google, que serve para teste.
+   - O mapa de fundo do OpenStreetMap serve só para uso leve. Para o lançamento, crie conta num provedor com plano grátis (ex.: MapTiler ou Stadia Maps) e preencha `VITE_MAPA_TILES` e `VITE_MAPA_CREDITO`.
+   - Confira no mapa a posição de cada destino. As coordenadas são aproximadas.
 9. **Verificar as fotos** do mockup (ver `docs/fotos-e-licencas.md`).
 10. **Pedir revisão dos termos de uso** a um advogado antes do lançamento público.
 11. **Recrutar o grupo de teste** (mensagem pronta abaixo).

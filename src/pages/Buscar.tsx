@@ -64,14 +64,22 @@ export function Buscar() {
         </select>
       </div>
 
-      <a className="acao secundaria compacta" href={rota.comparar([])}>
-        <Icone nome="comparar" tamanho={18} cor="#13394A" />
-        <div>
-          <div className="t">Comparar destinos</div>
-          <div className="s">Até 3 destinos lado a lado</div>
-        </div>
-        <Icone nome="seta" tamanho={16} cor="#5B6660" />
-      </a>
+      <div className="acoes-montanha">
+        <a className="acao secundaria compacta" href={rota.mapa}>
+          <Icone nome="mapa" tamanho={18} cor="#13394A" />
+          <div>
+            <div className="t">Ver no mapa</div>
+            <div className="s">Os 27 destinos</div>
+          </div>
+        </a>
+        <a className="acao secundaria compacta" href={rota.comparar([])}>
+          <Icone nome="comparar" tamanho={18} cor="#13394A" />
+          <div>
+            <div className="t">Comparar</div>
+            <div className="s">Até 3 lado a lado</div>
+          </div>
+        </a>
+      </div>
 
       <div className="legenda" aria-live="polite">
         {lista.length} {lista.length === 1 ? 'destino encontrado' : 'destinos encontrados'}

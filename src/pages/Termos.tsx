@@ -43,6 +43,11 @@ export function Creditos() {
       <p>
         <a href="https://docs.awesomeapi.com.br/api-de-moedas" target="_blank" rel="noopener">AwesomeAPI</a>. O valor em real é estimado e serve só de referência.
       </p>
+      <h2>Mapas</h2>
+      <p>
+        Mapa do destino: Google Maps. Mapa dos destinos e do roteiro: <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>,
+        com a biblioteca Leaflet.
+      </p>
       <h2>Fontes tipográficas</h2>
       <p>Inter e Space Grotesk, licença SIL Open Font License, pelo Google Fonts.</p>
       <h2>Imagens</h2>

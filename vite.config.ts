@@ -47,6 +47,12 @@ export default defineConfig(({ mode }) => {
                   options: { cacheName: 'cotacao', expiration: { maxAgeSeconds: 60 * 60 * 24 }, networkTimeoutSeconds: 6 }
                 },
                 {
+                  // Mapa de fundo: guarda só os pedaços que o usuário já viu (sem baixar mapa em massa).
+                  urlPattern: /^https:\/\/tile\.openstreetmap\.org\//,
+                  handler: 'CacheFirst',
+                  options: { cacheName: 'mapa', expiration: { maxEntries: 300, maxAgeSeconds: 60 * 60 * 24 * 14 } }
+                },
+                {
                   urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\//,
                   handler: 'StaleWhileRevalidate',
                   options: { cacheName: 'fontes' }
