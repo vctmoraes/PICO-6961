@@ -2,3 +2,5 @@ node_modules
 dist
 dist-preview
 *.zip
+.env
+.env.local
