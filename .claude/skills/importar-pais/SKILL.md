@@ -104,7 +104,8 @@ Destino importado tem só fatos da base. Para os destinos que brasileiros mais v
    - `revisadoEm`: data de hoje (AAAA-MM-DD).
 4. Faça 1 ou 2 buscas na web para conferir o que não for conhecimento estável (preço, voo sazonal, nome novo de resort). Liste as fontes para o usuário.
 5. Altitude, pistas e site continuam da base. Não copie esses números para a curadoria.
-6. Se quiser destaque no Início, acrescente o id na lista de destaques do país (modelo: `destaquesEua`).
+6. Aluguel: se achar faixa de preço com fonte e data, acrescente o destino em `src/data/aluguel.ts` (equipamento, roupa, snowboard se a fonte separar, onde alugar, dica, mês e fontes). Fonte sem data: `confianca: 'baixa'`. Sem fonte, não acrescente: o app mostra "Consultar".
+7. Se quiser destaque no Início, acrescente o id na lista de destaques do país (modelo: `destaquesEua`).
 
 ## Entrega
 

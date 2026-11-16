@@ -49,6 +49,7 @@ export function Guia() {
       <h2>5. Alugue o equipamento</h2>
       <p>Na primeira viagem, alugue ski, bota, bastão e capacete. Não compre equipamento antes de saber se você gosta.</p>
       <p>Na cidade, o aluguel em geral sai mais barato que na montanha. Prove a bota com a meia de ski: a bota deve ficar firme, sem apertar o dedo.</p>
+      <p>Na tela de cada destino, o cartão “Quanto custa 1 dia na montanha” mostra o valor médio do aluguel e do passe, já em real.</p>
 
       <h2>6. Vista-se em camadas</h2>
       <ul>

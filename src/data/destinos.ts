@@ -4,6 +4,7 @@
 
 export type Nivel = 'iniciante' | 'intermediario' | 'avancado';
 import { destinosEua } from './eua';
+import { aluguelPorDestino, type Aluguel } from './aluguel';
 
 export type Pais = 'Chile' | 'Argentina' | 'Estados Unidos';
 
@@ -68,6 +69,8 @@ export interface Destino {
    * Antes de pôr uma foto, confirme autor e licença. Ver docs/fotos-e-licencas.md.
    */
   foto?: { url: string; autor: string; licenca: string; fonte: string } | null;
+  /** Valor médio de referência do aluguel por dia (src/data/aluguel.ts). */
+  aluguel?: Aluguel;
   /** Código do aeroporto de chegada mais usado (para a busca de voo). */
   aeroporto?: string;
   /** Passe de temporada que vale neste resort (EUA). */
@@ -862,7 +865,9 @@ const aeroportoDe: Record<string, string> = {
 };
 
 /** Todos os destinos: curados (Chile e Argentina) + importados (Estados Unidos). */
-export const destinos: Destino[] = [...curados.map((d) => ({ ...d, aeroporto: d.aeroporto ?? aeroportoDe[d.id] })), ...destinosEua];
+export const destinos: Destino[] = [...curados.map((d) => ({ ...d, aeroporto: d.aeroporto ?? aeroportoDe[d.id] })), ...destinosEua].map((d) =>
+  aluguelPorDestino[d.id] ? { ...d, aluguel: aluguelPorDestino[d.id] } : d
+);
 
 /** Países com pelo menos 1 destino, na ordem dos filtros e das listas. */
 export const paises: Pais[] = (['Chile', 'Argentina', 'Estados Unidos'] as Pais[]).filter((p) => destinos.some((d) => d.pais === p));

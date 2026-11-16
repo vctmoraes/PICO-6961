@@ -4,6 +4,7 @@ import { checklistDoDestino } from '../data/checklist';
 import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } from '../lib/clima';
 import { checklistMarcados, perfil, perfilViajante, relatos, salvos, viagens, visitados, type Relato } from '../lib/storage';
 import { combinar } from '../lib/combina';
+import { custoDoDia, formatarFaixa, formatarReal } from '../lib/custo';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
 import { Seguro } from '../components/Seguro';
 import { linksNavegacao } from '../components/MapaPreguicoso';
@@ -93,6 +94,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </div>
       </div>
 
+      <CustoDoDia d={d} />
+
       <CombinaComVoce d={d} />
 
       <div className="acoes">
@@ -177,6 +180,67 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
       </div>
       {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
     </div>
+  );
+}
+
+/** "Quanto custa 1 dia na montanha": passe + aluguel, por pessoa, ajustado ao perfil e em reais. */
+function CustoDoDia({ d }: { d: TDestino }) {
+  const p = perfilViajante.ler();
+  const cot = useCotacoes();
+  const c = custoDoDia(d, p, cot);
+  const a = d.aluguel;
+  const temPerfil = p.equipamento !== undefined || p.esporte !== undefined;
+  return (
+    <section className="custo-dia" aria-labelledby="titulo-custo-dia">
+      <h2 id="titulo-custo-dia">Quanto custa 1 dia na montanha</h2>
+      <p className="legenda">Por pessoa{temPerfil ? ', ajustado ao seu perfil' : ''}.</p>
+      <dl>
+        {c.linhas.map((l) => (
+          <div key={l.rotulo} className={l.semValor ? 'sem-valor' : ''}>
+            <dt>{l.rotulo}</dt>
+            <dd>
+              {l.valor}
+              {l.real && <small>≈ {formatarReal(l.real[0], l.real[1])}</small>}
+            </dd>
+          </div>
+        ))}
+        {c.total && (
+          <div className="total">
+            <dt>Total{c.parcial ? ' (sem os itens a consultar)' : ''}</dt>
+            <dd>≈ {formatarReal(c.total[0], c.total[1])}</dd>
+          </div>
+        )}
+      </dl>
+      {p.equipamento === 'tudo' && <p className="legenda">Você tem todo o equipamento: o aluguel ficou fora da conta.</p>}
+      {a?.dica && <p className="dica-custo">{a.dica}</p>}
+      <p className="aviso">
+        {a ? (
+          <>
+            Aluguel: valor médio de referência ({a.onde}, {new Date(`${a.verificadoEm}-15T12:00:00`).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })}).{' '}
+            {a.confianca === 'baixa' && 'A fonte não confirma a data do preço. '}
+            Fonte:{' '}
+            {a.fontes.map((f, i) => (
+              <span key={f.url}>
+                {i > 0 && ' · '}
+                <a href={f.url} target="_blank" rel="noopener">
+                  {f.nome}
+                </a>
+              </span>
+            ))}
+            . O preço muda com a loja e com a data.
+          </>
+        ) : (
+          'Ainda não temos o valor médio do aluguel deste destino. Consulte as lojas da região.'
+        )}
+        {!cot && ' O valor em real aparece com a cotação do dia.'}
+        {!temPerfil && (
+          <>
+            {' '}
+            <a href={rota.questionario}>Ajuste ao seu perfil</a>.
+          </>
+        )}
+      </p>
+    </section>
   );
 }
 
@@ -485,6 +549,11 @@ function Checklist({ d }: { d: TDestino }) {
       {grupos.map((g) => (
         <div key={g.titulo}>
           <h3>{g.titulo}</h3>
+          {g.titulo === 'Equipamento' && d.aluguel?.equipamento && perfilViajante.ler().equipamento !== 'tudo' && (
+            <p className="legenda">
+              Aluguel: {formatarFaixa(d.aluguel.equipamento, d.aluguel.moeda)} por dia ({d.aluguel.onde}). Veja o custo completo na Visão geral.
+            </p>
+          )}
           {g.itens.map((item) => {
             const feito = marcados.includes(item);
             return (

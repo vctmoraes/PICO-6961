@@ -8,6 +8,7 @@ Item em aberto do briefing. Esta é uma proposta para o Victor aprovar.
 | --- | --- | --- | --- |
 | Condição de neve e tempo | API Open-Meteo, direto no app | Tempo real | Não precisa |
 | Preço do passe | Site oficial de cada resort | 1 vez por semana na temporada, 1 vez por mês fora dela | Sim, quando o preço muda mais de 15% |
+| Aluguel de equipamento e de roupa (faixa por dia) | Lojas de aluguel e site do resort (`src/data/aluguel.ts`) | 1 vez por temporada, antes da abertura | Sim, sempre |
 | Data de abertura e fechamento da temporada | Site oficial e redes sociais do resort | 1 vez por semana de março a outubro | Sim |
 | Link oficial (passe, site, câmeras, boletim da montanha) | Site oficial | 1 vez por semana | Sim, quando o link quebra |
 | Novo link de câmera ou boletim | Site oficial do resort | 1 vez por temporada | Sim, sempre |

@@ -28,7 +28,7 @@ export function App() {
   if (pagina === 'destino' && param) {
     return (
       <div className="app">
-        <Destino key={param} id={param} abaInicial={extra} />
+        <Destino key={`${param}--${extra ?? ''}`} id={param} abaInicial={extra} />
       </div>
     );
   }

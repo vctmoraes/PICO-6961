@@ -53,6 +53,18 @@ export function useCotacoes(): Cotacoes | null {
   return c;
 }
 
+/** Valor em reais, ou null quando não há cotação dessa moeda. */
+export function paraReal(valor: number, moeda: Moeda, c: Cotacoes | null): number | null {
+  const taxa = c?.[moeda];
+  return taxa && taxa > 0 ? valor * taxa : null;
+}
+
+/** "R$ 520" ou "R$ 400–520". */
+export function formatarReal(min: number, max: number = min): string {
+  const f = (x: number) => Math.round(x).toLocaleString('pt-BR');
+  return Math.round(min) === Math.round(max) ? `R$ ${f(min)}` : `R$ ${f(min)}–${f(max)}`;
+}
+
 /** "≈ R$ 520" ou null quando não há cotação dessa moeda. */
 export function emReal(valor: number, moeda: Moeda, c: Cotacoes | null): string | null {
   const taxa = c?.[moeda];

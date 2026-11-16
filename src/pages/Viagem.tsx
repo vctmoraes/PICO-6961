@@ -5,6 +5,8 @@ import { viagens, type Atividade, type DiaViagem, type Viagem as TViagem } from 
 import { MAX_DIAS, ajustarDias, atividadeLabel, custoPasses, dataCurta, distribuirDias, textoDoRoteiro } from '../lib/viagem';
 import { rota } from '../lib/rota';
 import { emReal, useCotacoes } from '../lib/moeda';
+import { aluguelDoPerfil, custoMontanha, formatarReal } from '../lib/custo';
+import { perfilViajante } from '../lib/storage';
 import { Seguro } from '../components/Seguro';
 import { MapaPreguicoso, linkRotaGoogle } from '../components/MapaPreguicoso';
 
@@ -246,6 +248,8 @@ export function Viagem({ id }: { id: string }) {
         </section>
       )}
 
+      <CustoMontanhaBloco v={v} />
+
       {v.destinos.length > 0 && <Seguro />}
 
       <div className="secao-titulo">
@@ -297,5 +301,31 @@ export function Viagem({ id }: { id: string }) {
       )}
       <p className="aviso">O roteiro fica salvo só neste aparelho.</p>
     </main>
+  );
+}
+
+/** Custo de montanha do roteiro: passe + aluguel do perfil, em reais, para o grupo inteiro. */
+function CustoMontanhaBloco({ v }: { v: TViagem }) {
+  const cot = useCotacoes();
+  const p = perfilViajante.ler();
+  const c = custoMontanha(v, buscarDestino, p, cot);
+  if (c.diasSki === 0) return null;
+  const quer = aluguelDoPerfil(p);
+  const itens = ['passe', quer.equipamento && 'aluguel de equipamento', quer.roupa && 'aluguel de roupa'].filter(Boolean).join(' + ');
+  return (
+    <section className="resumo-custo montanha">
+      <h3>Custo de montanha</h3>
+      {c.total ? (
+        <strong>≈ {formatarReal(c.total[0], c.total[1])}</strong>
+      ) : (
+        <p className="legenda">O valor em real aparece com a cotação do dia.</p>
+      )}
+      <p className="legenda">
+        {itens} × {c.diasSki} {c.diasSki === 1 ? 'dia' : 'dias'} de ski × {v.pessoas} {v.pessoas === 1 ? 'pessoa' : 'pessoas'}, com o valor médio de referência
+        de cada destino.
+        {c.incompletos.length > 0 && ` Sem algum valor de referência (parte fora da soma): ${c.incompletos.join(', ')}.`} Para mudar o que entra na conta,
+        ajuste o equipamento no seu <a href="#perfil">perfil</a>.
+      </p>
+    </section>
   );
 }

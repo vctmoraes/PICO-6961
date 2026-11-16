@@ -4,6 +4,7 @@ import { Badge } from '../components/Badge';
 import { CabecalhoVolta } from '../components/Nav';
 import { buscarClima, type Clima } from '../lib/clima';
 import { emReal, useCotacoes } from '../lib/moeda';
+import { formatarFaixa } from '../lib/custo';
 import { rota } from '../lib/rota';
 
 const MAX = 3;
@@ -54,6 +55,23 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
             {d.passe.moeda === 'USD' ? 'US$' : d.passe.moeda} {d.passe.valor}*
             {emReal(d.passe.valor, d.passe.moeda, cot) && <small>{emReal(d.passe.valor, d.passe.moeda, cot)}</small>}
           </>
+        )
+    },
+    {
+      rotulo: 'Aluguel de equipamento (dia)',
+      valor: (d) =>
+        d.aluguel?.equipamento ? (
+          <>
+            {formatarFaixa(d.aluguel.equipamento, d.aluguel.moeda)}
+            {emReal(d.aluguel.equipamento.min, d.aluguel.moeda, cot) && (
+              <small>
+                {emReal(d.aluguel.equipamento.min, d.aluguel.moeda, cot)}
+                {d.aluguel.equipamento.max !== d.aluguel.equipamento.min && ` a ${emReal(d.aluguel.equipamento.max, d.aluguel.moeda, cot)?.replace('≈ ', '')}`}
+              </small>
+            )}
+          </>
+        ) : (
+          'Consultar'
         )
     },
     { rotulo: 'Passe de temporada', valor: (d) => d.rede ?? '—' },
