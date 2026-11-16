@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { perfilViajante, type PerfilViajante } from '../lib/storage';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 
 type Opcao<T> = { valor: T; rotulo: string; detalhe?: string };
 
@@ -134,7 +135,10 @@ export function Questionario() {
   };
   const avancar = () => {
     // Lê o perfil gravado: a última resposta pode ainda não estar no estado desta tela.
-    if (i + 1 >= etapas.length) salvar({ ...perfilViajante.ler(), concluidoEm: new Date().toISOString() });
+    if (i + 1 >= etapas.length) {
+      salvar({ ...perfilViajante.ler(), concluidoEm: new Date().toISOString() });
+      medir('Perfil concluído');
+    }
     setI((x) => x + 1);
     window.scrollTo(0, 0);
   };

@@ -10,6 +10,8 @@ import { perfilViajante } from '../lib/storage';
 import { Seguro } from '../components/Seguro';
 import { MapaPreguicoso, linkRotaGoogle } from '../components/MapaPreguicoso';
 import { linkDoRoteiro, linkWhatsApp } from '../lib/compartilhar';
+import { medir } from '../lib/medir';
+import { hemisferioDe, lotacaoNasDatas } from '../data/lotacao';
 
 /** Quando o roteiro é de um grupo: de onde vem, onde salva e para onde volta. */
 export interface FonteExterna {
@@ -92,6 +94,15 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
           </label>
         </div>
         {datasInvalidas && <p className="erro-form">A volta precisa ser depois da ida.</p>}
+        {(() => {
+          const d0 = v.destinos.map(buscarDestino).find(Boolean);
+          const lot = lotacaoNasDatas(v.ida, v.volta, d0 ? hemisferioDe(d0.lat) : null);
+          return lot.length ? (
+            <p className="aviso-lotacao">
+              <strong>Época cheia (datas aproximadas):</strong> {lot.map((l) => l.nome).join(' · ')}. {lot[0].dica}
+            </p>
+          ) : null;
+        })()}
         <label>
           Pessoas
           <div className="contador">
@@ -277,6 +288,7 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
         href={linkWhatsApp(`${textoDoRoteiro(v)}\n\nAbra no app e salve uma cópia: ${linkDoRoteiro(v)}`)}
         target="_blank"
         rel="noopener"
+        onClick={() => medir('Compartilhar', { canal: 'whatsapp', item: 'roteiro' })}
       >
         Mandar no WhatsApp
       </a>

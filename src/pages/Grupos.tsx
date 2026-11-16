@@ -4,6 +4,7 @@ import { Icone } from '../components/Icone';
 import { backend, useUsuario, type Grupo, type Usuario } from '../lib/grupos';
 import { perfil } from '../lib/storage';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 
 /** Aviso do modo demonstração (sem Supabase configurado). */
 export function AvisoDemo() {
@@ -143,6 +144,7 @@ function ListaGrupos() {
           e.preventDefault();
           try {
             const g = await backend().criarGrupo(nome || 'Viagem de ski');
+            medir('Grupo criado', { modo: backend().modo });
             window.location.hash = rota.grupo(g.id);
           } catch (err) {
             setErro(err instanceof Error ? err.message : 'Não foi possível criar o grupo.');
@@ -163,6 +165,7 @@ function ListaGrupos() {
           e.preventDefault();
           try {
             const g = await backend().entrarNoGrupo(codigo);
+            medir('Entrou em grupo', { via: 'codigo' });
             window.location.hash = rota.grupo(g.id);
           } catch (err) {
             setErro(err instanceof Error ? err.message : 'Não foi possível entrar no grupo.');

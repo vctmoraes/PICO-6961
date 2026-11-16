@@ -5,6 +5,7 @@ import { decodificarViagem } from '../lib/compartilhar';
 import { viagens } from '../lib/storage';
 import { dataCurta } from '../lib/viagem';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 
 /** Tela que abre quando alguém recebe um roteiro pelo WhatsApp. */
 export function Importar({ dados }: { dados: string }) {
@@ -33,6 +34,7 @@ export function Importar({ dados }: { dados: string }) {
           className="botao"
           onClick={() => {
             const nova = viagens.criar(v.nome);
+            medir('Roteiro criado', { origem: 'importado' });
             viagens.salvar({ ...nova, ...v, id: nova.id, criadaEm: nova.criadaEm });
             window.location.hash = rota.viagem(nova.id);
           }}

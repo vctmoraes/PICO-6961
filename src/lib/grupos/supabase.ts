@@ -219,6 +219,12 @@ export function criarBackendSupabase(url: string, chaveAnon: string): BackendGru
       };
     },
 
+    async entrarNaListaDeEspera({ email, peca, tamanho }) {
+      const { error } = await sb.from('lista_espera').insert({ email: email.trim().toLowerCase(), peca, tamanho: tamanho || null, aceita_email: true });
+      // 23505 = a pessoa já estava na lista para essa peça: tudo certo.
+      if (error && error.code !== '23505') throw new Error(error.message);
+    },
+
     async apagarConta() {
       const { error } = await sb.functions.invoke('apagar-conta');
       if (error) {

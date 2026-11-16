@@ -6,6 +6,7 @@ import { backend, type Enquete, type Grupo as TGrupo, type Membro, type Mensagem
 import { linkWhatsApp } from '../lib/compartilhar';
 import { viagens, type Viagem as TViagem } from '../lib/storage';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 import { AvisoDemo, ComLogin } from './Grupos';
 import { Viagem } from './Viagem';
 
@@ -90,6 +91,7 @@ function Chat({ g, eu, aoAbrirAba }: { g: TGrupo; eu: Usuario; aoAbrirAba: (a: A
   const enviar = async (m: Parameters<ReturnType<typeof backend>['enviar']>[1]) => {
     try {
       await backend().enviar(g.id, m);
+      medir('Mensagem enviada', { tipo: m.cartao ? `cartao-${m.cartao.tipo}` : 'texto' });
       carregar();
     } catch (e) {
       setAviso(e instanceof Error ? e.message : 'Não foi possível enviar.');
@@ -463,7 +465,7 @@ function Pessoas({ g, eu }: { g: TGrupo; eu: Usuario }) {
           Código do grupo: <strong className="codigo">{g.codigo}</strong>
         </p>
         <div className="linha-form">
-          <a className="botao whatsapp curto" href={linkWhatsApp(convite)} target="_blank" rel="noopener">
+          <a className="botao whatsapp curto" href={linkWhatsApp(convite)} target="_blank" rel="noopener" onClick={() => medir('Compartilhar', { canal: 'whatsapp', item: 'convite' })}>
             Convidar pelo WhatsApp
           </a>
           <button

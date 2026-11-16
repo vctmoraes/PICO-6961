@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { Destino } from '../data/destinos';
 import { viagens } from '../lib/storage';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 
 /** Painel que sobe do rodapé: escolhe um roteiro existente ou cria um roteiro novo com o destino. */
 export function AdicionarAoRoteiro({ destino, aoFechar }: { destino: Destino; aoFechar: () => void }) {
@@ -51,6 +52,7 @@ export function AdicionarAoRoteiro({ destino, aoFechar }: { destino: Destino; ao
           onSubmit={(e) => {
             e.preventDefault();
             const v = viagens.criar(nome, destino.id);
+            medir('Roteiro criado', { origem: 'destino' });
             window.location.hash = rota.viagem(v.id);
           }}
         >

@@ -58,6 +58,8 @@ export interface RoteiroGrupo {
 
 export type Mudanca = 'mensagens' | 'roteiro' | 'enquetes';
 
+export type PecaLoja = 'bone' | 'camiseta' | 'moletom' | 'gorro';
+
 export interface BackendGrupos {
   modo: 'supabase' | 'demo';
   usuario(): Promise<Usuario | null>;
@@ -85,6 +87,8 @@ export interface BackendGrupos {
   bloqueados(): Promise<string[]>;
   /** Avisa quando algo muda no grupo (tempo real). Retorna a função que para de ouvir. */
   ouvir(grupoId: string, cb: (m: Mudanca) => void): () => void;
+  /** Lista de espera da loja PICO 6961. */
+  entrarNaListaDeEspera(dados: { email: string; peca: PecaLoja; tamanho?: string }): Promise<void>;
   /** Apaga a conta e os dados do servidor (LGPD). */
   apagarConta(): Promise<void>;
 }

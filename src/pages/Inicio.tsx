@@ -6,6 +6,7 @@ import { Logo } from '../components/Logo';
 import { perfil } from '../lib/storage';
 import { NeveNosDestinos } from '../components/NeveNosDestinos';
 import { ParaVoce } from '../components/ParaVoce';
+import { Avisos } from '../components/Avisos';
 import { rota } from '../lib/rota';
 
 const esportesEmBreve = ['Surf', 'Escalada', 'Mountain bike', 'Kite', 'Parapente'];
@@ -47,6 +48,17 @@ export function Inicio() {
         ))}
       </div>
 
+      <a className="acao primaria" href={rota.planejar}>
+        <Icone nome="calendario" tamanho={18} cor="#D9480F" />
+        <div>
+          <div className="t">Monte minha viagem</div>
+          <div className="s">Datas e orçamento → roteiro pronto, com custo em real</div>
+        </div>
+        <Icone nome="seta" tamanho={16} cor="#5B6660" />
+      </a>
+
+      <Avisos />
+
       <ParaVoce />
 
       <NeveNosDestinos />
@@ -82,6 +94,10 @@ export function Inicio() {
             ))}
         </>
       )}
+
+      <a className="banner-loja" href={rota.loja}>
+        <strong>PICO 6961 vai virar marca de roupa.</strong> Entre na lista de espera da primeira coleção →
+      </a>
 
       <p className="legenda" style={{ textAlign: 'center' }}>
         Mais esportes em breve · Esta versão é só de ski e snowboard

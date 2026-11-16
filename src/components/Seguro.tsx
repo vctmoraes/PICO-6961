@@ -1,5 +1,6 @@
 import { config } from '../config';
 import { Icone } from './Icone';
+import { medir } from '../lib/medir';
 
 /** Dicas de seguro viagem para ski. Com link de afiliado configurado, mostra o botão de cotação. */
 export function Seguro() {
@@ -14,7 +15,7 @@ export function Seguro() {
         <li>Equipamento perdido ou quebrado, se você levar o seu</li>
       </ul>
       {config.seguroUrl && (
-        <a className="acao primaria" href={config.seguroUrl} target="_blank" rel="noopener sponsored">
+        <a className="acao primaria" href={config.seguroUrl} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'seguro' })}>
           <Icone nome="escudo" tamanho={18} cor="#D9480F" />
           <div>
             <div className="t">Cotar seguro com ski</div>

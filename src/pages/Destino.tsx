@@ -7,7 +7,9 @@ import { combinar } from '../lib/combina';
 import { custoDoDia, formatarFaixa, formatarReal } from '../lib/custo';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
 import { MandarParaGrupo } from '../components/MandarParaGrupo';
+import { QuandoLota } from '../components/QuandoLota';
 import { linkWhatsApp } from '../lib/compartilhar';
+import { medir } from '../lib/medir';
 import { Seguro } from '../components/Seguro';
 import { linksNavegacao } from '../components/MapaPreguicoso';
 import { MapaGoogle } from '../components/MapaGoogle';
@@ -44,6 +46,10 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
   const [salvo, setSalvo] = useState(() => salvos.tem(id));
   const [painel, setPainel] = useState(false);
   const [painelGrupo, setPainelGrupo] = useState(false);
+  useEffect(() => {
+    const d0 = buscarDestino(id);
+    if (d0) medir('Destino aberto', { destino: d0.id, pais: d0.pais });
+  }, [id]);
   const emRoteiros = viagens.listar().filter((v) => v.destinos.includes(id)).length;
 
   if (!d) {
@@ -103,7 +109,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
 
       <div className="acoes">
         {d.passe.urlOficial && (
-        <a className="acao primaria" href={linkOficial(d.passe.urlOficial)} target="_blank" rel="noopener sponsored">
+        <a className="acao primaria" href={linkOficial(d.passe.urlOficial)} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'passe', destino: d.id })}>
           <Icone nome="ticket" tamanho={18} cor="#D9480F" />
           <div>
             <div className="t">Comprar passe</div>
@@ -112,7 +118,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
           <Icone nome="seta" tamanho={16} cor="#5B6660" />
         </a>
         )}
-        <a className="acao secundaria" href={linkHospedagem(d.hospedagem.buscaReserva)} target="_blank" rel="noopener sponsored">
+        <a className="acao secundaria" href={linkHospedagem(d.hospedagem.buscaReserva)} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'hospedagem', destino: d.id })}>
           <Icone nome="cama" tamanho={18} cor="#13394A" />
           <div>
             <div className="t">Ver hospedagem</div>
@@ -133,6 +139,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
             href={linkWhatsApp(`${d.nome} (${d.regiao}, ${d.pais}) no PICO 6961: ${window.location.origin}${window.location.pathname}${rota.destino(d.id)}`)}
             target="_blank"
             rel="noopener"
+            onClick={() => medir('Compartilhar', { canal: 'whatsapp', item: 'destino' })}
           >
             <Icone nome="compartilhar" tamanho={18} cor="#13394A" />
             <div>
@@ -316,7 +323,7 @@ function BuscaVoo({ d }: { d: TDestino }) {
   if (!saida || !d.aeroporto) return null;
   const url = `https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${saida} to ${d.aeroporto}`)}&hl=pt-BR&curr=BRL`;
   return (
-    <a className="acao secundaria" href={url} target="_blank" rel="noopener">
+    <a className="acao secundaria" href={url} target="_blank" rel="noopener" onClick={() => medir('Link de afiliado', { tipo: 'voo', destino: d.id })}>
       <Icone nome="aviao" tamanho={18} cor="#13394A" />
       <div>
         <div className="t">
@@ -470,6 +477,8 @@ function VisaoGeral({ d }: { d: TDestino }) {
         {d.kmPista ? `Cerca de ${d.kmPista} km de pista · ` : ''}Altitude de {d.altitudeBase.toLocaleString('pt-BR')} m a {d.altitudeTopo.toLocaleString('pt-BR')} m ·
         Temporada: {d.temporada.toLowerCase()}
       </p>
+
+      <QuandoLota d={d} />
 
       <h3>Onde fica</h3>
       <MapaGoogle destino={d} />

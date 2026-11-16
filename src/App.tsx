@@ -14,6 +14,8 @@ import { Importar } from './pages/Importar';
 import { Grupos } from './pages/Grupos';
 import { Grupo } from './pages/Grupo';
 import { Convite } from './pages/Convite';
+import { Planejar } from './pages/Planejar';
+import { Loja } from './pages/Loja';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -84,9 +86,11 @@ export function App() {
     guia: <Guia />,
     mapa: <MapaDestinos />,
     questionario: <Questionario />,
-    grupos: <Grupos />
+    grupos: <Grupos />,
+    planejar: <Planejar />,
+    loja: <Loja />
   };
-  const navAtual = ['termos', 'creditos', 'questionario'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
+  const navAtual = ['termos', 'creditos', 'questionario', 'loja'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
 
   return (
     <div className="app">

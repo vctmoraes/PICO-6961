@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { CabecalhoVolta } from '../components/Nav';
 import { backend } from '../lib/grupos';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 import { AvisoDemo, ComLogin } from './Grupos';
 
 /** Link de convite: depois do login, entra no grupo e abre o chat. */
@@ -21,7 +22,10 @@ function EntrarNoGrupo({ codigo }: { codigo: string }) {
   useEffect(() => {
     backend()
       .entrarNoGrupo(codigo)
-      .then((g) => (window.location.hash = rota.grupo(g.id)))
+      .then((g) => {
+        medir('Entrou em grupo', { via: 'convite' });
+        window.location.hash = rota.grupo(g.id);
+      })
       .catch((e) => setErro(e.message));
   }, [codigo]);
   return erro ? (

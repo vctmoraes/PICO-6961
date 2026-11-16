@@ -6,6 +6,7 @@ import { Icone } from '../components/Icone';
 import { salvos, viagens } from '../lib/storage';
 import { dataCurta } from '../lib/viagem';
 import { rota } from '../lib/rota';
+import { medir } from '../lib/medir';
 
 export function Roteiros() {
   const [lista] = useState(viagens.listar);
@@ -15,6 +16,7 @@ export function Roteiros() {
   const criar = (e: React.FormEvent) => {
     e.preventDefault();
     const v = viagens.criar(nome);
+    medir('Roteiro criado', { origem: 'manual' });
     window.location.hash = rota.viagem(v.id);
   };
 
@@ -31,6 +33,13 @@ export function Roteiros() {
           </button>
         </div>
       </form>
+
+      <a className="acao primaria" href={rota.planejar}>
+        <div>
+          <div className="t">Monte minha viagem</div>
+          <div className="s">O app sugere o roteiro pelas datas, pelo orçamento e pelo seu perfil</div>
+        </div>
+      </a>
 
       {lista.length === 0 ? (
         <div className="vazio">
