@@ -18,7 +18,8 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Conteúdo curado: `src/data/destinos.ts`. O agente de atualização edita só este arquivo (ver `docs/agente-atualizacao.md`).
 - Condição de neve e tempo: API Open-Meteo (`src/lib/clima.ts`). Licença CC BY 4.0: mantenha o crédito na tela.
 - Dados do usuário (roteiro, checklist, relatos): `localStorage`, em `src/lib/storage.ts`. Na fase 2, troque a implementação por um servidor e mantenha a mesma interface.
-- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist` (`src/lib/rota.ts`).
+- Rotas por âncora simples: `#buscar`, `#destino-<id>`, `#destino-<id>--checklist`, `#roteiro-<id>` (`src/lib/rota.ts`).
+- Roteiro de viagem: tipo `Viagem` em `src/lib/storage.ts`; regras (dias, distribuição, custo, texto) em `src/lib/viagem.ts`. O marcador do destino é outra coisa: "Destinos salvos" (`salvos`).
 - Links de afiliado: `src/config.ts`. As chaves ficam no `.env` (ver `.env.example`).
 - Tokens visuais: `src/styles.css`, no `:root`. Use as variáveis. Não escreva cor solta no componente.
 

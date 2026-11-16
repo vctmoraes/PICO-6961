@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 // Usa só letra, número e hífen: funciona em qualquer hospedagem estática e na pré-visualização do claude.ai.
 function ler(): string[] {
   const h = window.location.hash.replace(/^#\/?/, '');
+  if (h.startsWith('roteiro-')) return ['roteiro', h.slice('roteiro-'.length)];
   if (h.startsWith('destino-')) {
     const resto = h.slice('destino-'.length);
     const [id, aba] = resto.split('--');
@@ -32,6 +33,7 @@ export const rota = {
   perfil: '#perfil',
   termos: '#termos',
   creditos: '#creditos',
+  viagem: (id: string) => `#roteiro-${id}`,
   /** aba opcional: dicas, checklist ou avaliacoes (ex.: #destino-portillo--checklist). */
   destino: (id: string, aba?: string) => `#destino-${id}${aba ? `--${aba}` : ''}`
 };

@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { buscarDestino, nivelLabel, type Destino as TDestino } from '../data/destinos';
 import { checklistDoDestino } from '../data/checklist';
 import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } from '../lib/clima';
-import { checklistMarcados, perfil, relatos, roteiro, type Relato } from '../lib/storage';
+import { checklistMarcados, perfil, relatos, salvos, viagens, type Relato } from '../lib/storage';
+import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
 import { linkHospedagem, linkOficial } from '../config';
 import { rota } from '../lib/rota';
 import { Icone } from '../components/Icone';
@@ -31,7 +32,9 @@ function melhorEpoca(d: TDestino): string {
 export function Destino({ id, abaInicial }: { id: string; abaInicial?: string }) {
   const d = buscarDestino(id);
   const [aba, setAba] = useState<Aba>((abas.find((a) => a.id === abaInicial)?.id as Aba) ?? 'geral');
-  const [salvo, setSalvo] = useState(() => roteiro.tem(id));
+  const [salvo, setSalvo] = useState(() => salvos.tem(id));
+  const [painel, setPainel] = useState(false);
+  const emRoteiros = viagens.listar().filter((v) => v.destinos.includes(id)).length;
 
   if (!d) {
     return (
@@ -54,9 +57,9 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         <button
           className="botao-redondo dir"
           type="button"
-          aria-label={salvo ? 'Remover do roteiro' : 'Salvar no roteiro'}
+          aria-label={salvo ? 'Remover dos destinos salvos' : 'Salvar destino'}
           aria-pressed={salvo}
-          onClick={() => setSalvo(roteiro.alternar(d.id))}
+          onClick={() => setSalvo(salvos.alternar(d.id))}
         >
           <Icone nome="marcador" tamanho={18} cheio={salvo} cor={salvo ? '#D9480F' : '#1C2321'} />
         </button>
@@ -149,10 +152,11 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
       </div>
 
       <div className="rodape-cta">
-        <button type="button" className={`botao ${salvo ? 'contorno' : ''}`} onClick={() => setSalvo(roteiro.alternar(d.id))}>
-          {salvo ? 'Salvo no roteiro ✓' : 'Salvar no roteiro'}
+        <button type="button" className="botao" onClick={() => setPainel(true)}>
+          {emRoteiros ? `No roteiro ✓ · Adicionar a outro` : 'Adicionar ao roteiro'}
         </button>
       </div>
+      {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
     </div>
   );
 }

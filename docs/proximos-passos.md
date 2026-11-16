@@ -10,6 +10,7 @@
 - API de condição de neve escolhida: Open-Meteo (grátis, sem chave, licença CC BY 4.0).
 - Telas do mockup: Início, Buscar, Detalhe do destino (Visão geral, Dicas, Checklist, Avaliações).
 - Telas novas: Roteiros, Perfil, Termos de uso (rascunho), Créditos.
+- Roteiro personalizável: vários roteiros, datas, pessoas, destinos em ordem, dia a dia (onde, atividade, nota), distribuição automática dos dias, custo estimado de passe e texto para copiar.
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -33,6 +34,8 @@
 - Moderação de relato.
 - Mais destinos (Brasil: não há resort de ski; foco em Chile, Argentina, depois EUA e Europa).
 - Alerta de neve nova para os destinos do roteiro.
+- Roteiro compartilhado: o grupo edita o mesmo roteiro (precisa de servidor).
+- Custo da viagem completo: hospedagem, voo e aluguel de equipamento, além do passe.
 
 ## Mensagem para o grupo de teste
 

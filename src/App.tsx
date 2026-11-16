@@ -5,6 +5,7 @@ import { Destino } from './pages/Destino';
 import { Inicio } from './pages/Inicio';
 import { Perfil } from './pages/Perfil';
 import { Roteiros } from './pages/Roteiros';
+import { Viagem } from './pages/Viagem';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -14,6 +15,15 @@ export function App() {
     return (
       <div className="app">
         <Destino key={param} id={param} abaInicial={extra} />
+      </div>
+    );
+  }
+
+  if (pagina === 'roteiro' && param) {
+    return (
+      <div className="app">
+        <Viagem key={param} id={param} />
+        <Nav atual="roteiros" />
       </div>
     );
   }

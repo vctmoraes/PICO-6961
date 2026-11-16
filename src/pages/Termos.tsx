@@ -25,7 +25,7 @@ export function Termos() {
       <p>Não publique conteúdo de outra pessoa sem permissão. Não publique conteúdo ofensivo ou falso.</p>
 
       <h2>5. Privacidade</h2>
-      <p>Nesta versão de teste, seu nome, seu roteiro, seu checklist e seus relatos ficam salvos só neste aparelho. O Pico Trip não recebe esses dados.</p>
+      <p>Nesta versão de teste, seu nome, seus roteiros, seus destinos salvos, seu checklist e seus relatos ficam salvos só neste aparelho. O Pico Trip não recebe esses dados.</p>
       <p>O app pode medir o número de visitas de forma anônima, sem cookie e sem dado pessoal.</p>
     </main>
   );
