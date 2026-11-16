@@ -1,3 +1,4 @@
+import { linkSeguro } from './lib/link';
 // Configuração lida das variáveis de ambiente (arquivo .env). Ver .env.example.
 export const config = {
   /** ID de afiliado do Booking.com. Vazio = link sem comissão. */
@@ -24,9 +25,11 @@ export function linkHospedagem(busca: string): string {
   return u.toString();
 }
 
-/** Link para o site oficial do resort, com marcação de origem. */
-export function linkOficial(url: string): string {
-  const u = new URL(url);
+/** Link para o site oficial do resort, com marcação de origem. null = link inválido ou não seguro (o app esconde o botão). */
+export function linkOficial(url: string | null | undefined): string | null {
+  const seguro = linkSeguro(url);
+  if (!seguro) return null;
+  const u = new URL(seguro);
   u.searchParams.set('utm_source', 'pico6961');
   u.searchParams.set('utm_medium', 'app');
   return u.toString();

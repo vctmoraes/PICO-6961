@@ -33,6 +33,23 @@ async function carregar() {
 
 const num = (x) => (typeof x === 'number' && Number.isFinite(x) ? x : null);
 
+/** Texto puro: sem sinais de HTML nem caracteres de controle, no máximo 80 caracteres. */
+const textoLimpo = (s) => String(s).replace(/[<>"`]/g, '').replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 80);
+
+/** Só links http/https. Domínio solto vira https. O resto vira null. */
+function linkLimpo(bruto) {
+  const t = String(bruto ?? '').trim();
+  if (!t) return null;
+  const c = /^[a-z][a-z0-9+.-]*:/i.test(t) ? t : /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,}(?:[/?#]\S*)?$/i.test(t) ? `https://${t}` : null;
+  if (!c) return null;
+  try {
+    const u = new URL(c);
+    return u.protocol === 'https:' || u.protocol === 'http:' ? u.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Centro aproximado da geometria (ponto, polígono ou multipolígono). */
 function centro(g) {
   if (!g) return null;
@@ -66,7 +83,8 @@ for (const f of lista) {
   if (pais !== PAIS) { motivos.pais++; continue; }
   if (p.status && p.status !== 'operating') { motivos.status++; continue; }
   if (Array.isArray(p.activities) && !p.activities.includes('downhill')) { motivos.atividade++; continue; }
-  if (!p.name) { motivos.nome++; continue; }
+  const nomeLimpo = p.name ? textoLimpo(p.name) : '';
+  if (!nomeLimpo) { motivos.nome++; continue; }
 
   const est = p.statistics ?? {};
   const dif = est.runs?.byActivity?.downhill?.byDifficulty ?? {};
@@ -84,22 +102,22 @@ for (const f of lista) {
 
   const estado = (loc.iso3166_2 ?? '').replace(`${PAIS}-`, '') || null;
   const sufixo = (estado ?? PAIS).toLowerCase();
-  let id = `${slug(p.name)}-${sufixo}`;
-  for (let i = 2; ids.has(id); i++) id = `${slug(p.name)}-${sufixo}-${i}`;
+  let id = `${slug(nomeLimpo)}-${sufixo}`;
+  for (let i = 2; ids.has(id); i++) id = `${slug(nomeLimpo)}-${sufixo}-${i}`;
   ids.add(id);
 
   areas.push({
     id,
-    nome: p.name,
+    nome: nomeLimpo,
     estado,
-    localidade: loc.localized?.en?.locality ?? null,
+    localidade: loc.localized?.en?.locality ? textoLimpo(loc.localized.en.locality) : null,
     lat: Math.round(c[1] * 10000) / 10000,
     lon: Math.round(c[0] * 10000) / 10000,
     min: Math.round(min),
     max: Math.round(max),
     km: { i: Math.round(kmI * 10) / 10, m: Math.round(kmM * 10) / 10, a: Math.round(kmA * 10) / 10, total: Math.round(kmTotal * 10) / 10 },
     teleferico: lifts,
-    site: Array.isArray(p.websites) && p.websites[0] ? p.websites[0] : null,
+    site: Array.isArray(p.websites) ? p.websites.map(linkLimpo).find(Boolean) ?? null : null,
     fonte: p.id ?? null
   });
 }

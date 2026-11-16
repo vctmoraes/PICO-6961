@@ -16,6 +16,8 @@ Sem o Supabase, os grupos funcionam em **modo demonstração**: tudo fica só no
 
 O arquivo cria as tabelas e liga as regras de segurança: cada pessoa só lê e escreve nos grupos de que participa.
 
+4. Repita com o arquivo `supabase/migrations/0002_seguranca_convites.sql`. Esse arquivo deixa o código de convite mais longo (12 caracteres) e limita as tentativas de entrar em grupo a 10 por hora para cada pessoa.
+
 ## 3. Configure o login por e-mail
 
 1. Abra **Authentication → Sign In / Providers**. Confirme que **Email** está ligado.

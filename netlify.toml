@@ -6,6 +6,32 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# ───────── Segurança ─────────
+# Content-Security-Policy (CSP): lista os únicos serviços externos que o app pode usar.
+# ATENÇÃO: ao ligar um serviço novo (outro provedor de mapa, outro analytics, outra API),
+# acrescente o endereço aqui. Sem isso, o navegador bloqueia o serviço.
+#   script-src : código do app e o Plausible (medição)
+#   style-src  : estilos do app e as fontes do Google ('unsafe-inline' é necessário para o Leaflet e o React)
+#   img-src    : imagens do app e os pedaços do mapa do OpenStreetMap
+#   connect-src: Open-Meteo (neve), AwesomeAPI (cotação), Plausible, Supabase (grupos) e o que o service worker baixa
+#   frame-src  : só o Google Maps embutido na tela do destino
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org; connect-src 'self' https://api.open-meteo.com https://economia.awesomeapi.com.br https://plausible.io https://*.supabase.co wss://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com https://tile.openstreetmap.org; frame-src https://www.google.com https://maps.google.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"
+    # Nenhum outro site pode colocar o app dentro de uma moldura (golpe de clique falso).
+    X-Frame-Options = "DENY"
+    # O navegador não tenta adivinhar o tipo dos arquivos.
+    X-Content-Type-Options = "nosniff"
+    # Sites de fora recebem só o domínio do app, não o endereço completo (que pode ter o roteiro dentro).
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # O app não usa câmera, microfone, localização, pagamento nem USB.
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+    # Sempre HTTPS.
+    Strict-Transport-Security = "max-age=31536000"
+    # Uma janela aberta pelo app não controla o app.
+    Cross-Origin-Opener-Policy = "same-origin"
+
 # O service worker do PWA precisa estar sempre atualizado.
 [[headers]]
   for = "/sw.js"

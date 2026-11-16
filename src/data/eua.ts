@@ -3,6 +3,7 @@
 import type { Destino, Nivel } from './destinos';
 import base from './eua.json';
 import { curadoriaEua } from './eua-curados';
+import { linkSeguro } from '../lib/link';
 
 interface AreaEua {
   id: string;
@@ -96,7 +97,7 @@ function paraDestino(a: AreaEua, i: number): Destino {
     resumo: `Área de ski nos Estados Unidos (${estado}).${partes.length ? ` Tem ${partes.join(' e ')}.` : ''} Altitude de ${a.min.toLocaleString('pt-BR')} m a ${a.max.toLocaleString('pt-BR')} m.`,
     destaques: [],
     comoChegar: `Aeroporto mais perto da nossa lista: ${aero.nome} (${aero.codigo}), a cerca de ${Math.round(aero.km / 10) * 10} km em linha reta. Alguns aeroportos regionais só têm voo na temporada. Confira os voos e a estrada antes de viajar.`,
-    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: a.site },
+    passe: { valor: null, moeda: 'USD', verificadoEm: null, urlOficial: linkSeguro(a.site) },
     hospedagem: {
       resumo: `Procure hotel perto de ${a.nome} ou em ${a.localidade ?? 'uma cidade próxima'}.`,
       buscaReserva: `${a.localidade ?? a.nome}, ${estado}, Estados Unidos`

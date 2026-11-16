@@ -108,8 +108,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
       <CombinaComVoce d={d} />
 
       <div className="acoes">
-        {d.passe.urlOficial && (
-        <a className="acao primaria" href={linkOficial(d.passe.urlOficial)} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'passe', destino: d.id })}>
+        {linkOficial(d.passe.urlOficial) && (
+        <a className="acao primaria" href={linkOficial(d.passe.urlOficial)!} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'passe', destino: d.id })}>
           <Icone nome="ticket" tamanho={18} cor="#D9480F" />
           <div>
             <div className="t">Comprar passe</div>
@@ -149,8 +149,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </div>
         {(d.montanha?.cameras || d.montanha?.boletim) && (
           <div className="acoes-montanha">
-            {d.montanha.cameras && (
-              <a className="acao secundaria compacta" href={linkOficial(d.montanha.cameras)} target="_blank" rel="noopener">
+            {linkOficial(d.montanha.cameras) && (
+              <a className="acao secundaria compacta" href={linkOficial(d.montanha.cameras)!} target="_blank" rel="noopener">
                 <Icone nome="camera" tamanho={18} cor="#13394A" />
                 <div>
                   <div className="t">Câmeras ao vivo</div>
@@ -158,8 +158,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
                 </div>
               </a>
             )}
-            {d.montanha.boletim && (
-              <a className="acao secundaria compacta" href={linkOficial(d.montanha.boletim)} target="_blank" rel="noopener">
+            {linkOficial(d.montanha.boletim) && (
+              <a className="acao secundaria compacta" href={linkOficial(d.montanha.boletim)!} target="_blank" rel="noopener">
                 <Icone nome="montanha" tamanho={18} cor="#13394A" />
                 <div>
                   <div className="t">Boletim da montanha</div>
@@ -423,9 +423,9 @@ function CondicaoAgora({ d }: { d: TDestino }) {
       </div>
       <div className="credito">
         Previsão do modelo meteorológico, não é boletim oficial do resort.{' '}
-        {d.montanha?.boletim && (
+        {linkOficial(d.montanha?.boletim) && (
           <>
-            <a href={linkOficial(d.montanha.boletim)} target="_blank" rel="noopener">
+            <a href={linkOficial(d.montanha?.boletim)!} target="_blank" rel="noopener">
               Ver o boletim oficial
             </a>
             .{' '}

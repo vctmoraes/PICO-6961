@@ -174,7 +174,7 @@ function ListaGrupos() {
       >
         <label htmlFor="codigo-grupo">Entrar com código de convite</label>
         <div className="linha-form">
-          <input id="codigo-grupo" value={codigo} onChange={(e) => setCodigo(e.target.value.toUpperCase())} placeholder="Ex.: 4F7K2QX9" maxLength={12} />
+          <input id="codigo-grupo" value={codigo} onChange={(e) => setCodigo(e.target.value.toUpperCase())} placeholder="Ex.: 4F7A2C9B1E0D" maxLength={16} />
           <button className="botao secundario curto" type="submit" disabled={!codigo.trim()}>
             Entrar
           </button>

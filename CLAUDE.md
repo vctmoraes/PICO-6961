@@ -17,6 +17,13 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - Grupos: só para quem tem 16 anos ou mais e aceita os termos. Toda mensagem de outra pessoa tem "Denunciar" e "Bloquear". Nunca crie pessoa, mensagem ou voto falso, nem no modo demonstração.
 - Perfil do viajante (LGPD): pergunte só o que o app usa, diga para que serve cada pergunta, nunca guarde número de documento, e mantenha "Baixar meus dados" e "Apagar todos os meus dados" no Perfil, dentro de "Privacidade e dados" (parte fechada da seção do perfil; o Victor pediu que essa parte fique escondida). O texto técnico dos dados só aparece se o download falhar. Toda chave nova do `localStorage` entra no objeto `K` de `src/lib/storage.ts`, para a exportação e a exclusão pegarem a chave.
 
+## Segurança (ver `docs/seguranca.md`)
+
+- Link de fora do app: sempre por `linkSeguro()` (`src/lib/link.ts`) ou `linkOficial()`. Só http/https.
+- Texto de fora do app (OpenStreetMap, usuários, links): sempre como texto. Nunca `innerHTML` ou `dangerouslySetInnerHTML` com esse texto.
+- Serviço externo novo: acrescente o endereço na Content-Security-Policy do `netlify.toml`, ou o navegador bloqueia o serviço.
+- Tabela nova no Supabase: sempre com Row Level Security.
+
 ## Técnica
 
 - PWA com Vite + React 18 + TypeScript. Sem servidor nesta fase.

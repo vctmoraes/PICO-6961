@@ -20,6 +20,28 @@ export interface PropsMapa {
   zoom?: number;
 }
 
+/**
+ * Conteúdo da janelinha do ponto, montado como texto puro (textContent).
+ * O nome vem do OpenStreetMap: nunca monte HTML com esse texto.
+ */
+function conteudoPopup(d: Destino, emFoco: boolean): HTMLElement {
+  const caixa = document.createElement('div');
+  const nome = document.createElement('strong');
+  nome.textContent = d.nome;
+  const linha1 = document.createElement('div');
+  linha1.textContent = `${d.pais} · ${nivelLabel[d.nivel]}`;
+  const linha2 = document.createElement('div');
+  linha2.textContent = `${d.altitudeBase}–${d.altitudeTopo} m`;
+  caixa.append(nome, linha1, linha2);
+  if (!emFoco) {
+    const link = document.createElement('a');
+    link.href = rota.destino(d.id);
+    link.textContent = 'Ver destino';
+    caixa.append(link);
+  }
+  return caixa;
+}
+
 export default function Mapa({ pontos, foco, ordem = false, altura = 260, zoom }: PropsMapa) {
   const caixa = useRef<HTMLDivElement>(null);
 
@@ -44,10 +66,7 @@ export default function Mapa({ pontos, foco, ordem = false, altura = 260, zoom }
           // Na visão geral, o toque aproxima o mapa, para separar centros que ficam perto um do outro.
           if (mapa.getZoom() < 9) mapa.flyTo([d.lat, d.lon], 10, { duration: 0.6 });
         })
-        .bindPopup(
-          `<strong>${d.nome}</strong><br>${d.pais} · ${nivelLabel[d.nivel]}<br>${d.altitudeBase}–${d.altitudeTopo} m` +
-            (emFoco ? '' : `<br><a href="${rota.destino(d.id)}">Ver destino</a>`)
-        );
+        .bindPopup(conteudoPopup(d, emFoco));
     });
 
     if (ordem && pontos.length > 1) {

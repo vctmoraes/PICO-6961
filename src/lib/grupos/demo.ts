@@ -36,7 +36,8 @@ function gravar(d: Dados) {
 }
 
 const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-const codigo = () => Math.random().toString(36).slice(2, 10).toUpperCase();
+/** 12 caracteres hexadecimais de fonte aleatória segura, igual ao banco real. */
+const codigo = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), (b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
 
 export function criarBackendDemo(): BackendGrupos {
   const ouvintesLogin = new Set<() => void>();
