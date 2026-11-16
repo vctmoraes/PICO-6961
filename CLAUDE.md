@@ -15,7 +15,7 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - O guia "Primeira vez na neve" (`src/pages/Guia.tsx`) não tem preço nem número inventado. Regra de documento de viagem: sempre mande conferir no site oficial.
 - Todo texto do app em português do Brasil, com frase curta e voz ativa.
 - Grupos: só para quem tem 16 anos ou mais e aceita os termos. Toda mensagem de outra pessoa tem "Denunciar" e "Bloquear". Nunca crie pessoa, mensagem ou voto falso, nem no modo demonstração.
-- Perfil do viajante (LGPD): pergunte só o que o app usa, diga para que serve cada pergunta, nunca guarde número de documento, e mantenha "Baixar", "Mostrar" e "Apagar todos os meus dados" no Perfil. Toda chave nova do `localStorage` entra no objeto `K` de `src/lib/storage.ts`, para a exportação e a exclusão pegarem a chave.
+- Perfil do viajante (LGPD): pergunte só o que o app usa, diga para que serve cada pergunta, nunca guarde número de documento, e mantenha "Baixar meus dados" e "Apagar todos os meus dados" no Perfil, dentro de "Privacidade e dados" (parte fechada da seção do perfil; o Victor pediu que essa parte fique escondida). O texto técnico dos dados só aparece se o download falhar. Toda chave nova do `localStorage` entra no objeto `K` de `src/lib/storage.ts`, para a exportação e a exclusão pegarem a chave.
 
 ## Técnica
 

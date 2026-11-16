@@ -64,7 +64,7 @@ export function Perfil() {
       a.download = `pico6961-meus-dados-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setAviso('Arquivo gerado. Se o download não começou, use "Mostrar meus dados".');
+      setAviso('Arquivo gerado.');
     } catch {
       setTextoDados(json);
     }
@@ -121,6 +121,53 @@ export function Perfil() {
             </a>
           </>
         )}
+
+        <details className="privacidade">
+          <summary>Privacidade e dados</summary>
+          <div className="conteudo-privacidade">
+            <p>
+              O app guarda o seu perfil, os roteiros, o checklist e o Passaporte de Picos só neste aparelho. Nos grupos, as mensagens, o roteiro do grupo e
+              os votos ficam no servidor, para os amigos verem.
+            </p>
+            <button type="button" className="botao contorno" onClick={baixar}>
+              Baixar meus dados
+            </button>
+            {aviso && (
+              <p className="legenda" role="status">
+                {aviso}{' '}
+                <button type="button" className="link-quiz" onClick={() => setTextoDados(JSON.stringify(exportarDados(), null, 2))}>
+                  O download não começou?
+                </button>
+              </p>
+            )}
+            {textoDados && <textarea className="campo" readOnly value={textoDados} aria-label="Meus dados" onFocus={(e) => e.target.select()} />}
+            {confirmarApagar ? (
+              <div className="confirmar">
+                <p>Apagar todos os seus dados deste aparelho? Você não pode desfazer. Para apagar os dados dos grupos, use “Apagar minha conta”.</p>
+                <div className="linha-form">
+                  <button type="button" className="botao contorno" onClick={() => setConfirmarApagar(false)}>
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    className="botao perigo"
+                    onClick={() => {
+                      apagarTodosOsDados();
+                      window.location.hash = rota.inicio;
+                      window.location.reload();
+                    }}
+                  >
+                    Apagar tudo
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button type="button" className="link-perigo" onClick={() => setConfirmarApagar(true)}>
+                Apagar todos os meus dados
+              </button>
+            )}
+          </div>
+        </details>
       </section>
 
       <PassaportePicos />
@@ -152,53 +199,6 @@ export function Perfil() {
 
       <Conta />
 
-      <section className="cartao-seguro" aria-labelledby="titulo-dados">
-        <h3 id="titulo-dados">Seus dados</h3>
-        <p>
-          O app guarda o seu nome, o perfil de viagem, os roteiros, o checklist, os relatos e o Passaporte de Picos só neste aparelho. Os grupos são a
-          exceção: as mensagens, o roteiro do grupo e os votos ficam no servidor, para os amigos verem. Para apagar esses dados, use “Apagar minha
-          conta”.
-        </p>
-        <div className="linha-form">
-          <button type="button" className="botao contorno curto" onClick={baixar}>
-            Baixar meus dados
-          </button>
-          <button type="button" className="botao contorno curto" onClick={() => setTextoDados(JSON.stringify(exportarDados(), null, 2))}>
-            Mostrar meus dados
-          </button>
-        </div>
-        {aviso && (
-          <p className="legenda" role="status">
-            {aviso}
-          </p>
-        )}
-        {textoDados && <textarea className="campo" readOnly value={textoDados} aria-label="Meus dados" onFocus={(e) => e.target.select()} />}
-        {confirmarApagar ? (
-          <div className="confirmar">
-            <p>Apagar todos os seus dados deste aparelho? Você não pode desfazer.</p>
-            <div className="linha-form">
-              <button type="button" className="botao contorno" onClick={() => setConfirmarApagar(false)}>
-                Cancelar
-              </button>
-              <button
-                type="button"
-                className="botao perigo"
-                onClick={() => {
-                  apagarTodosOsDados();
-                  window.location.hash = rota.inicio;
-                  window.location.reload();
-                }}
-              >
-                Apagar tudo
-              </button>
-            </div>
-          </div>
-        ) : (
-          <button type="button" className="link-perigo" onClick={() => setConfirmarApagar(true)}>
-            Apagar todos os meus dados
-          </button>
-        )}
-      </section>
 
       <section className="cartao-seguro" aria-labelledby="titulo-nome">
         <h3 id="titulo-nome">Por que 6961?</h3>
