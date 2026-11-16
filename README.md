@@ -1,4 +1,4 @@
-# Pico Trip
+# PICO 6961
 
 App (PWA) para planejar viagem de ski e snowboard: condição da neve em tempo real, preço do passe, hospedagem, checklist e relato de usuário.
 

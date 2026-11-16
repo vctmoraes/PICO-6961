@@ -17,7 +17,7 @@ export function Guia() {
       <p>Na dúvida, comece pelo ski. Você pode trocar no meio da viagem.</p>
 
       <h2>2. Escolha um destino bom para iniciante</h2>
-      <p>Procure uma área grande de pista fácil (verde) e uma escola de ski. Estes destinos têm o nível “Iniciante” no Pico Trip:</p>
+      <p>Procure uma área grande de pista fácil (verde) e uma escola de ski. Estes destinos têm o nível “Iniciante” no PICO 6961:</p>
       <ul>
         {iniciantes.map((d) => (
           <li key={d.id}>
@@ -77,7 +77,7 @@ export function Guia() {
       <p>
         Use os <a href={rota.roteiros}>Roteiros</a> para escolher as datas, os destinos e o dia a dia. O app calcula o custo estimado do passe.
       </p>
-      <p className="aviso">O Pico Trip só informa. A decisão de praticar o esporte é sua.</p>
+      <p className="aviso">O PICO 6961 só informa. A decisão de praticar o esporte é sua.</p>
     </main>
   );
 }

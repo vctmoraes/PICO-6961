@@ -362,7 +362,7 @@ function VisaoGeral({ d }: { d: TDestino }) {
         </p>
       )}
       <p className="aviso">
-        O Pico Trip só informa. A decisão de praticar o esporte é sua. Ver os <a href={rota.termos}>termos de uso</a>.
+        O PICO 6961 só informa. A decisão de praticar o esporte é sua. Ver os <a href={rota.termos}>termos de uso</a>.
       </p>
     </>
   );
@@ -463,7 +463,7 @@ function Avaliacoes({ d }: { d: TDestino }) {
           Publicar relato
         </button>
         <p className="aviso">
-          Versão de teste: o relato fica salvo só neste aparelho. Você mantém o direito sobre o que escreve. O Pico Trip recebe só licença para exibir.
+          Versão de teste: o relato fica salvo só neste aparelho. Você mantém o direito sobre o que escreve. O PICO 6961 recebe só licença para exibir.
         </p>
       </form>
     </>

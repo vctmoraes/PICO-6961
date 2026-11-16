@@ -45,7 +45,7 @@ export function Perfil() {
 
       {instalar && (
         <button className="botao" type="button" onClick={() => instalar.prompt().then(() => setInstalar(null))}>
-          Instalar o Pico Trip no celular
+          Instalar o PICO 6961 no celular
         </button>
       )}
       <p className="aviso">
@@ -60,7 +60,15 @@ export function Perfil() {
         <a href={rota.creditos}>Créditos e fontes de dados <Icone nome="seta" tamanho={16} /></a>
       </div>
 
-      <p className="legenda" style={{ textAlign: 'center' }}>Pico Trip · versão de teste 0.1</p>
+      <section className="cartao-seguro" aria-labelledby="titulo-nome">
+        <h3 id="titulo-nome">Por que 6961?</h3>
+        <p>
+          6.961 m é a altitude do Aconcágua, a montanha mais alta das Américas, medida pelo Instituto Geográfico Nacional da Argentina. O
+          Aconcágua fica no meio do caminho entre as montanhas do Chile e da Argentina. É o nosso ponto mais alto.
+        </p>
+      </section>
+
+      <p className="legenda" style={{ textAlign: 'center' }}>PICO 6961 · versão de teste 0.1</p>
     </main>
   );
 }

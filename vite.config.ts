@@ -18,8 +18,8 @@ export default defineConfig(({ mode }) => {
             registerType: 'autoUpdate',
             includeAssets: ['icon.svg', 'apple-touch-icon.png'],
             manifest: {
-              name: 'Pico Trip',
-              short_name: 'Pico Trip',
+              name: 'PICO 6961',
+              short_name: 'PICO 6961',
               description: 'Planeje sua viagem de ski e snowboard: neve em tempo real, passe e hospedagem.',
               lang: 'pt-BR',
               theme_color: '#13394A',

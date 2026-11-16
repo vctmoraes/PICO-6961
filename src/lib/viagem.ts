@@ -102,6 +102,6 @@ export function textoDoRoteiro(v: Viagem): string {
     }
   }
   if (v.notas.trim()) linhas.push('', `Notas: ${v.notas.trim()}`);
-  linhas.push('', 'Feito no Pico Trip');
+  linhas.push('', 'Feito no PICO 6961');
   return linhas.join('\n');
 }

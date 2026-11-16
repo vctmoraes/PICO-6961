@@ -1,16 +1,18 @@
-# Pico Trip — Instruções do projeto
+# PICO 6961 (antes: Pico Trip) — Instruções do projeto
 
 Documento de referência pro Claude Code. Reúne tudo decidido até agora sobre o app. Use isso como contexto inicial antes de começar a construir.
 
 ## O que é o app
 
-Pico Trip é um app que reúne, num só lugar, a informação que um praticante de esporte radical precisa pra planejar uma viagem: onde ficar, condição do tempo/neve/onda em tempo real, e preço de passe da montanha. Hoje essa informação está espalhada em apps separados por esporte. Nenhum concorrente junta tudo isso em português, com foco no viajante brasileiro.
+PICO 6961 é um app que reúne, num só lugar, a informação que um praticante de esporte radical precisa pra planejar uma viagem: onde ficar, condição do tempo/neve/onda em tempo real, e preço de passe da montanha. Hoje essa informação está espalhada em apps separados por esporte. Nenhum concorrente junta tudo isso em português, com foco no viajante brasileiro.
 
 ## Decisões confirmadas
 
 ### Marca
-- Nome: **Pico Trip**.
-- "Pico" sozinho estava concorrido (domínio pico.com.br já registrado, app brasileiro "Pico.app" de vestibular, marca de headset VR PICO). "Pico Trip" resolve isso.
+- **Atualização de 16/11/2026: o nome mudou para PICO 6961.** 6.961 m é a altitude do Aconcágua, a montanha mais alta das Américas. Motivo: a marca vai virar também marca de roupa e de outros produtos; "PICO 6961" é mais distinto, mais fácil de registrar e mais forte para roupa. Classes do INPI a pesquisar: 9, 42, 39 (app e viagem), 25 (roupa), 18 (mochila), 28 (artigo esportivo), 35 (comércio).
+- Logo: triângulo laranja `#D9480F`, "PICO" em teal `#13394A` e "6961" em laranja.
+- Nome anterior (histórico): **Pico Trip**.
+- "Pico" sozinho estava concorrido (domínio pico.com.br já registrado, app brasileiro "Pico.app" de vestibular, marca de headset VR PICO). Por isso o nome sempre combina "Pico" com outra parte.
 - Ainda falta confirmar disponibilidade real de domínio e redes sociais na hora de registrar.
 
 ### Conceito
@@ -85,13 +87,13 @@ O mockup (telas Início, Busca, Detalhe do destino) já define um estilo visual.
 - Cards de destino com foto/cor à esquerda, nome + badge de nível + nota à direita.
 
 **Logo**
-- Marca "Pico Trip": ícone de pico de montanha (triângulo) em laranja `#D9480F`, nome em duas cores — "Pico" em teal `#13394A`, "Trip" em laranja.
+- Marca "PICO 6961": ícone de pico de montanha (triângulo) em laranja `#D9480F`, nome em duas cores — "PICO" em teal `#13394A`, "6961" em laranja.
 
 Mockup publicado (referência visual): https://claude.ai/artifact/YFmLQYKc9BcsAfeE4xeJJx
 
 ## Concorrência — resumo
 
-Pesquisa feita em 15/11/2026. Nenhum concorrente direto cobre tudo que o Pico Trip pretende cobrir.
+Pesquisa feita em 15/11/2026. Nenhum concorrente direto cobre tudo que o PICO 6961 pretende cobrir.
 
 | App | Esporte | Modelo | Observação |
 | --- | --- | --- | --- |
@@ -102,14 +104,14 @@ Pesquisa feita em 15/11/2026. Nenhum concorrente direto cobre tudo que o Pico Tr
 | FATMAP (Strava) | Ski/hike/bike | Assinatura | Mapa 3D, comprado pela Strava em 2023 |
 | Komoot | Hike/bike/run | Freemium | Planejador de rota, forte na Europa |
 
-**Caso de atenção — Liftopia**: marketplace de passe de montanha com desconto, reserva e pagamento integrados no app. Faliu em 2020 após reclamações de reembolso (muitos usuários perderam dinheiro quando resort fechou por Covid). Por isso o Pico Trip só informa e linka, nunca processa pagamento.
+**Caso de atenção — Liftopia**: marketplace de passe de montanha com desconto, reserva e pagamento integrados no app. Faliu em 2020 após reclamações de reembolso (muitos usuários perderam dinheiro quando resort fechou por Covid). Por isso o PICO 6961 só informa e linka, nunca processa pagamento.
 
 **Gap de mercado**: no Brasil, o que existe sobre viagem de esporte radical é conteúdo de blog e comparador de seguro viagem — não um app dedicado. Nenhum concorrente junta hospedagem + clima + preço de passe + dica, em vários esportes, em português, foco Brasil.
 
 ## Ainda em aberto
 
 - Detalhar o agente de IA de atualização de conteúdo (frequência, fontes de dado, supervisão humana).
-- Confirmar disponibilidade real de domínio e redes sociais para "Pico Trip" (registro formal).
+- Confirmar disponibilidade real de domínio (`pico6961.com.br`) e redes sociais (@pico6961) e pesquisar "PICO 6961" no INPI.
 - Confirmar autor/licença de cada foto de destino antes de usar em produção.
 - Escolher a API de condição de neve/onda a integrar.
 - Listar os primeiros destinos de ski/snowboard do MVP.

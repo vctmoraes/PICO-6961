@@ -1,6 +1,8 @@
-# Pico Trip — contexto para o Claude
+# PICO 6961 — contexto para o Claude
 
 Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de produto, de marca e de design.
+
+**Nome da marca: PICO 6961** (antes: Pico Trip; troca em 16/11/2026). Escreva sempre "PICO 6961", em maiúsculas. 6.961 m é a altitude do Aconcágua (valor do IGN da Argentina: 6.960,8 m). A marca vai virar também marca de roupa e de outros produtos. As chaves internas do `localStorage` continuam com o prefixo `pt.`: não mude essas chaves, para não apagar os dados dos usuários.
 
 ## Regras do produto (não mudar sem o Victor pedir)
 

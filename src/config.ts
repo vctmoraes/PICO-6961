@@ -24,7 +24,7 @@ export function linkHospedagem(busca: string): string {
 /** Link para o site oficial do resort, com marcação de origem. */
 export function linkOficial(url: string): string {
   const u = new URL(url);
-  u.searchParams.set('utm_source', 'picotrip');
+  u.searchParams.set('utm_source', 'pico6961');
   u.searchParams.set('utm_medium', 'app');
   return u.toString();
 }
