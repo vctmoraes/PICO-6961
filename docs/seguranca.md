@@ -36,9 +36,11 @@ Antes de publicar uma mudança grande, rode o app com os cabeçalhos do `netlify
 
 ## Contas (responsabilidade do Victor)
 
-- [ ] Verificação em 2 etapas (2FA) no GitHub, no Netlify, no Google e no Supabase.
-- [ ] GitHub → Settings → Code security: ligar "Dependabot alerts" e "Secret scanning".
-- [ ] Chave do Google Maps restrita ao domínio `https://pico-6961.netlify.app/*`.
+- [x] 2FA no Netlify (conferido pelo conector em 16/11/2026).
+- [x] 2FA no GitHub e no Google (o Victor confirmou em 16/11/2026; a sessão do Claude não consegue conferir).
+- [x] GitHub → Settings → Code security: "Dependabot alerts" e "Secret scanning" (o Victor confirmou em 16/11/2026).
+- [ ] 2FA no Supabase, quando criar a conta.
+- [ ] Chave do Google Maps restrita ao domínio `https://pico-6961.netlify.app/*`, quando criar a chave.
 
 ## Para depois (com o Supabase ligado)
 
