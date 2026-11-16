@@ -4,3 +4,4 @@ dist-preview
 *.zip
 .env
 .env.local
+tsconfig.tsbuildinfo
