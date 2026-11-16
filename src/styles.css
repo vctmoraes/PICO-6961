@@ -212,3 +212,28 @@ textarea.campo { min-height: 90px; resize: vertical; }
 .fechar { background: var(--fundo); border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 22px; color: var(--texto); flex-shrink: 0; }
 .item-painel { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--borda); }
 .item-painel small { display: block; font-size: 12px; color: var(--texto-2); }
+
+/* Real, seguro, comparação, neve nos destinos */
+.em-real { display: block; font-size: 11px; color: var(--texto-2); font-weight: 500; }
+.em-real-grande { font-size: 14px; font-weight: 600; color: var(--int-texto); }
+.cartao-seguro { background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.cartao-seguro h3 { font-size: 15px; }
+.cartao-seguro p, .cartao-seguro li { font-size: 13px; line-height: 1.45; margin: 0; }
+.cartao-seguro ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 2px; }
+.seletores-comparar { display: flex; flex-direction: column; gap: 8px; }
+.comparacao { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); overflow: hidden; }
+.linha-comparar { display: grid; grid-template-columns: repeat(var(--colunas), minmax(0, 1fr)); gap: 4px 10px; padding: 10px 12px; border-bottom: 1px solid var(--borda); font-size: 13px; line-height: 1.35; }
+.linha-comparar:last-child { border-bottom: none; }
+.linha-comparar .rotulo { grid-column: 1 / -1; font-size: 11px; font-weight: 600; color: var(--texto-2); text-transform: uppercase; letter-spacing: 0.04em; }
+.linha-comparar small { display: block; font-size: 11px; color: var(--texto-2); }
+.linha-comparar.cabecalho { background: var(--marca); }
+.linha-comparar.cabecalho a { color: #fff; font-family: var(--fonte-titulo); font-weight: 700; font-size: 14px; }
+.neve-destinos { display: flex; flex-direction: column; gap: 8px; }
+.linha-neve { display: flex; align-items: center; gap: 12px; background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 10px 12px; color: var(--texto); }
+.linha-neve:hover { color: var(--texto); }
+.linha-neve > div { flex: 1; min-width: 0; }
+.linha-neve strong { font-size: 14px; display: block; }
+.linha-neve small { font-size: 12px; color: var(--texto-2); }
+.linha-neve.destaque { background: var(--ini-fundo); border-color: transparent; }
+.linha-neve.destaque small { color: var(--ini-texto); font-weight: 600; }
+.texto-longo ul { padding-left: 20px; margin: 0; display: flex; flex-direction: column; gap: 4px; }

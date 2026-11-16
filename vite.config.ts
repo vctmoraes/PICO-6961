@@ -41,6 +41,12 @@ export default defineConfig(({ mode }) => {
                   options: { cacheName: 'clima', expiration: { maxAgeSeconds: 60 * 60 * 6 }, networkTimeoutSeconds: 6 }
                 },
                 {
+                  // Cotação do real: usa a última cotação guardada se o usuário estiver sem sinal.
+                  urlPattern: /^https:\/\/economia\.awesomeapi\.com\.br\//,
+                  handler: 'NetworkFirst',
+                  options: { cacheName: 'cotacao', expiration: { maxAgeSeconds: 60 * 60 * 24 }, networkTimeoutSeconds: 6 }
+                },
+                {
                   urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\//,
                   handler: 'StaleWhileRevalidate',
                   options: { cacheName: 'fontes' }

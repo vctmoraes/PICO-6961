@@ -39,6 +39,10 @@ export function Creditos() {
       <p>
         <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo.com</a>, licença CC BY 4.0.
       </p>
+      <h2>Cotação do real</h2>
+      <p>
+        <a href="https://docs.awesomeapi.com.br/api-de-moedas" target="_blank" rel="noopener">AwesomeAPI</a>. O valor em real é estimado e serve só de referência.
+      </p>
       <h2>Fontes tipográficas</h2>
       <p>Inter e Space Grotesk, licença SIL Open Font License, pelo Google Fonts.</p>
       <h2>Imagens</h2>

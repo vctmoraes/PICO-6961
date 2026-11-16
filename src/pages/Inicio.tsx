@@ -3,6 +3,7 @@ import { DestinoCard } from '../components/DestinoCard';
 import { Icone } from '../components/Icone';
 import { Logo } from '../components/Logo';
 import { perfil } from '../lib/storage';
+import { NeveNosDestinos } from '../components/NeveNosDestinos';
 import { rota } from '../lib/rota';
 
 const esportesEmBreve = ['Surf', 'Escalada', 'Mountain bike', 'Kite', 'Parapente'];
@@ -43,6 +44,17 @@ export function Inicio() {
           </span>
         ))}
       </div>
+
+      <NeveNosDestinos />
+
+      <a className="acao secundaria" href={rota.guia}>
+        <Icone nome="livro" tamanho={18} cor="#13394A" />
+        <div>
+          <div className="t">Primeira vez na neve?</div>
+          <div className="s">Guia para iniciante: destino, época, aula, roupa e custo</div>
+        </div>
+        <Icone nome="seta" tamanho={16} cor="#5B6660" />
+      </a>
 
       <div className="secao-titulo">
         <h2>Destinos em alta</h2>

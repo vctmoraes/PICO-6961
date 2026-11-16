@@ -4,6 +4,8 @@ import { checklistDoDestino } from '../data/checklist';
 import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } from '../lib/clima';
 import { checklistMarcados, perfil, relatos, salvos, viagens, type Relato } from '../lib/storage';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
+import { Seguro } from '../components/Seguro';
+import { emReal, useCotacoes } from '../lib/moeda';
 import { linkHospedagem, linkOficial } from '../config';
 import { rota } from '../lib/rota';
 import { Icone } from '../components/Icone';
@@ -83,6 +85,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         <div className="bloco">
           <small>Passe (dia)</small>
           <strong>{precoPasse(d)}</strong>
+          <PrecoEmReal d={d} />
         </div>
       </div>
 
@@ -159,6 +162,12 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
       {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
     </div>
   );
+}
+
+function PrecoEmReal({ d }: { d: TDestino }) {
+  const cot = useCotacoes();
+  const r = d.passe.valor != null ? emReal(d.passe.valor, d.passe.moeda, cot) : null;
+  return r ? <small className="em-real">{r}</small> : null;
 }
 
 function CondicaoAgora({ d }: { d: TDestino }) {
@@ -296,6 +305,22 @@ function VisaoGeral({ d }: { d: TDestino }) {
 
       <h3>Onde ficar</h3>
       <p>{d.hospedagem.resumo}</p>
+
+      <a className="acao secundaria compacta" href={rota.comparar([d.id])}>
+        <Icone nome="comparar" tamanho={18} cor="#13394A" />
+        <div>
+          <div className="t">Comparar {d.nome} com outro destino</div>
+        </div>
+        <Icone nome="seta" tamanho={16} cor="#5B6660" />
+      </a>
+
+      <Seguro />
+      {d.pais === 'Argentina' && (
+        <p className="aviso">
+          <strong>Câmbio na Argentina:</strong> o valor em real depende de como você paga (cartão, dinheiro em espécie ou conta
+          internacional). As cotações podem ser diferentes. Compare antes de pagar.
+        </p>
+      )}
 
       {!d.verificadoEm && (
         <p className="aviso">

@@ -3,6 +3,7 @@ import { destinos, nivelLabel, type Nivel, type Pais } from '../data/destinos';
 import { DestinoCard } from '../components/DestinoCard';
 import { Icone } from '../components/Icone';
 import { CabecalhoVolta } from '../components/Nav';
+import { rota } from '../lib/rota';
 
 const semAcento = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
@@ -62,6 +63,15 @@ export function Buscar() {
           <option value={95}>Passe até US$ 95</option>
         </select>
       </div>
+
+      <a className="acao secundaria compacta" href={rota.comparar([])}>
+        <Icone nome="comparar" tamanho={18} cor="#13394A" />
+        <div>
+          <div className="t">Comparar destinos</div>
+          <div className="s">Até 3 destinos lado a lado</div>
+        </div>
+        <Icone nome="seta" tamanho={16} cor="#5B6660" />
+      </a>
 
       <div className="legenda" aria-live="polite">
         {lista.length} {lista.length === 1 ? 'destino encontrado' : 'destinos encontrados'}

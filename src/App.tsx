@@ -6,10 +6,22 @@ import { Inicio } from './pages/Inicio';
 import { Perfil } from './pages/Perfil';
 import { Roteiros } from './pages/Roteiros';
 import { Viagem } from './pages/Viagem';
+import { Comparar } from './pages/Comparar';
+import { Guia } from './pages/Guia';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
-  const [pagina = '', param, extra] = useRota();
+  const partes = useRota();
+  const [pagina = '', param, extra] = partes;
+
+  if (pagina === 'comparar') {
+    return (
+      <div className="app">
+        <Comparar ids={partes.slice(1)} />
+        <Nav atual="buscar" />
+      </div>
+    );
+  }
 
   if (pagina === 'destino' && param) {
     return (
@@ -35,7 +47,8 @@ export function App() {
     roteiros: <Roteiros />,
     perfil: <Perfil />,
     termos: <Termos />,
-    creditos: <Creditos />
+    creditos: <Creditos />,
+    guia: <Guia />
   };
   const navAtual = ['termos', 'creditos'].includes(pagina) ? 'perfil' : pagina === 'inicio' ? '' : pagina;
 

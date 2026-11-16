@@ -3,7 +3,9 @@ export const config = {
   /** ID de afiliado do Booking.com. Vazio = link sem comissão. */
   bookingAid: import.meta.env.VITE_BOOKING_AID ?? '',
   /** Domínio cadastrado no Plausible (métrica de usuário ativo). Vazio = sem métrica. */
-  plausibleDomain: import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? ''
+  plausibleDomain: import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? '',
+  /** Link de afiliado de um comparador de seguro viagem. Vazio = o app mostra só as dicas, sem botão. */
+  seguroUrl: import.meta.env.VITE_SEGURO_URL ?? ''
 };
 
 /** Link de reserva de hospedagem (afiliado). */

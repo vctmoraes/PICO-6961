@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 function ler(): string[] {
   const h = window.location.hash.replace(/^#\/?/, '');
   if (h.startsWith('roteiro-')) return ['roteiro', h.slice('roteiro-'.length)];
+  if (h === 'comparar' || h.startsWith('comparar-')) return ['comparar', ...h.slice('comparar-'.length).split('--').filter(Boolean)];
   if (h.startsWith('destino-')) {
     const resto = h.slice('destino-'.length);
     const [id, aba] = resto.split('--');
@@ -34,6 +35,9 @@ export const rota = {
   termos: '#termos',
   creditos: '#creditos',
   viagem: (id: string) => `#roteiro-${id}`,
+  guia: '#guia',
+  /** ex.: #comparar-portillo--la-parva */
+  comparar: (ids: string[]) => (ids.length ? `#comparar-${ids.join('--')}` : '#comparar'),
   /** aba opcional: dicas, checklist ou avaliacoes (ex.: #destino-portillo--checklist). */
   destino: (id: string, aba?: string) => `#destino-${id}${aba ? `--${aba}` : ''}`
 };

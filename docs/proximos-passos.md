@@ -11,6 +11,11 @@
 - Telas do mockup: Início, Buscar, Detalhe do destino (Visão geral, Dicas, Checklist, Avaliações).
 - Telas novas: Roteiros, Perfil, Termos de uso (rascunho), Créditos.
 - Roteiro personalizável: vários roteiros, datas, pessoas, destinos em ordem, dia a dia (onde, atividade, nota), distribuição automática dos dias, custo estimado de passe e texto para copiar.
+- Comparar até 3 destinos lado a lado (`#comparar`).
+- Valor em real (cotação do dia, AwesomeAPI) no passe, na comparação e no custo do roteiro.
+- "Neve nos seus destinos" no Início: condição dos destinos salvos e dos destinos dos roteiros.
+- Guia "Primeira vez na neve" (`#guia`).
+- Cartão de seguro viagem com ski, no destino, no roteiro e no guia. O botão de cotação aparece quando `VITE_SEGURO_URL` estiver preenchido.
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -20,7 +25,8 @@
 2. **Publicar no Netlify** (ver README). O Netlify dá um endereço grátis, por exemplo `picotrip.netlify.app`.
 3. **Confirmar os preços do passe** no site oficial de cada resort. Preencha `verificadoEm` em `src/data/destinos.ts`.
 4. **Registrar o domínio.** Consulte `picotrip.com.br` no registro.br e `picotrip.com` num registrador internacional. Confira também o nome @picotrip no Instagram e no TikTok.
-5. **Cadastrar no programa de afiliados** do Booking.com. Ponha o ID no `.env` (`VITE_BOOKING_AID`). Veja também se os resorts têm programa de afiliado.
+5. **Cadastrar no programa de afiliados** de um comparador de seguro viagem brasileiro. Ponha o link no `.env` (`VITE_SEGURO_URL`). Sem o link, o app mostra só as dicas de seguro.
+5b. **Cadastrar no programa de afiliados** do Booking.com. Ponha o ID no `.env` (`VITE_BOOKING_AID`). Veja também se os resorts têm programa de afiliado.
 6. **Ligar a métrica de usuário ativo:** crie uma conta no Plausible (pago, sem cookie) ou no Umami (tem plano grátis). Ponha o domínio no `.env`.
 7. **Conferir os 19 destinos novos.** Os dados vieram de busca na web e de sites de terceiros. Para cada destino: confira altitude, temporada e site oficial, e preencha `verificadoEm`. Hoje, 12 destinos não têm site oficial confirmado e não mostram o botão "Comprar passe". Nenhum dos 19 tem preço de passe: o app mostra "Consultar".
 8. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 24 destinos uma página de câmeras ou de boletim.

@@ -4,12 +4,15 @@ import { CabecalhoVolta } from '../components/Nav';
 import { viagens, type Atividade, type DiaViagem, type Viagem as TViagem } from '../lib/storage';
 import { MAX_DIAS, ajustarDias, atividadeLabel, custoPasses, dataCurta, distribuirDias, textoDoRoteiro } from '../lib/viagem';
 import { rota } from '../lib/rota';
+import { emReal, useCotacoes } from '../lib/moeda';
+import { Seguro } from '../components/Seguro';
 
 export function Viagem({ id }: { id: string }) {
   const [v, setV] = useState<TViagem | undefined>(() => viagens.obter(id));
   const [novoDestino, setNovoDestino] = useState('');
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
   const [copiado, setCopiado] = useState<'' | 'ok' | 'erro'>('');
+  const cot = useCotacoes();
 
   if (!v) {
     return (
@@ -215,6 +218,7 @@ export function Viagem({ id }: { id: string }) {
         <section className="resumo-custo">
           <h3>Custo estimado de passe</h3>
           <strong>US$ {custo.total.toLocaleString('pt-BR')}</strong>
+          {emReal(custo.total, 'USD', cot) && <span className="em-real-grande">{emReal(custo.total, 'USD', cot)} (cotação de hoje)</span>}
           <p className="legenda">
             {custo.diasSki} {custo.diasSki === 1 ? 'dia' : 'dias'} de ski × {v.pessoas} {v.pessoas === 1 ? 'pessoa' : 'pessoas'}, com o preço de referência de
             cada destino.
@@ -223,6 +227,8 @@ export function Viagem({ id }: { id: string }) {
           </p>
         </section>
       )}
+
+      {v.destinos.length > 0 && <Seguro />}
 
       <div className="secao-titulo">
         <h2>Notas</h2>

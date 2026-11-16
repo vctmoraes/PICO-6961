@@ -54,6 +54,8 @@ export function Perfil() {
 
       <div className="lista-simples">
         <a href={rota.roteiros}>Meus roteiros <Icone nome="seta" tamanho={16} /></a>
+        <a href={rota.guia}>Guia: primeira vez na neve <Icone nome="seta" tamanho={16} /></a>
+        <a href={rota.comparar([])}>Comparar destinos <Icone nome="seta" tamanho={16} /></a>
         <a href={rota.termos}>Termos de uso e privacidade <Icone nome="seta" tamanho={16} /></a>
         <a href={rota.creditos}>Créditos e fontes de dados <Icone nome="seta" tamanho={16} /></a>
       </div>
