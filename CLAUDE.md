@@ -18,7 +18,8 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 ## Técnica
 
 - PWA com Vite + React 18 + TypeScript. Sem servidor nesta fase.
-- Destinos dos EUA: importados do OpenSkiMap (dados do OpenStreetMap, licença ODbL) por `npm run importar:eua`, que grava `src/data/eua.json`. O texto de cada destino dos EUA é gerado em `src/data/eua.ts`, só com fatos da base: sem dica e sem preço inventado. Para curar um destino dos EUA à mão, copie o destino para a lista `curados` em `destinos.ts` e tire o destino do JSON.
+- Destinos dos EUA: importados do OpenSkiMap (dados do OpenStreetMap, licença ODbL) por `npm run importar:eua`, que grava `src/data/eua.json`. O texto de cada destino dos EUA é gerado em `src/data/eua.ts`, só com fatos da base: sem dica e sem preço inventado. Para curar um destino dos EUA, escreva o texto em `src/data/eua-curados.ts` (pelo `id`): altitude, pistas e site continuam da base. Preço de passe dinâmico vai em `passeInfo` (faixa com fonte), nunca em `passe.valor`.
+- Skill do projeto `importar-pais` (`.claude/skills/importar-pais/SKILL.md`): roteiro para importar ou atualizar um país do OpenSkiMap e para curar destinos importados. Use essa skill nessas tarefas.
 - Conteúdo curado: `src/data/destinos.ts`. O agente de atualização edita só este arquivo (ver `docs/agente-atualizacao.md`).
 - Condição de neve e tempo: API Open-Meteo (`src/lib/clima.ts`). Licença CC BY 4.0: mantenha o crédito na tela.
 - Dados do usuário (roteiro, checklist, relatos): `localStorage`, em `src/lib/storage.ts`. Na fase 2, troque a implementação por um servidor e mantenha a mesma interface.
@@ -36,4 +37,5 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - `npm run build` — gera o PWA em `dist/` (para publicar).
 - `npm run build:preview` — gera um único `index.html` em `dist-preview/` (para pré-visualização no claude.ai).
 - `npm run typecheck` — confere os tipos.
-- `npm run importar:eua` — baixa a base do OpenSkiMap e gera `src/data/eua.json` (ou `node scripts/importar-eua.mjs arquivo.geojson`).
+- `npm run importar:eua` — baixa a base do OpenSkiMap e gera `src/data/eua.json`. Outro país: `node scripts/importar-openskimap.mjs --pais <ISO2> --saida src/data/<arquivo>.json [arquivo.geojson]`.
+- `python3 scripts/gerar-preview-artifact.py <saida.html>` — prepara a pré-visualização do claude.ai a partir de `dist-preview/`.

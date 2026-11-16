@@ -24,7 +24,7 @@ const abas: { id: Aba; rotulo: string }[] = [
 const corNivel = { iniciante: 'var(--ini-texto)', intermediario: 'var(--int-texto)', avancado: 'var(--ava-texto)' };
 
 function precoPasse(d: TDestino): string {
-  if (d.passe.valor == null) return 'Consultar';
+  if (d.passe.valor == null) return d.passeInfo ? 'Dinâmico' : 'Consultar';
   const simbolo = { USD: 'US$', CLP: 'CLP$', ARS: 'AR$' }[d.passe.moeda];
   return `${simbolo} ${d.passe.valor.toLocaleString('pt-BR')}*`;
 }
@@ -292,6 +292,12 @@ function VisaoGeral({ d }: { d: TDestino }) {
         </div>
       ))}
 
+      {d.rede && (
+        <p className="selo-rede">
+          Aceita o <strong>{d.rede}</strong>, passe de temporada que vale em vários resorts.
+        </p>
+      )}
+
       <h3>A montanha</h3>
       {d.pistas && (
         <>
@@ -358,7 +364,10 @@ function VisaoGeral({ d }: { d: TDestino }) {
           <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">
             OpenStreetMap
           </a>{' '}
-          (ODbL). A equipe do PICO 6961 ainda não revisou este destino.
+          (ODbL).{' '}
+          {d.revisadoEm
+            ? `Texto e dicas: equipe do PICO 6961, revisados em ${new Date(`${d.revisadoEm}T12:00:00`).toLocaleDateString('pt-BR')}.`
+            : 'A equipe do PICO 6961 ainda não revisou este destino.'}
         </p>
       )}
       {!d.verificadoEm && d.fonteDados !== 'openskimap' && (
@@ -374,6 +383,10 @@ function VisaoGeral({ d }: { d: TDestino }) {
             ? `valor de referência, verificado em ${new Date(d.passe.verificadoEm).toLocaleDateString('pt-BR')}.`
             : 'valor estimado, ainda não confirmado no site oficial.'}{' '}
           O preço muda com a data e a temporada. Confira no site oficial antes de comprar.
+        </p>
+      ) : d.passeInfo ? (
+        <p className="aviso">
+          <strong>Preço do passe:</strong> {d.passeInfo}
         </p>
       ) : (
         <p className="aviso">

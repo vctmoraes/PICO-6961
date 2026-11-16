@@ -48,7 +48,7 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
       rotulo: 'Passe (dia)',
       valor: (d) =>
         d.passe.valor == null ? (
-          'Consultar'
+          d.passeInfo ? 'Dinâmico (ver destino)' : 'Consultar'
         ) : (
           <>
             {d.passe.moeda === 'USD' ? 'US$' : d.passe.moeda} {d.passe.valor}*
@@ -56,6 +56,7 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
           </>
         )
     },
+    { rotulo: 'Passe de temporada', valor: (d) => d.rede ?? '—' },
     { rotulo: 'Cidade-base', valor: (d) => d.cidadeBase },
     {
       rotulo: 'Neve nova (24h)',

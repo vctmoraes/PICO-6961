@@ -1,7 +1,8 @@
-// Destinos dos Estados Unidos, gerados de src/data/eua.json (importado do OpenSkiMap pelo script scripts/importar-eua.mjs).
+// Destinos dos Estados Unidos, gerados de src/data/eua.json (importado do OpenSkiMap pelo script scripts/importar-openskimap.mjs).
 // Dados: © colaboradores do OpenStreetMap, licença ODbL. Texto gerado: só fatos que a base traz. Sem dica nem preço inventado.
 import type { Destino, Nivel } from './destinos';
 import base from './eua.json';
+import { curadoriaEua } from './eua-curados';
 
 interface AreaEua {
   id: string;
@@ -34,7 +35,7 @@ const aeroportos: [string, string, number, number][] = [
   ['Hayden/Steamboat', 'HDN', 40.48, -107.22], ['Montrose/Telluride', 'MTJ', 38.51, -107.89], ['Gunnison/Crested Butte', 'GUC', 38.53, -106.93],
   ['Salt Lake City', 'SLC', 40.79, -111.98], ['Jackson Hole', 'JAC', 43.61, -110.74], ['Bozeman', 'BZN', 45.78, -111.15],
   ['Kalispell/Whitefish', 'FCA', 48.31, -114.26], ['Sun Valley/Hailey', 'SUN', 43.5, -114.3], ['Boise', 'BOI', 43.56, -116.22],
-  ['Reno-Tahoe', 'RNO', 39.5, -119.77], ['Sacramento', 'SMF', 38.7, -121.59], ['Mammoth', 'MMH', 37.62, -118.84],
+  ['Reno-Tahoe', 'RNO', 39.5, -119.77], ['Sacramento', 'SMF', 38.7, -121.59], ['Bishop', 'BIH', 37.37, -118.36],
   ['Los Angeles', 'LAX', 33.94, -118.41], ['São Francisco', 'SFO', 37.62, -122.38], ['Seattle', 'SEA', 47.45, -122.31],
   ['Portland (Oregon)', 'PDX', 45.59, -122.6], ['Redmond/Mt. Bachelor', 'RDM', 44.25, -121.15], ['Spokane', 'GEG', 47.62, -117.53],
   ['Albuquerque', 'ABQ', 35.04, -106.61], ['Phoenix', 'PHX', 33.43, -112.01], ['Minneapolis', 'MSP', 44.88, -93.22],
@@ -107,5 +108,11 @@ function paraDestino(a: AreaEua, i: number): Destino {
   };
 }
 
-export const destinosEua: Destino[] = (base.areas as AreaEua[]).map(paraDestino);
+/** Destino gerado + texto da curadoria (quando existe). Altitude, pistas e site continuam da base. */
+function comCuradoria(d: Destino): Destino {
+  const c = curadoriaEua[d.id];
+  return c ? { ...d, ...c } : d;
+}
+
+export const destinosEua: Destino[] = (base.areas as AreaEua[]).map(paraDestino).map(comCuradoria);
 export const infoBaseEua = { fonte: base.fonte, licenca: base.licenca, geradoEm: base.geradoEm, total: base.total };

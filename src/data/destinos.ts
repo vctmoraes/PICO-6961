@@ -68,6 +68,12 @@ export interface Destino {
    * Antes de pôr uma foto, confirme autor e licença. Ver docs/fotos-e-licencas.md.
    */
   foto?: { url: string; autor: string; licenca: string; fonte: string } | null;
+  /** Passe de temporada que vale neste resort (EUA). */
+  rede?: 'Epic Pass' | 'Ikon Pass';
+  /** Texto sobre o preço do passe quando o preço é dinâmico (sem valor fixo). */
+  passeInfo?: string;
+  /** Data em que a equipe revisou o texto de um destino importado (AAAA-MM-DD). */
+  revisadoEm?: string;
   /** 'openskimap' = destino importado da base aberta (dados do OpenStreetMap). Vazio = conteúdo curado à mão. */
   fonteDados?: 'openskimap';
   /** Cores da ilustração (substitui a foto até termos fotos com licença confirmada). */

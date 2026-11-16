@@ -1,16 +1,29 @@
 #!/usr/bin/env node
-// Importa as áreas de ski dos Estados Unidos da base aberta do OpenSkiMap (dados do OpenStreetMap, licença ODbL).
+// Importa as áreas de ski de um país da base aberta do OpenSkiMap (dados do OpenStreetMap, licença ODbL).
 // Uso:
-//   node scripts/importar-eua.mjs                    (baixa a base e gera src/data/eua.json)
-//   node scripts/importar-eua.mjs caminho/ski_areas.geojson   (usa um arquivo já baixado)
-// Saída: src/data/eua.json. Rode de novo para atualizar os dados.
+//   node scripts/importar-openskimap.mjs                                   (EUA: baixa a base e gera src/data/eua.json)
+//   node scripts/importar-openskimap.mjs caminho/ski_areas.geojson         (EUA, com arquivo já baixado)
+//   node scripts/importar-openskimap.mjs --pais CA --saida src/data/canada.json caminho/ski_areas.geojson
+// --pais: código ISO 3166-1 de 2 letras. --saida: caminho do JSON, a partir da pasta do projeto.
+// Rode de novo para atualizar os dados.
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const URL_BASE = 'https://tiles.openskimap.org/geojson/ski_areas.geojson';
-const SAIDA = new URL('../src/data/eua.json', import.meta.url);
+
+const args = process.argv.slice(2);
+const opcao = (nome, padrao) => {
+  const i = args.indexOf(nome);
+  if (i < 0) return padrao;
+  const v = args[i + 1];
+  args.splice(i, 2);
+  return v;
+};
+const PAIS = opcao('--pais', 'US').toUpperCase();
+const saidaArg = opcao('--saida', 'src/data/eua.json');
+const SAIDA = saidaArg.startsWith('/') ? new URL(`file://${saidaArg}`) : new URL(`../${saidaArg}`, import.meta.url);
 
 async function carregar() {
-  const arquivo = process.argv[2];
+  const arquivo = args[0];
   if (arquivo) return JSON.parse(readFileSync(arquivo, 'utf8'));
   console.log(`Baixando ${URL_BASE} …`);
   const r = await fetch(URL_BASE);
@@ -50,7 +63,7 @@ for (const f of lista) {
   const lugares = Array.isArray(p.places) ? p.places : p.location ? [p.location] : [];
   const loc = lugares.find((l) => l?.localized?.en?.locality) ?? lugares[0] ?? {};
   const pais = loc.iso3166_1Alpha2 ?? loc.localized?.en?.country;
-  if (pais !== 'US' && pais !== 'United States') { motivos.pais++; continue; }
+  if (pais !== PAIS) { motivos.pais++; continue; }
   if (p.status && p.status !== 'operating') { motivos.status++; continue; }
   if (Array.isArray(p.activities) && !p.activities.includes('downhill')) { motivos.atividade++; continue; }
   if (!p.name) { motivos.nome++; continue; }
@@ -69,9 +82,10 @@ for (const f of lista) {
   const c = Array.isArray(p.viewportHint?.center) ? p.viewportHint.center : centro(f.geometry);
   if (!c) { motivos.local++; continue; }
 
-  const estado = (loc.iso3166_2 ?? '').replace('US-', '') || null;
-  let id = `${slug(p.name)}-${(estado ?? 'eua').toLowerCase()}`;
-  for (let i = 2; ids.has(id); i++) id = `${slug(p.name)}-${(estado ?? 'eua').toLowerCase()}-${i}`;
+  const estado = (loc.iso3166_2 ?? '').replace(`${PAIS}-`, '') || null;
+  const sufixo = (estado ?? PAIS).toLowerCase();
+  let id = `${slug(p.name)}-${sufixo}`;
+  for (let i = 2; ids.has(id); i++) id = `${slug(p.name)}-${sufixo}-${i}`;
   ids.add(id);
 
   areas.push({
@@ -105,5 +119,5 @@ writeFileSync(
     0
   ) + '\n'
 );
-console.log(`Áreas dos EUA gravadas: ${areas.length}`);
+console.log(`Áreas de ${PAIS} gravadas: ${areas.length} → ${SAIDA.pathname}`);
 console.log('Fora da lista, por motivo:', motivos);

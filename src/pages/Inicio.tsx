@@ -1,4 +1,5 @@
-import { destinos } from '../data/destinos';
+import { buscarDestino, destinos, type Destino } from '../data/destinos';
+import { destaquesEua } from '../data/eua-curados';
 import { DestinoCard } from '../components/DestinoCard';
 import { Icone } from '../components/Icone';
 import { Logo } from '../components/Logo';
@@ -63,6 +64,21 @@ export function Inicio() {
       {destinos.slice(0, 4).map((d) => (
         <DestinoCard key={d.id} destino={d} />
       ))}
+
+      {destaquesEua.some((id) => buscarDestino(id)) && (
+        <>
+          <div className="secao-titulo">
+            <h2>Em alta nos EUA</h2>
+            <a href="#buscar">Ver todos</a>
+          </div>
+          {destaquesEua
+            .map(buscarDestino)
+            .filter((d): d is Destino => d !== undefined)
+            .map((d) => (
+              <DestinoCard key={d.id} destino={d} />
+            ))}
+        </>
+      )}
 
       <p className="legenda" style={{ textAlign: 'center' }}>
         Mais esportes em breve · Esta versão é só de ski e snowboard
