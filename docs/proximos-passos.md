@@ -16,7 +16,7 @@
 - "Neve nos seus destinos" no Início: condição dos destinos salvos e dos destinos dos roteiros.
 - Guia "Primeira vez na neve" (`#guia`).
 - Cartão de seguro viagem com ski, no destino, no roteiro e no guia. O botão de cotação aparece quando `VITE_SEGURO_URL` estiver preenchido.
-- Mapas: Google Maps (satélite ou mapa) na tela do destino, com botões Google Maps e Waze; tela "Mapa" com os 27 destinos (filtro por país e nível); mapa do roteiro com os destinos numerados e botão "Abrir a rota no Google Maps".
+- Mapas: Google Maps (satélite ou mapa) na tela do destino, com botões Google Maps e Apple Maps; tela "Mapa" com os 27 destinos (filtro por país e nível); mapa do roteiro com os destinos numerados e botão "Abrir a rota no Google Maps".
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 

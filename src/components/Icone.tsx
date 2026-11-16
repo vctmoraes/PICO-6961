@@ -15,7 +15,6 @@ const caminhos = {
   comparar: <><rect x="3" y="4" width="7" height="16" rx="1" /><rect x="14" y="4" width="7" height="16" rx="1" /></>,
   floco: <><line x1="12" y1="2" x2="12" y2="22" /><line x1="4.9" y1="7" x2="19.1" y2="17" /><line x1="4.9" y1="17" x2="19.1" y2="7" /></>,
   pino: <><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z" /><circle cx="12" cy="10" r="2.5" /></>,
-  carro: <><path d="M5 17h14v-5l-2-5H7l-2 5z" /><circle cx="7.5" cy="17" r="1.5" /><circle cx="16.5" cy="17" r="1.5" /></>,
   mapa: <><polygon points="1 6 8 3 16 6 23 3 23 18 16 21 8 18 1 21 1 6" /><line x1="8" y1="3" x2="8" y2="18" /><line x1="16" y1="6" x2="16" y2="21" /></>,
   seta: <polyline points="9 6 15 12 9 18" />,
   baixo: <polyline points="6 9 12 15 18 9" />

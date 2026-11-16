@@ -312,10 +312,10 @@ function VisaoGeral({ d }: { d: TDestino }) {
             <div className="t">Google Maps</div>
           </div>
         </a>
-        <a className="acao secundaria compacta" href={linksNavegacao(d.nome, d.regiao, d.pais).waze} target="_blank" rel="noopener">
-          <Icone nome="carro" tamanho={18} cor="#13394A" />
+        <a className="acao secundaria compacta" href={linksNavegacao(d.nome, d.regiao, d.pais).apple} target="_blank" rel="noopener">
+          <Icone nome="mapa" tamanho={18} cor="#13394A" />
           <div>
-            <div className="t">Ir com o Waze</div>
+            <div className="t">Apple Maps</div>
           </div>
         </a>
       </div>

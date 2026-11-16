@@ -24,11 +24,11 @@ export function linkRotaGoogle(pontos: { nome: string; regiao: string; pais: str
   return u.toString();
 }
 
-/** Links para abrir o destino no Google Maps e no Waze (busca pelo nome: mais preciso que a coordenada aproximada). */
+/** Links para abrir o destino no Google Maps e no Apple Maps (busca pelo nome: mais preciso que a coordenada aproximada). */
 export function linksNavegacao(nome: string, regiao: string, pais: string) {
   const q = encodeURIComponent(`${nome} centro de ski, ${regiao}, ${pais}`);
   return {
     google: `https://www.google.com/maps/search/?api=1&query=${q}`,
-    waze: `https://waze.com/ul?q=${q}&navigate=yes`
+    apple: `https://maps.apple.com/?q=${q}`
   };
 }
