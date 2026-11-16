@@ -20,6 +20,8 @@
 - Estados Unidos preparado: script de importação do OpenSkiMap (`npm run importar:eua`), filtro por país e por estado, busca com páginas de 40 destinos, época do hemisfério norte, checklist com passaporte e visto americano, aeroporto mais perto de cada área. Importação feita em 16/11/2026: 523 áreas de ski em 37 estados. Curadoria feita em 11 destinos: Vail, Breckenridge, Aspen Snowmass, Aspen Mountain, Park City, Deer Valley, Jackson Hole, Mammoth, Palisades Tahoe, Heavenly e Big Sky (texto, dicas, como chegar, Epic ou Ikon Pass e faixa de preço com fonte).
 - Perfil personalizado (Etapa 1, sem servidor): questionário de 9 perguntas, "Para você" no Início, "Combina X% com você" nos cards e no destino, busca de voo com o aeroporto do perfil, checklist personalizado (esporte, equipamento, família, aula, visto, passe), Passaporte de Picos e controles de dados (baixar, mostrar, apagar).
 - Custo do dia: cartão "Quanto custa 1 dia na montanha" (passe + aluguel de equipamento + aluguel de roupa, em real, ajustado ao perfil), "Custo de montanha" no roteiro, linha de aluguel na comparação e aviso no checklist. Aluguel com fonte em 16 destinos: Valle Nevado, La Parva, El Colorado, Lagunillas, Nevados de Chillán, Corralco, Ski Pucón, Antillanca, Cerro Catedral, Cerro Castor, Las Leñas, Chapelco, Park City, Breckenridge, Vail e Aspen (2 montanhas). Las Leñas, Chapelco, Antillanca, Vail e Aspen têm fonte sem data confirmada.
+- Ponte com o WhatsApp: "Mandar no WhatsApp" no roteiro (com link que importa o roteiro) e no destino.
+- Grupos (Etapa 1): login por e-mail, grupo com convite (código, link e WhatsApp), chat com cartões do app (destino, comparação, votação, roteiro), roteiro do grupo editado por todos, votação (com sugestão dos destinos do roteiro), denúncia, bloqueio, sair do grupo, apagar mensagem e apagar conta. Funciona em modo demonstração até ligar o Supabase.
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
@@ -36,6 +38,7 @@
 8. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 24 destinos uma página de câmeras ou de boletim.
 7b. **Completar o aluguel** dos destinos que mostram "Consultar" (ex.: Portillo, Chapa Verde, Cerro Bayo, La Hoya, Deer Valley, Jackson Hole, Mammoth). Ligue ou mande mensagem para 1 ou 2 lojas de cada região. Depois, pense numa parceria de afiliado com lojas de aluguel (botão "Reservar aluguel").
 8a. **Revisar os destinos dos EUA.** Rode `npm run importar:eua` uma vez por temporada para atualizar os dados. Próximos para curar: Snowbird, Alta, Steamboat, Telluride, Keystone, Copper Mountain, Beaver Creek, Snowbasin, Sun Valley e Killington. Use a skill `importar-pais`, parte B.
+8c. **Ligar os grupos:** siga `docs/grupos-supabase.md` (projeto no Supabase, SQL, login por e-mail, chaves no Netlify, função de apagar conta e rotina de moderação).
 8b. **Configurar os mapas antes do lançamento.**
    - Crie uma chave grátis da Google Maps Embed API no Google Cloud, restrita ao domínio do app. Ponha a chave em `VITE_GOOGLE_MAPS_KEY`. Sem chave, o app usa a incorporação clássica do Google, que serve para teste.
    - O mapa de fundo do OpenStreetMap serve só para uso leve. Para o lançamento, crie conta num provedor com plano grátis (ex.: MapTiler ou Stadia Maps) e preencha `VITE_MAPA_TILES` e `VITE_MAPA_CREDITO`.
@@ -50,7 +53,8 @@
 - Moderação de relato.
 - Mais países com a skill `importar-pais`: o script já funciona para qualquer país (teste com o Canadá: 257 áreas).
 - Alerta de neve nova para os destinos do roteiro.
-- Conta (Etapa 2 do perfil): login com Google, Apple e e-mail (link mágico), no modo misto (o app funciona sem conta). Sugestão: Supabase. Antes, atualizar termos de uso e política de privacidade.
+- Grupos, Etapa 2: quem leva o quê, racha de custos e alerta de neve para o grupo. Etapa 3: fotos, login com Google e Apple, e notificações.
+- Sincronizar o perfil, os roteiros e o Passaporte de Picos na conta (hoje ficam no aparelho).
 - Perfil público opcional, selos ("Primeira descida", "3 países", "Andes completo") e grupo de viagem com voto no destino.
 - Roteiro compartilhado: o grupo edita o mesmo roteiro (precisa de servidor).
 - Custo da viagem completo: hospedagem, voo e aluguel de equipamento, além do passe.

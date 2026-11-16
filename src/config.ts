@@ -6,6 +6,9 @@ export const config = {
   plausibleDomain: import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? '',
   /** Link de afiliado de um comparador de seguro viagem. Vazio = o app mostra só as dicas, sem botão. */
   seguroUrl: import.meta.env.VITE_SEGURO_URL ?? '',
+  /** Supabase (grupos e conta). Vazio = modo demonstração, tudo no aparelho. A chave "anon" é pública; nunca use a "service_role" aqui. */
+  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? '',
+  supabaseAnon: import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
   /** Mapa de fundo. Padrão: OpenStreetMap (uso leve). Antes do lançamento, troque por um provedor com chave (ver .env.example). */
   /** Chave da Google Maps Embed API (grátis). Vazio = incorporação clássica do Google Maps. */
   googleMapsKey: import.meta.env.VITE_GOOGLE_MAPS_KEY ?? '',

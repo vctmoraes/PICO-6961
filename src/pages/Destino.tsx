@@ -6,6 +6,8 @@ import { checklistMarcados, perfil, perfilViajante, relatos, salvos, viagens, vi
 import { combinar } from '../lib/combina';
 import { custoDoDia, formatarFaixa, formatarReal } from '../lib/custo';
 import { AdicionarAoRoteiro } from '../components/AdicionarAoRoteiro';
+import { MandarParaGrupo } from '../components/MandarParaGrupo';
+import { linkWhatsApp } from '../lib/compartilhar';
 import { Seguro } from '../components/Seguro';
 import { linksNavegacao } from '../components/MapaPreguicoso';
 import { MapaGoogle } from '../components/MapaGoogle';
@@ -41,6 +43,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
   const [aba, setAba] = useState<Aba>((abas.find((a) => a.id === abaInicial)?.id as Aba) ?? 'geral');
   const [salvo, setSalvo] = useState(() => salvos.tem(id));
   const [painel, setPainel] = useState(false);
+  const [painelGrupo, setPainelGrupo] = useState(false);
   const emRoteiros = viagens.listar().filter((v) => v.destinos.includes(id)).length;
 
   if (!d) {
@@ -118,6 +121,25 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
           <Icone nome="seta" tamanho={16} cor="#5B6660" />
         </a>
         <BuscaVoo d={d} />
+        <div className="acoes-montanha">
+          <button type="button" className="acao secundaria compacta" onClick={() => setPainelGrupo(true)}>
+            <Icone nome="pessoas" tamanho={18} cor="#13394A" />
+            <div>
+              <div className="t">Mandar para um grupo</div>
+            </div>
+          </button>
+          <a
+            className="acao secundaria compacta"
+            href={linkWhatsApp(`${d.nome} (${d.regiao}, ${d.pais}) no PICO 6961: ${window.location.origin}${window.location.pathname}${rota.destino(d.id)}`)}
+            target="_blank"
+            rel="noopener"
+          >
+            <Icone nome="compartilhar" tamanho={18} cor="#13394A" />
+            <div>
+              <div className="t">WhatsApp</div>
+            </div>
+          </a>
+        </div>
         {(d.montanha?.cameras || d.montanha?.boletim) && (
           <div className="acoes-montanha">
             {d.montanha.cameras && (
@@ -179,6 +201,7 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </button>
       </div>
       {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
+      {painelGrupo && <MandarParaGrupo cartao={{ tipo: 'destino', id: d.id }} titulo={`Mandar ${d.nome} para um grupo`} aoFechar={() => setPainelGrupo(false)} />}
     </div>
   );
 }

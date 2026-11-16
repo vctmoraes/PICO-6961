@@ -9,9 +9,17 @@ import { aluguelDoPerfil, custoMontanha, formatarReal } from '../lib/custo';
 import { perfilViajante } from '../lib/storage';
 import { Seguro } from '../components/Seguro';
 import { MapaPreguicoso, linkRotaGoogle } from '../components/MapaPreguicoso';
+import { linkDoRoteiro, linkWhatsApp } from '../lib/compartilhar';
 
-export function Viagem({ id }: { id: string }) {
-  const [v, setV] = useState<TViagem | undefined>(() => viagens.obter(id));
+/** Quando o roteiro é de um grupo: de onde vem, onde salva e para onde volta. */
+export interface FonteExterna {
+  viagem: TViagem;
+  salvar: (v: TViagem) => void;
+  voltar: string;
+}
+
+export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) {
+  const [v, setV] = useState<TViagem | undefined>(() => externo?.viagem ?? viagens.obter(id));
   const [novoDestino, setNovoDestino] = useState('');
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
   const [copiado, setCopiado] = useState<'' | 'ok' | 'erro'>('');
@@ -20,7 +28,7 @@ export function Viagem({ id }: { id: string }) {
   if (!v) {
     return (
       <main className="conteudo">
-        <CabecalhoVolta titulo="Roteiro" href={rota.roteiros} />
+        <CabecalhoVolta titulo="Roteiro" href={externo?.voltar ?? rota.roteiros} />
         <div className="vazio">
           Roteiro não encontrado. <a href={rota.roteiros}>Ver meus roteiros</a>
         </div>
@@ -32,7 +40,7 @@ export function Viagem({ id }: { id: string }) {
   const atualizar = (mudanca: Partial<TViagem>) => {
     const nova = { ...v, ...mudanca };
     if ('ida' in mudanca || 'volta' in mudanca) nova.dias = ajustarDias(nova);
-    viagens.salvar(nova);
+    (externo?.salvar ?? viagens.salvar)(nova);
     setV(nova);
     setCopiado('');
   };
@@ -66,7 +74,7 @@ export function Viagem({ id }: { id: string }) {
 
   return (
     <main className="conteudo">
-      <CabecalhoVolta titulo="Roteiro" href={rota.roteiros} />
+      {!externo && <CabecalhoVolta titulo="Roteiro" href={rota.roteiros} />}
 
       <section className="form" aria-label="Dados da viagem">
         <label>
@@ -264,8 +272,16 @@ export function Viagem({ id }: { id: string }) {
         maxLength={2000}
       />
 
-      <button type="button" className="botao" onClick={copiar}>
-        Copiar roteiro para compartilhar
+      <a
+        className="botao whatsapp"
+        href={linkWhatsApp(`${textoDoRoteiro(v)}\n\nAbra no app e salve uma cópia: ${linkDoRoteiro(v)}`)}
+        target="_blank"
+        rel="noopener"
+      >
+        Mandar no WhatsApp
+      </a>
+      <button type="button" className="botao contorno" onClick={copiar}>
+        Copiar roteiro em texto
       </button>
       {copiado === 'ok' && <p className="legenda" role="status">Roteiro copiado. Cole no WhatsApp ou no e-mail.</p>}
       {copiado === 'erro' && (
@@ -275,7 +291,7 @@ export function Viagem({ id }: { id: string }) {
         </div>
       )}
 
-      {confirmarExclusao ? (
+      {externo ? null : confirmarExclusao ? (
         <div className="confirmar">
           <p>Excluir o roteiro “{v.nome}”? Você não pode desfazer.</p>
           <div className="linha-form">
@@ -299,7 +315,7 @@ export function Viagem({ id }: { id: string }) {
           Excluir roteiro
         </button>
       )}
-      <p className="aviso">O roteiro fica salvo só neste aparelho.</p>
+      {!externo && <p className="aviso">O roteiro fica salvo só neste aparelho.</p>}
     </main>
   );
 }

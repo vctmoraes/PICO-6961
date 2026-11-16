@@ -24,7 +24,13 @@ export function Termos() {
       <p>Você mantém o direito sobre o relato e a foto que publica. Ao publicar, você dá ao PICO 6961 uma licença gratuita para exibir esse conteúdo no app.</p>
       <p>Não publique conteúdo de outra pessoa sem permissão. Não publique conteúdo ofensivo ou falso.</p>
 
-      <h2>5. Privacidade</h2>
+      <h2>5. Grupos de viagem</h2>
+      <p>Para usar os grupos, você precisa ter 16 anos ou mais e entrar com o seu e-mail.</p>
+      <p>O que você manda no grupo fica salvo no servidor do PICO 6961 (Supabase). Só as pessoas do grupo veem as mensagens, o roteiro e os votos.</p>
+      <p>Regras: respeite as pessoas. Não mande conteúdo ofensivo, ilegal, falso, propaganda ou dado pessoal de outra pessoa. Você pode denunciar uma mensagem e bloquear uma pessoa. A equipe analisa as denúncias e pode apagar mensagens e contas que quebram as regras.</p>
+      <p>Você pode apagar as suas mensagens e a sua conta quando quiser, na tela Perfil.</p>
+
+      <h2>6. Privacidade</h2>
       <p>Nesta versão de teste, seu nome, seu perfil de viagem, seus roteiros, seus destinos salvos, seu checklist, seus relatos e o seu Passaporte de Picos ficam salvos só neste aparelho. O PICO 6961 não recebe esses dados.</p>
       <p>O perfil de viagem tem só o que o app usa para recomendar destinos e montar o checklist. O app não pede número de documento. Você pode baixar, ver e apagar os seus dados na tela Perfil.</p>
       <p>O app pode medir o número de visitas de forma anônima, sem cookie e sem dado pessoal.</p>

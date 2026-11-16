@@ -27,7 +27,8 @@ const K = {
   nome: 'pt.nome',
   perfil: 'pt.perfil',
   visitados: 'pt.visitados',
-  avisoPerfil: 'pt.avisoPerfil'
+  avisoPerfil: 'pt.avisoPerfil',
+  gruposDemo: 'pt.gruposDemo'
 };
 
 /** Destinos salvos (favoritos): o botão de marcador na tela do destino. */
@@ -205,6 +206,7 @@ export function apagarTodosOsDados(): void {
   try {
     for (const chave of Object.values(K)) localStorage.removeItem(chave);
     localStorage.removeItem('pt.cotacao');
+    localStorage.removeItem('pt.sessao');
   } catch {
     /* sem armazenamento: nada para apagar */
   }

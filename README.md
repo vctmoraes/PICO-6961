@@ -18,6 +18,10 @@ Os destinos dos EUA vêm da base aberta do OpenSkiMap (dados do OpenStreetMap).
 
 Rode o passo 1 de novo para atualizar os dados. Licença dos dados: ODbL. O app mostra o crédito ao OpenStreetMap. Se o app publicar a base derivada (`eua.json`), essa base também fica sob a ODbL.
 
+## Grupos (chat com amigos)
+
+Os grupos usam o Supabase. Sem configuração, funcionam em modo demonstração. Veja `docs/grupos-supabase.md`.
+
 ## Publicar (Netlify, grátis)
 
 1. Crie um repositório no GitHub e envie esta pasta.

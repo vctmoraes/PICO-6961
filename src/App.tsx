@@ -10,6 +10,10 @@ import { Comparar } from './pages/Comparar';
 import { Guia } from './pages/Guia';
 import { MapaDestinos } from './pages/MapaDestinos';
 import { Questionario } from './pages/Questionario';
+import { Importar } from './pages/Importar';
+import { Grupos } from './pages/Grupos';
+import { Grupo } from './pages/Grupo';
+import { Convite } from './pages/Convite';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -33,6 +37,33 @@ export function App() {
     );
   }
 
+  if (pagina === 'grupo' && param) {
+    return (
+      <div className="app">
+        <Grupo key={param} id={param} />
+        <Nav atual="grupos" />
+      </div>
+    );
+  }
+
+  if (pagina === 'convite' && param) {
+    return (
+      <div className="app">
+        <Convite codigo={param} />
+        <Nav atual="grupos" />
+      </div>
+    );
+  }
+
+  if (pagina === 'importar' && param) {
+    return (
+      <div className="app">
+        <Importar dados={param} />
+        <Nav atual="roteiros" />
+      </div>
+    );
+  }
+
   if (pagina === 'roteiro' && param) {
     return (
       <div className="app">
@@ -52,7 +83,8 @@ export function App() {
     creditos: <Creditos />,
     guia: <Guia />,
     mapa: <MapaDestinos />,
-    questionario: <Questionario />
+    questionario: <Questionario />,
+    grupos: <Grupos />
   };
   const navAtual = ['termos', 'creditos', 'questionario'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
 

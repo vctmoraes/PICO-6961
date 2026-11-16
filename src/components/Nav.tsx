@@ -5,6 +5,7 @@ const itens: { id: string; rotulo: string; href: string; icone: NomeIcone }[] = 
   { id: '', rotulo: 'Início', href: rota.inicio, icone: 'casa' },
   { id: 'buscar', rotulo: 'Buscar', href: rota.buscar, icone: 'busca' },
   { id: 'roteiros', rotulo: 'Roteiros', href: rota.roteiros, icone: 'calendario' },
+  { id: 'grupos', rotulo: 'Grupos', href: rota.grupos, icone: 'pessoas' },
   { id: 'perfil', rotulo: 'Perfil', href: rota.perfil, icone: 'pessoa' }
 ];
 

@@ -6,6 +6,7 @@ import { buscarClima, type Clima } from '../lib/clima';
 import { emReal, useCotacoes } from '../lib/moeda';
 import { formatarFaixa } from '../lib/custo';
 import { rota } from '../lib/rota';
+import { MandarParaGrupo } from '../components/MandarParaGrupo';
 
 const MAX = 3;
 
@@ -30,6 +31,7 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
   const escolhidos = ids.map(buscarDestino).filter((d): d is Destino => d !== undefined);
   const climas = useClimas(escolhidos);
   const cot = useCotacoes();
+  const [painelGrupo, setPainelGrupo] = useState(false);
 
   // Guarda a escolha no endereço, para o usuário compartilhar a comparação.
   useEffect(() => {
@@ -142,6 +144,14 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
         </div>
       ) : (
         <div className="vazio">Escolha pelo menos 2 destinos para comparar.</div>
+      )}
+      {escolhidos.length >= 2 && (
+        <button type="button" className="botao contorno" onClick={() => setPainelGrupo(true)}>
+          Mandar esta comparação para um grupo
+        </button>
+      )}
+      {painelGrupo && (
+        <MandarParaGrupo cartao={{ tipo: 'comparacao', ids }} titulo="Mandar a comparação para um grupo" aoFechar={() => setPainelGrupo(false)} />
       )}
       <p className="aviso">
         * Preço estimado. Neve e tempo: previsão do modelo meteorológico (Open-Meteo), não é boletim oficial. Cotação do real: AwesomeAPI.

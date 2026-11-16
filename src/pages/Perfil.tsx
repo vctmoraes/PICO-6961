@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { CabecalhoVolta } from '../components/Nav';
 import { Icone } from '../components/Icone';
 import { PassaportePicos } from '../components/PassaportePicos';
+import { Conta } from '../components/Conta';
 import { apagarTodosOsDados, exportarDados, perfil, perfilViajante, type PerfilViajante } from '../lib/storage';
 import { aeroportosBrasil } from './Questionario';
 import { rota } from '../lib/rota';
@@ -149,11 +150,14 @@ export function Perfil() {
         </a>
       </div>
 
+      <Conta />
+
       <section className="cartao-seguro" aria-labelledby="titulo-dados">
         <h3 id="titulo-dados">Seus dados</h3>
         <p>
-          O app guarda o seu nome, o perfil de viagem, os roteiros, o checklist, os relatos e o Passaporte de Picos só neste aparelho. O PICO 6961
-          não recebe esses dados.
+          O app guarda o seu nome, o perfil de viagem, os roteiros, o checklist, os relatos e o Passaporte de Picos só neste aparelho. Os grupos são a
+          exceção: as mensagens, o roteiro do grupo e os votos ficam no servidor, para os amigos verem. Para apagar esses dados, use “Apagar minha
+          conta”.
         </p>
         <div className="linha-form">
           <button type="button" className="botao contorno curto" onClick={baixar}>

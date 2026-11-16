@@ -323,3 +323,50 @@ textarea.campo { min-height: 90px; resize: vertical; }
 .dica-custo { margin: 0; font-size: 13px; background: var(--ini-fundo); color: var(--ini-texto); border-radius: 10px; padding: 8px 10px; }
 .resumo-custo.montanha { background: var(--ini-fundo); }
 .resumo-custo.montanha strong { color: var(--ini-texto); }
+.botao.whatsapp { background: var(--ini-texto); color: #fff; text-align: center; }
+.botao.whatsapp:hover { color: #fff; }
+
+/* Grupos e chat */
+.aviso-demo { margin: 0; font-size: 12px; background: var(--int-fundo); color: var(--int-texto); border-radius: 10px; padding: 8px 10px; line-height: 1.45; }
+.form .check { flex-direction: row; align-items: flex-start; gap: 10px; font-weight: 500; color: var(--texto); font-size: 13px; }
+.form .check input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+.abas-grupo { padding: 0; margin: 0 -20px; padding: 0 20px; top: 0; }
+.chat { display: flex; flex-direction: column; gap: 10px; padding-bottom: 70px; }
+.mensagens { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.msg { align-self: flex-start; max-width: 85%; background: var(--cartao); border: 1px solid var(--borda); border-radius: 14px 14px 14px 4px; padding: 8px 12px; display: flex; flex-direction: column; gap: 4px; position: relative; }
+.msg.minha { align-self: flex-end; background: #e6eef1; border-color: transparent; border-radius: 14px 14px 4px 14px; }
+.msg p { margin: 0; font-size: 14px; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg .autor { font-size: 12px; font-weight: 700; color: var(--marca); }
+.msg .hora { font-size: 11px; color: var(--texto-2); display: flex; align-items: center; justify-content: flex-end; gap: 6px; }
+.mais-msg { background: none; border: none; color: var(--texto-2); font-size: 16px; padding: 0 6px; min-width: 32px; min-height: 28px; }
+.menu-msg { display: flex; flex-direction: column; gap: 2px; background: var(--cartao); border: 1px solid var(--borda); border-radius: 10px; padding: 4px; }
+.menu-msg button { background: none; border: none; text-align: left; padding: 10px; font-size: 13px; color: var(--texto); border-radius: 8px; min-height: 40px; }
+.menu-msg button:hover { background: var(--fundo); }
+.cartao-msg { display: flex; flex-direction: column; gap: 2px; background: var(--fundo); border: 1px solid var(--borda); border-radius: 12px; padding: 10px; color: var(--texto); text-align: left; font: inherit; width: 100%; }
+.cartao-msg:hover { color: var(--texto); }
+.cartao-msg.destino { flex-direction: row; gap: 10px; align-items: center; }
+.cartao-msg .mini { width: 52px; height: 52px; border-radius: 10px; overflow: hidden; flex-shrink: 0; }
+.cartao-msg strong { font-size: 14px; }
+.cartao-msg small { font-size: 12px; color: var(--texto-2); display: block; }
+.linha-cartao { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.link-cartao { font-size: 12px; font-weight: 700; color: var(--marca); margin-top: 4px; }
+.anexo { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.anexo label { font-size: 12px; font-weight: 600; color: var(--texto-2); }
+.escrever { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(68px + env(safe-area-inset-bottom)); width: 100%; max-width: 480px; display: flex; gap: 8px; padding: 8px 12px; background: var(--fundo); border-top: 1px solid var(--borda); z-index: 9; }
+.escrever input { flex: 1; min-width: 0; font: inherit; font-size: 15px; border: 1px solid var(--borda); border-radius: 22px; padding: 10px 14px; background: var(--cartao); color: var(--texto); }
+.botao-anexo { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--borda); background: var(--cartao); font-size: 22px; color: var(--marca); flex-shrink: 0; }
+.aviso-mudanca { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--int-fundo); color: var(--int-texto); border-radius: 12px; padding: 10px 12px; font-size: 13px; font-weight: 600; }
+.votacao { display: flex; flex-direction: column; gap: 12px; }
+.enquete { background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.enquete h3 { font-size: 15px; }
+.enquete .legenda { margin: 0; }
+.opcao-enquete { position: relative; overflow: hidden; display: flex; justify-content: space-between; gap: 10px; align-items: center; border: 1.5px solid var(--borda); background: var(--cartao); border-radius: 10px; padding: 10px 12px; min-height: 44px; font: inherit; font-size: 14px; color: var(--texto); text-align: left; }
+.opcao-enquete.minha { border-color: var(--marca); }
+.opcao-enquete .barra { position: absolute; left: 0; top: 0; bottom: 0; background: var(--ini-fundo); z-index: 0; }
+.opcao-enquete .texto-opcao, .opcao-enquete .contagem { position: relative; z-index: 1; }
+.opcao-enquete .contagem { font-size: 12px; color: var(--texto-2); font-weight: 600; white-space: nowrap; }
+.pessoas { display: flex; flex-direction: column; gap: 12px; }
+.pessoas h3 { font-size: 15px; }
+.pessoas .lista-simples { list-style: none; margin: 0; padding: 0; }
+.pessoas .item small { color: var(--texto-2); font-size: 12px; }
+.codigo { font-family: var(--fonte-titulo); letter-spacing: 0.08em; font-size: 16px; }
