@@ -29,10 +29,15 @@
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 
+## App no ar
+
+- Endereço: https://pico-6961.netlify.app (Netlify, time "Team Pico", site `pico-6961`).
+- Publicação automática: cada envio para a branch `main` do GitHub (vctmoraes/PICO-6961) publica o app de novo.
+
 ## Para o Victor fazer
 
-1. **Criar o repositório no GitHub** e enviar este código. Sem repositório, o código se perde quando a sessão termina.
-2. **Publicar no Netlify** (ver README). O Netlify dá um endereço grátis, por exemplo `pico6961.netlify.app`.
+1. ~~Criar o repositório no GitHub~~ (feito: vctmoraes/PICO-6961).
+2. ~~Publicar no Netlify~~ (feito: https://pico-6961.netlify.app).
 3. **Confirmar os preços do passe** no site oficial de cada resort. Preencha `verificadoEm` em `src/data/destinos.ts`.
 4. **Registrar a marca PICO 6961.** Consulte `pico6961.com.br` no registro.br e `pico6961.com` num registrador internacional. Confira @pico6961 no Instagram e no TikTok. Pesquise "PICO 6961" e "PICO" no INPI (busca.inpi.gov.br) nas classes 9, 42, 39 e 25, e peça o registro cedo. Antes, teste o nome com o grupo de ski: fale o nome e peça para a pessoa escrever.
 5. **Cadastrar no programa de afiliados** de um comparador de seguro viagem brasileiro. Ponha o link no `.env` (`VITE_SEGURO_URL`). Sem o link, o app mostra só as dicas de seguro.
