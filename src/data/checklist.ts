@@ -31,16 +31,24 @@ const base: GrupoChecklist[] = [
     titulo: 'Saúde e proteção',
     itens: ['Protetor solar FPS 50', 'Protetor labial com FPS', 'Óculos de sol para fora da pista', 'Remédio de uso pessoal']
   },
-  {
-    titulo: 'Documentos',
-    itens: [
-      'RG (emitido há menos de 10 anos) ou passaporte',
-      'Seguro viagem com cobertura para esporte na neve',
-      'Cartão de crédito internacional',
-      'Reserva de hospedagem e transfer'
-    ]
-  }
 ];
+
+function documentos(d: Destino): GrupoChecklist {
+  const comuns = ['Seguro viagem com cobertura para esporte na neve', 'Cartão de crédito internacional', 'Reserva de hospedagem e transfer'];
+  if (d.pais === 'Estados Unidos') {
+    return {
+      titulo: 'Documentos',
+      itens: [
+        'Passaporte válido',
+        'Visto americano válido (brasileiro precisa de visto para os EUA)',
+        'Seguro com cobertura médica alta: atendimento médico nos EUA é muito caro',
+        ...comuns.slice(1),
+        'Carteira de motorista (e Permissão Internacional para Dirigir), se for alugar carro'
+      ]
+    };
+  }
+  return { titulo: 'Documentos', itens: ['RG (emitido há menos de 10 anos) ou passaporte', ...comuns] };
+}
 
 /** Checklist do destino: lista base + itens que dependem do destino. */
 export function checklistDoDestino(d: Destino): GrupoChecklist[] {
@@ -49,5 +57,7 @@ export function checklistDoDestino(d: Destino): GrupoChecklist[] {
   if (d.pais === 'Chile') extras.push('Corrente para o pneu, se for de carro (exigida na subida com neve)');
   if (d.pais === 'Argentina') extras.push('Dinheiro em espécie (peso argentino) para gasto pequeno');
   if (d.nivel === 'avancado') extras.push('Kit de avalanche (ARVA, pá e sonda) se for para fora de pista, com guia');
-  return extras.length ? [...base, { titulo: `Para ${d.nome}`, itens: extras }] : base;
+  if (d.pais === 'Estados Unidos') extras.push('Corrente ou pneu de neve, se for de carro pela montanha');
+  const grupos = [...base, documentos(d)];
+  return extras.length ? [...grupos, { titulo: `Para ${d.nome}`, itens: extras }] : grupos;
 }

@@ -30,6 +30,7 @@ function precoPasse(d: TDestino): string {
 }
 
 function melhorEpoca(d: TDestino): string {
+  if (d.lat > 0) return 'Dez – Mar'; // hemisfério norte
   return d.temporada.toLowerCase().includes('outubro') ? 'Jun – Out' : 'Jun – Set';
 }
 
@@ -151,7 +152,16 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
 
       <div className="painel" role="tabpanel">
         {aba === 'geral' && <VisaoGeral d={d} />}
-        {aba === 'dicas' && d.dicas.map((t) => <div key={t} className="dica">{t}</div>)}
+        {aba === 'dicas' &&
+          (d.dicas.length ? (
+            d.dicas.map((t) => (
+              <div key={t} className="dica">
+                {t}
+              </div>
+            ))
+          ) : (
+            <p className="legenda">Ainda não temos dicas de {d.nome}. Já esteve lá? Conte na aba Avaliações.</p>
+          ))}
         {aba === 'checklist' && <Checklist d={d} />}
         {aba === 'avaliacoes' && <Avaliacoes d={d} />}
       </div>
@@ -342,7 +352,16 @@ function VisaoGeral({ d }: { d: TDestino }) {
         </p>
       )}
 
-      {!d.verificadoEm && (
+      {d.fonteDados === 'openskimap' && (
+        <p className="aviso">
+          <strong>Fonte:</strong> altitude, pistas e site vêm do OpenSkiMap, com dados do{' '}
+          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">
+            OpenStreetMap
+          </a>{' '}
+          (ODbL). A equipe do PICO 6961 ainda não revisou este destino.
+        </p>
+      )}
+      {!d.verificadoEm && d.fonteDados !== 'openskimap' && (
         <p className="aviso">
           <strong>Dados em conferência:</strong> altitude, pistas e temporada são valores de referência. Confira no site oficial
           antes de viajar.

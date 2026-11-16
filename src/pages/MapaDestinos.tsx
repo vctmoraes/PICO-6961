@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { destinos, nivelLabel, type Nivel, type Pais } from '../data/destinos';
+import { destinos, nivelLabel, paises, type Nivel, type Pais } from '../data/destinos';
 import { CabecalhoVolta } from '../components/Nav';
 import { MapaPreguicoso } from '../components/MapaPreguicoso';
 import { rota } from '../lib/rota';
@@ -14,9 +14,12 @@ export function MapaDestinos() {
       <CabecalhoVolta titulo="Mapa dos destinos" href={rota.buscar} />
       <div className="chips" role="group" aria-label="Filtros do mapa">
         <select className="filtro select-filtro" value={pais} onChange={(e) => setPais(e.target.value as Pais | '')} aria-label="País">
-          <option value="">Chile e Argentina ▾</option>
-          <option value="Chile">Chile</option>
-          <option value="Argentina">Argentina</option>
+          <option value="">Todos os países ▾</option>
+          {paises.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
         </select>
         <select className="filtro select-filtro" value={nivel} onChange={(e) => setNivel(e.target.value as Nivel | '')} aria-label="Nível">
           <option value="">Todos os níveis ▾</option>

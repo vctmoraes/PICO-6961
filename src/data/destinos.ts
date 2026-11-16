@@ -3,7 +3,10 @@
 // Regra: todo dado tem fonte e data de verificação. Dado sem verificação aparece como "a confirmar".
 
 export type Nivel = 'iniciante' | 'intermediario' | 'avancado';
-export type Pais = 'Chile' | 'Argentina';
+import { destinosEua } from './eua';
+
+export type Pais = 'Chile' | 'Argentina' | 'Estados Unidos';
+
 
 export interface Destino {
   id: string;
@@ -65,11 +68,13 @@ export interface Destino {
    * Antes de pôr uma foto, confirme autor e licença. Ver docs/fotos-e-licencas.md.
    */
   foto?: { url: string; autor: string; licenca: string; fonte: string } | null;
+  /** 'openskimap' = destino importado da base aberta (dados do OpenStreetMap). Vazio = conteúdo curado à mão. */
+  fonteDados?: 'openskimap';
   /** Cores da ilustração (substitui a foto até termos fotos com licença confirmada). */
   cor: [string, string];
 }
 
-export const destinos: Destino[] = [
+const curados: Destino[] = [
   {
     id: 'valle-nevado',
     nome: 'Valle Nevado',
@@ -838,6 +843,12 @@ export const destinos: Destino[] = [
     dicas: ['Combine com Cerro Castor, a 26 km.', 'Leve roupa para vento. O clima em Ushuaia muda rápido.']
   }
 ];
+
+/** Todos os destinos: curados (Chile e Argentina) + importados (Estados Unidos). */
+export const destinos: Destino[] = [...curados, ...destinosEua];
+
+/** Países com pelo menos 1 destino, na ordem dos filtros e das listas. */
+export const paises: Pais[] = (['Chile', 'Argentina', 'Estados Unidos'] as Pais[]).filter((p) => destinos.some((d) => d.pais === p));
 
 export const nivelLabel: Record<Nivel, string> = {
   iniciante: 'Iniciante',

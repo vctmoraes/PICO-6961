@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { buscarDestino, destinos, type Destino } from '../data/destinos';
+import { buscarDestino, destinos, paises, type Destino } from '../data/destinos';
 import { Badge } from '../components/Badge';
 import { CabecalhoVolta } from '../components/Nav';
 import { buscarClima, type Clima } from '../lib/clima';
@@ -90,7 +90,7 @@ export function Comparar({ ids: idsIniciais }: { ids: string[] }) {
         {[...Array(Math.min(ids.length + 1, MAX))].map((_, i) => (
           <select key={i} className="campo" aria-label={`Destino ${i + 1}`} value={ids[i] ?? ''} onChange={(e) => trocar(i, e.target.value)}>
             <option value="">{ids[i] ? 'Remover' : `Destino ${i + 1}…`}</option>
-            {(['Chile', 'Argentina'] as const).map((pais) => (
+            {paises.map((pais) => (
               <optgroup key={pais} label={pais}>
                 {destinos
                   .filter((d) => d.pais === pais && (d.id === ids[i] || !ids.includes(d.id)))

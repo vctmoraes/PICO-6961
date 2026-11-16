@@ -9,6 +9,15 @@ App (PWA) para planejar viagem de ski e snowboard: condição da neve em tempo r
 3. Rode `npm run dev`.
 4. Abra o endereço que aparece no terminal (em geral, http://localhost:5173).
 
+## Importar os destinos dos Estados Unidos
+
+Os destinos dos EUA vêm da base aberta do OpenSkiMap (dados do OpenStreetMap).
+
+1. Rode `npm run importar:eua`. O script baixa a base (cerca de dezenas de MB) e grava `src/data/eua.json`.
+2. Rode `npm run build` de novo.
+
+Rode o passo 1 de novo para atualizar os dados. Licença dos dados: ODbL. O app mostra o crédito ao OpenStreetMap. Se o app publicar a base derivada (`eua.json`), essa base também fica sob a ODbL.
+
 ## Publicar (Netlify, grátis)
 
 1. Crie um repositório no GitHub e envie esta pasta.

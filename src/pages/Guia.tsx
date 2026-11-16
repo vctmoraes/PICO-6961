@@ -39,6 +39,7 @@ export function Guia() {
           <strong>Setembro:</strong> dias mais longos e mais sol. A neve pode ficar dura de manhã e mole à tarde.
         </li>
       </ul>
+      <p>Nos Estados Unidos, a temporada é no nosso verão: em geral, de dezembro a março. As férias de fim de ano e a semana do Carnaval enchem as montanhas.</p>
       <p>A neve muda de ano para ano. Confira a condição no app antes de comprar o passe.</p>
 
       <h2>4. Faça aula nos primeiros dias</h2>
@@ -70,7 +71,7 @@ export function Guia() {
       </ul>
 
       <h2>9. Documentos</h2>
-      <p>Brasileiro entra no Chile e na Argentina com passaporte ou RG em bom estado. Confira a regra atual antes de viajar, no site oficial do governo do país.</p>
+      <p>Brasileiro entra no Chile e na Argentina com passaporte ou RG em bom estado. Para os Estados Unidos, você precisa de passaporte e de visto americano. Confira a regra atual antes de viajar, no site oficial do governo do país.</p>
       <Seguro />
 
       <h2>10. Monte o roteiro</h2>

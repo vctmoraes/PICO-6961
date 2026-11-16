@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { buscarDestino, destinos } from '../data/destinos';
+import { buscarDestino, destinos, paises } from '../data/destinos';
 import { CabecalhoVolta } from '../components/Nav';
 import { viagens, type Atividade, type DiaViagem, type Viagem as TViagem } from '../lib/storage';
 import { MAX_DIAS, ajustarDias, atividadeLabel, custoPasses, dataCurta, distribuirDias, textoDoRoteiro } from '../lib/viagem';
@@ -154,7 +154,7 @@ export function Viagem({ id }: { id: string }) {
       <div className="linha-form">
         <select value={novoDestino} onChange={(e) => setNovoDestino(e.target.value)} aria-label="Escolher destino" className="campo">
           <option value="">Escolher destino…</option>
-          {(['Chile', 'Argentina'] as const).map((pais) => (
+          {paises.map((pais) => (
             <optgroup key={pais} label={pais}>
               {disponiveis
                 .filter((d) => d.pais === pais)

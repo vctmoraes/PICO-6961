@@ -53,6 +53,10 @@ export function Creditos() {
       <h2>Imagens</h2>
       <p>As ilustrações de montanha são do próprio PICO 6961. Foto de destino só entra no app com autor e licença confirmados.</p>
       <h2>Conteúdo dos destinos</h2>
+      <p>
+        Destinos dos Estados Unidos: <a href="https://openskimap.org" target="_blank" rel="noopener">OpenSkiMap</a>, com dados do{' '}
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>, licença ODbL.
+      </p>
       <p>Curadoria do PICO 6961. Preço de passe e informação de resort vêm do site oficial de cada resort.</p>
     </main>
   );
