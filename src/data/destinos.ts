@@ -39,6 +39,16 @@ export interface Destino {
     /** Termo de busca usado no link de afiliado. */
     buscaReserva: string;
   };
+  /**
+   * Páginas oficiais do resort com câmera ao vivo e boletim da montanha (pistas, teleféricos, neve).
+   * Só ponha link de site oficial. Sem página oficial, deixe o campo vazio: o app esconde o botão.
+   */
+  montanha?: {
+    cameras?: string;
+    boletim?: string;
+    /** null = link não testado. */
+    verificadoEm: string | null;
+  };
   /** Frase curta que aparece no card do destino. */
   nota: string;
   /** Dicas práticas da aba "Dicas". */
@@ -78,6 +88,7 @@ export const destinos: Destino[] = [
       buscaReserva: 'Valle Nevado, Chile'
     },
     cor: ['#13394A', '#2F6F8A'],
+    montanha: { boletim: 'https://vallenevado.com/en/mountain-report', verificadoEm: null },
     nota: 'Pistas largas e hotel na base',
     dicas: [
       "Reserve o transfer com antecedência. Na alta temporada, os lugares acabam.",
@@ -172,6 +183,11 @@ export const destinos: Destino[] = [
       buscaReserva: 'Portillo, Chile'
     },
     cor: ['#9C3B30', '#D9480F'],
+    montanha: {
+      cameras: 'https://www.skiportillo.com/en/webcams/',
+      boletim: 'https://skiportillo.com/en/mountain/portillo-snow-forecast-conditions/',
+      verificadoEm: null
+    },
     nota: 'Pacote semanal com tudo incluído',
     dicas: [
       "Reserve a semana inteira cedo. O hotel tem poucos quartos.",
@@ -235,6 +251,7 @@ export const destinos: Destino[] = [
       buscaReserva: 'San Martín de los Andes, Argentina'
     },
     cor: ['#13394A', '#1F6B44'],
+    montanha: { boletim: 'https://www.cerrochapelco.com.ar/parte-diario', verificadoEm: null },
     nota: 'Ótimo para quem está começando',
     dicas: [
       "Fique em San Martín de los Andes. A cidade tem boa comida e é tranquila.",

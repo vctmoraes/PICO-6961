@@ -17,9 +17,10 @@
 4. **Registrar o domínio.** Consulte `picotrip.com.br` no registro.br e `picotrip.com` num registrador internacional. Confira também o nome @picotrip no Instagram e no TikTok.
 5. **Cadastrar no programa de afiliados** do Booking.com. Ponha o ID no `.env` (`VITE_BOOKING_AID`). Veja também se os resorts têm programa de afiliado.
 6. **Ligar a métrica de usuário ativo:** crie uma conta no Plausible (pago, sem cookie) ou no Umami (tem plano grátis). Ponha o domínio no `.env`.
-7. **Verificar as fotos** do mockup (ver `docs/fotos-e-licencas.md`).
-8. **Pedir revisão dos termos de uso** a um advogado antes do lançamento público.
-9. **Recrutar o grupo de teste** (mensagem pronta abaixo).
+7. **Testar os links de câmera e boletim.** Hoje só 3 destinos têm link oficial: Valle Nevado (boletim), Portillo (câmeras e boletim) e Chapelco (parte diário, link tirado de notícia antiga). Teste cada link e preencha `montanha.verificadoEm`. Procure no site oficial dos outros 5 destinos uma página de câmeras ou de boletim.
+8. **Verificar as fotos** do mockup (ver `docs/fotos-e-licencas.md`).
+9. **Pedir revisão dos termos de uso** a um advogado antes do lançamento público.
+10. **Recrutar o grupo de teste** (mensagem pronta abaixo).
 
 ## Fase 2 (depois do teste)
 

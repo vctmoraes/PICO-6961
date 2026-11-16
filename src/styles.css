@@ -165,3 +165,8 @@ h1, h2, h3, .titulo { font-family: var(--fonte-titulo); margin: 0; }
 .cabecalho-volta a { width: 40px; height: 40px; border-radius: 50%; background: var(--cartao); border: 1px solid var(--borda); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--texto); }
 .cabecalho-volta h1 { font-size: 18px; }
 .select-filtro { appearance: none; -webkit-appearance: none; }
+
+/* Câmeras e boletim da montanha: lado a lado quando o destino tem os dois. */
+.acoes-montanha { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.acao.compacta { padding: 10px 12px; gap: 10px; min-height: 52px; }
+.acao.compacta .t { font-size: 13px; }

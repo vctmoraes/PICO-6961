@@ -7,6 +7,7 @@ Leia `docs/briefing.md` antes de começar. O briefing tem todas as decisões de 
 - O app só informa e mostra link de saída. O app não processa reserva nem pagamento (caso Liftopia).
 - MVP: só ski e snowboard. Outros esportes aparecem como "em breve".
 - Todo preço mostra a data de verificação. Sem data, o app mostra "valor estimado".
+- Botão de câmera ao vivo e de boletim da montanha: só com link do site oficial. Sem link oficial, o app esconde o botão (campo `montanha` em `src/data/destinos.ts`).
 - Foto de destino só entra com autor e licença confirmados (`docs/fotos-e-licencas.md`).
 - Nunca invente avaliação, relato ou número de usuário.
 - Todo texto do app em português do Brasil, com frase curta e voz ativa.

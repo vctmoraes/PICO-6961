@@ -99,6 +99,28 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
           </div>
           <Icone nome="seta" tamanho={16} cor="#5B6660" />
         </a>
+        {(d.montanha?.cameras || d.montanha?.boletim) && (
+          <div className="acoes-montanha">
+            {d.montanha.cameras && (
+              <a className="acao secundaria compacta" href={linkOficial(d.montanha.cameras)} target="_blank" rel="noopener">
+                <Icone nome="camera" tamanho={18} cor="#13394A" />
+                <div>
+                  <div className="t">Câmeras ao vivo</div>
+                  <div className="s">Site oficial</div>
+                </div>
+              </a>
+            )}
+            {d.montanha.boletim && (
+              <a className="acao secundaria compacta" href={linkOficial(d.montanha.boletim)} target="_blank" rel="noopener">
+                <Icone nome="montanha" tamanho={18} cor="#13394A" />
+                <div>
+                  <div className="t">Boletim da montanha</div>
+                  <div className="s">Pistas e teleféricos</div>
+                </div>
+              </a>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="abas" role="tablist">
@@ -212,7 +234,16 @@ function CondicaoAgora({ d }: { d: TDestino }) {
         ))}
       </div>
       <div className="credito">
-        Previsão do modelo meteorológico, não é boletim oficial do resort. Dados:{' '}
+        Previsão do modelo meteorológico, não é boletim oficial do resort.{' '}
+        {d.montanha?.boletim && (
+          <>
+            <a href={linkOficial(d.montanha.boletim)} target="_blank" rel="noopener">
+              Ver o boletim oficial
+            </a>
+            .{' '}
+          </>
+        )}
+        Dados:{' '}
         <a href="https://open-meteo.com/" target="_blank" rel="noopener">
           Open-Meteo.com
         </a>{' '}

@@ -8,6 +8,8 @@ const caminhos = {
   marcador: <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />,
   ticket: <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v1a2 2 0 1 0 0 4v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1a2 2 0 1 0 0-4z" />,
   cama: <><path d="M2 4v16" /><path d="M2 8h18a2 2 0 0 1 2 2v10" /><path d="M2 17h20" /><path d="M6 8v9" /></>,
+  camera: <><path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" /></>,
+  montanha: <><path d="M3 20l6-11 4 6 3-4 5 9z" /><circle cx="17" cy="6" r="2" /></>,
   seta: <polyline points="9 6 15 12 9 18" />,
   baixo: <polyline points="6 9 12 15 18 9" />
 };
