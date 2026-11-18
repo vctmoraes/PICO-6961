@@ -1,33 +1,35 @@
 import { CabecalhoVolta } from '../components/Nav';
 import { Seguro } from '../components/Seguro';
-import { destinos } from '../data/destinos';
+import { buscarDestino } from '../data/destinos';
 import { rota } from '../lib/rota';
 
-// Guia para quem nunca esquiou. Texto curado: frase curta, voz ativa, sem número inventado.
+// Os motivos abaixo vêm da descrição e da logística no catálogo, não de condições ao vivo.
+const escolhas = [
+  { id: 'el-colorado', motivo: 'Perto de Santiago, com pistas fáceis na área de Farellones.' },
+  { id: 'chapelco', motivo: 'Pistas entre árvores e San Martín de los Andes como cidade-base.' },
+  { id: 'los-puquios', motivo: 'Parque de neve menor na região de Mendoza, voltado a iniciantes.' }
+];
+
 export function Guia() {
-  const iniciantes = destinos.filter((d) => d.nivel === 'iniciante');
   return (
-    <main className="conteudo texto-longo">
+    <main className="conteudo texto-longo descoberta">
       <CabecalhoVolta titulo="Primeira vez na neve" />
-      <p>Este guia é para quem nunca esquiou. Leia antes de escolher o destino e de comprar o passe.</p>
+      <p>Escolha uma montanha para aprender, veja quando ir e separe o que precisa reservar.</p>
 
-      <h2>1. Ski ou snowboard?</h2>
-      <p>No primeiro dia, o ski costuma ser mais fácil. Você fica em pé e anda mais rápido.</p>
-      <p>No snowboard, os primeiros dias têm mais queda. Depois da fase inicial, muita gente evolui rápido.</p>
-      <p>Na dúvida, comece pelo ski. Você pode trocar no meio da viagem.</p>
-
-      <h2>2. Escolha um destino bom para iniciante</h2>
-      <p>Procure uma área grande de pista fácil (verde) e uma escola de ski. Estes destinos têm o nível “Iniciante” no PICO 6961:</p>
-      <ul>
-        {iniciantes.map((d) => (
-          <li key={d.id}>
-            <a href={rota.destino(d.id)}>{d.nome}</a> ({d.pais})
-          </li>
-        ))}
+      <h2>Por onde começar?</h2>
+      <p>Procure pistas fáceis, escola e um trajeto que caiba no roteiro. Estas três opções do catálogo atendem a perfis de viagem diferentes:</p>
+      <ul className="guia-escolhas">
+        {escolhas.map(({ id, motivo }) => {
+          const d = buscarDestino(id);
+          return d && <li key={id}><a href={rota.destino(id)}>{d.nome} · {d.pais}</a><p>{motivo}</p></li>;
+        })}
       </ul>
-      <p>Um destino “Intermediário” também serve, se tiver área de iniciante. Use a função <a href={rota.comparar([])}>Comparar destinos</a>.</p>
+      <div className="guia-acoes">
+        <a className="botao contorno curto" href={rota.comparar(escolhas.map(({ id }) => id))}>Comparar as três opções</a>
+        <a className="botao contorno curto" href={rota.buscarIniciantes}>Ver todos para iniciantes</a>
+      </div>
 
-      <h2>3. Escolha a época</h2>
+      <h2>Quando ir?</h2>
       <ul>
         <li>
           <strong>Julho:</strong> férias escolares no Brasil, no Chile e na Argentina. Tem mais gente, mais fila e preço mais alto.
@@ -42,16 +44,19 @@ export function Guia() {
       <p>Nos Estados Unidos, a temporada é no nosso verão: em geral, de dezembro a março. As férias de fim de ano e a semana do Carnaval enchem as montanhas.</p>
       <p>A neve muda de ano para ano. Confira a condição no app antes de comprar o passe.</p>
 
-      <h2>4. Faça aula nos primeiros dias</h2>
+      <h2>O que reservar primeiro?</h2>
+      <h3>Aula nos primeiros dias</h3>
+      <p>No ski, costuma ser mais fácil se equilibrar no primeiro dia. No snowboard, as quedas são mais comuns no início. Se tiver dúvida, escolha um e experimente na aula antes de comprar equipamento.</p>
       <p>Faça aula com instrutor nos 2 ou 3 primeiros dias. Você aprende a frear e a virar com segurança, e evita machucado.</p>
       <p>A aula em grupo custa menos. A aula particular rende mais. Pergunte na escola se tem instrutor que fala português ou espanhol devagar.</p>
 
-      <h2>5. Alugue o equipamento</h2>
+      <h3>Equipamento e passe</h3>
       <p>Na primeira viagem, alugue ski, bota, bastão e capacete. Não compre equipamento antes de saber se você gosta.</p>
       <p>Na cidade, o aluguel em geral sai mais barato que na montanha. Prove a bota com a meia de ski: a bota deve ficar firme, sem apertar o dedo.</p>
-      <p>Na tela de cada destino, o cartão “Quanto custa 1 dia na montanha” mostra o valor médio do aluguel e do passe, já em real.</p>
+      <p>Na tela de cada destino, o cartão “Quanto custa 1 dia na montanha” mostra os valores disponíveis de aluguel e passe, em reais quando há cotação.</p>
 
-      <h2>6. Vista-se em camadas</h2>
+      <h2>Como se preparar?</h2>
+      <h3>Vista-se em camadas</h3>
       <ul>
         <li>Camada 1: segunda pele térmica (nunca algodão).</li>
         <li>Camada 2: fleece ou casaco leve.</li>
@@ -59,10 +64,10 @@ export function Guia() {
       </ul>
       <p>Use luva impermeável, goggle e protetor solar. O sol na neve queima mais que na praia. Veja o checklist completo na tela de cada destino.</p>
 
-      <h2>7. Cuide da altitude</h2>
+      <h3>Altitude</h3>
       <p>Os resorts perto de Santiago ficam entre 2.400 m e 3.700 m de altitude. Beba muita água, vá devagar no primeiro dia e evite álcool na primeira noite.</p>
 
-      <h2>8. Regras de segurança na pista</h2>
+      <h3>Segurança na pista</h3>
       <ul>
         <li>Quem está abaixo de você tem a preferência. Desvie dessa pessoa.</li>
         <li>Não pare no meio da pista nem logo depois de uma curva. Pare na lateral.</li>
@@ -71,11 +76,11 @@ export function Guia() {
         <li>Use capacete.</li>
       </ul>
 
-      <h2>9. Documentos</h2>
+      <h3>Documentos e seguro</h3>
       <p>Brasileiro entra no Chile e na Argentina com passaporte ou RG em bom estado. Para os Estados Unidos, você precisa de passaporte e de visto americano. Confira a regra atual antes de viajar, no site oficial do governo do país.</p>
       <Seguro />
 
-      <h2>10. Monte o roteiro</h2>
+      <h2>Transforme a escolha em roteiro</h2>
       <p>
         Use os <a href={rota.roteiros}>Roteiros</a> para escolher as datas, os destinos e o dia a dia. O app calcula o custo estimado do passe.
       </p>

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 // Usa só letra, número e hífen: funciona em qualquer hospedagem estática e na pré-visualização do claude.ai.
 function ler(): string[] {
   const h = window.location.hash.replace(/^#\/?/, '');
+  if (h === 'buscar-iniciantes') return ['buscar', 'iniciante'];
   if (h.startsWith('roteiro-')) return ['roteiro', h.slice('roteiro-'.length)];
   if (h.startsWith('importar-')) return ['importar', h.slice('importar-'.length)];
   if (h.startsWith('grupo-')) return ['grupo', h.slice('grupo-'.length)];
@@ -20,19 +21,35 @@ function ler(): string[] {
 export function useRota(): string[] {
   const [partes, setPartes] = useState(ler);
   useEffect(() => {
+    const anterior = history.scrollRestoration;
+    history.scrollRestoration = 'manual';
     const ao = () => {
-      setPartes(ler());
-      window.scrollTo(0, 0);
+      const proxima = ler();
+      setPartes(proxima);
+      // A busca restaura o scroll depois de renderizar os resultados e a paginação.
+      if (proxima[0] !== 'buscar') window.scrollTo(0, 0);
     };
+    const aoSubstituir = () => setPartes(ler());
     window.addEventListener('hashchange', ao);
-    return () => window.removeEventListener('hashchange', ao);
+    window.addEventListener('pico:substituir-rota', aoSubstituir);
+    return () => {
+      history.scrollRestoration = anterior;
+      window.removeEventListener('hashchange', ao);
+      window.removeEventListener('pico:substituir-rota', aoSubstituir);
+    };
   }, []);
   return partes;
+}
+
+export function substituirRota(href: string) {
+  history.replaceState(history.state, '', href);
+  window.dispatchEvent(new Event('pico:substituir-rota'));
 }
 
 export const rota = {
   inicio: '#inicio',
   buscar: '#buscar',
+  buscarIniciantes: '#buscar-iniciantes',
   roteiros: '#roteiros',
   perfil: '#perfil',
   termos: '#termos',

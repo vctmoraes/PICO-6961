@@ -1,0 +1,36 @@
+.destino-ux .hero { height: 168px; background: var(--marca); }
+.destino-ux .hero .sombra { background: linear-gradient(to top, #101e23e6, transparent 75%); }
+.destino-ux .botao-redondo { width: 44px; height: 44px; }
+.destino-decisao { display: grid; gap: 12px; padding: 16px 20px 8px; }
+.destino-fatos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.destino-fatos div { padding-inline-start: 10px; border-inline-start: 2px solid var(--borda); }
+.destino-fatos dt { color: var(--texto-2); font-size: 12px; }
+.destino-fatos dd { margin: 2px 0 0; font-size: 14px; overflow-wrap: anywhere; }
+.destino-fatos dd.legenda { font-size: 12px; }
+.destino-decisao > p { margin: 0; }
+.destino-decisao > .botao, .roteiro-local .botao.whatsapp { background: var(--marca); }
+.destino-ux .custo-dia { margin: 0; background: var(--fundo); }
+.destino-faixa { font: 700 19px var(--fonte-titulo); color: var(--marca); }
+.destino-ux .custo-dia summary { cursor: pointer; color: var(--marca); font-size: 13px; font-weight: 700; padding: 8px 0; min-height: 36px; }
+.destino-ux .custo-dia .aviso a, .roteiro-local .legenda a { text-decoration: underline; }
+.destino-links-tempo { display: flex; gap: 8px; flex-wrap: wrap; }
+.destino-links-tempo > .botao.curto { flex: 1 1 auto; min-width: 0; padding-inline: 10px; text-align: center; font-size: 13px; }
+.destino-ux .previsao { flex-wrap: wrap; }
+.destino-ux .abas { position: static; }
+.destino-ux .painel { padding-bottom: 24px; }
+.destino-ux :focus-visible, .dialogo-roteiro :focus-visible, .roteiro-local :focus-visible, .meus-roteiros :focus-visible { outline: 2px solid var(--marca); outline-offset: 2px; }
+.destino-ux .hero :focus-visible, .destino-decisao > .botao:focus-visible { outline: 2px solid currentColor; outline-offset: -5px; }
+
+.dialogo-roteiro { position: fixed; inset: auto 0 0; border: 0; color: var(--texto); margin: 0 auto; }
+.dialogo-roteiro:not([open]) { display: none; }
+.dialogo-roteiro::backdrop { background: rgb(28 35 33 / 56%); }
+.dialogo-roteiro .fechar { width: 44px; height: 44px; }
+.dialogo-roteiro p { margin: 0; }
+.dialogo-roteiro .item-painel { flex-wrap: wrap; overflow-wrap: anywhere; }
+
+.roteiro-local .roteiro-etapas { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.roteiro-etapas button { padding: 0; border: 0; background: none; color: var(--marca); min-height: 44px; text-decoration: underline; font-size: 13px; font-weight: 600; }
+.roteiro-atalho-foco { scroll-margin-bottom: 90px; }
+.roteiro-local .roteiro-compartilhar { display: grid; gap: 8px; border-block-start: 1px solid var(--borda); padding-top: 12px; }
+.roteiro-local .roteiro-compartilhar p { margin: 0; }
+.roteiro-local .form input { min-height: 44px; min-width: 0; max-width: 100%; }

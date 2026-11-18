@@ -7,44 +7,35 @@ import { salvos, viagens } from '../lib/storage';
 import { dataCurta } from '../lib/viagem';
 import { rota } from '../lib/rota';
 import { medir } from '../lib/medir';
+import '../destino-ux.css';
 
 export function Roteiros() {
   const [lista] = useState(viagens.listar);
   const [nome, setNome] = useState('');
+  const [erro, setErro] = useState(false);
   const favoritos = salvos.listar().map(buscarDestino).filter((d) => d !== undefined);
 
   const criar = (e: React.FormEvent) => {
     e.preventDefault();
     const v = viagens.criar(nome);
+    if (!viagens.obter(v.id)) {
+      setErro(true);
+      return;
+    }
     medir('Roteiro criado', { origem: 'manual' });
     window.location.hash = rota.viagem(v.id);
   };
 
   return (
-    <main className="conteudo">
+    <main className="conteudo meus-roteiros">
       <CabecalhoVolta titulo="Meus roteiros" />
 
-      <form className="form" onSubmit={criar}>
-        <label htmlFor="nome-roteiro">Novo roteiro</label>
-        <div className="linha-form">
-          <input id="nome-roteiro" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Chile em julho com a turma" maxLength={60} />
-          <button className="botao secundario curto" type="submit">
-            Criar
-          </button>
-        </div>
-      </form>
-
-      <a className="acao primaria" href={rota.planejar}>
-        <div>
-          <div className="t">Monte minha viagem</div>
-          <div className="s">O app sugere o roteiro pelas datas, pelo orçamento e pelo seu perfil</div>
-        </div>
-      </a>
+      <p className="legenda">Seus roteiros ficam salvos neste aparelho, sem cadastro. Enviar uma cópia não dá acesso para editar o original.</p>
 
       {lista.length === 0 ? (
         <div className="vazio">
           <p>Você ainda não tem roteiro.</p>
-          <p>Crie um roteiro, escolha as datas e os destinos, e monte o dia a dia da viagem.</p>
+          <p>Comece com um nome ou encontre um destino para adicionar. As datas podem ficar para depois.</p>
         </div>
       ) : (
         lista.map((v) => {
@@ -66,6 +57,24 @@ export function Roteiros() {
           );
         })
       )}
+
+      <form className="form" onSubmit={criar}>
+        <label htmlFor="nome-roteiro">Novo roteiro</label>
+        <div className="linha-form">
+          <input id="nome-roteiro" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Ex.: Chile em julho com a turma" maxLength={60} />
+          <button className="botao secundario curto" type="submit">
+            Criar roteiro
+          </button>
+        </div>
+        {erro && <p className="erro-form" role="status">Não foi possível criar o roteiro neste aparelho.</p>}
+      </form>
+
+      <a className="acao secundaria" href={rota.planejar}>
+        <div>
+          <div className="t">Monte minha viagem</div>
+          <div className="s">O app sugere o roteiro pelas datas, pelo orçamento e pelo seu perfil</div>
+        </div>
+      </a>
 
       <div className="secao-titulo">
         <h2>Destinos salvos</h2>

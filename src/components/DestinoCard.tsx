@@ -5,10 +5,12 @@ import { perfilViajante } from '../lib/storage';
 import { Badge } from './Badge';
 import { Paisagem } from './Paisagem';
 
-export function DestinoCard({ destino }: { destino: Destino }) {
+type Props = { destino: Destino; fonte?: string; comparar?: { ativo: boolean; bloqueado: boolean; alternar: () => void } };
+
+export function DestinoCard({ destino, fonte, comparar }: Props) {
   const p = perfilViajante.ler();
   const nota = perfilViajante.temRespostas(p) ? combinar(destino, p).nota : null;
-  return (
+  const link = (
     <a className="card" href={rota.destino(destino.id)}>
       <div className="miniatura">
         <Paisagem destino={destino} />
@@ -21,9 +23,19 @@ export function DestinoCard({ destino }: { destino: Destino }) {
         <div className="sub">
           {destino.pais} · {destino.regiao}
         </div>
+        {fonte && <div className="legenda">{fonte}</div>}
         <div className="nota">{destino.nota}</div>
         {nota != null && <div className={`combina ${nota >= 70 ? 'alta' : nota >= 45 ? 'media' : 'baixa'}`}>{nota}% para você</div>}
       </div>
     </a>
   );
+  return comparar ? (
+    <article className="resultado-descoberta">
+      {link}
+      <button type="button" className="chip" disabled={comparar.bloqueado} aria-pressed={comparar.ativo}
+        aria-label={`Comparar ${destino.nome}`} onClick={comparar.alternar}>
+        {comparar.ativo ? '✓ Selecionado' : '+ Comparar'}
+      </button>
+    </article>
+  ) : link;
 }

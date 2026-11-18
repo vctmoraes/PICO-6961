@@ -22,6 +22,18 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--fundo); color: var(--texto); font-family: var(--fonte); -webkit-font-smoothing: antialiased; }
+html { scroll-padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+
+.inicio-ux .avatar { width: 44px; height: 44px; }
+.inicio-lead { margin: 12px 0 28px; }
+.inicio-lead h1 { font-size: clamp(1.8rem, 7vw, 2.2rem); line-height: 1.07; letter-spacing: -.035em; max-width: 17ch; }
+.inicio-lead p { color: var(--texto-2); line-height: 1.5; margin: 12px 0 16px; overflow-wrap: anywhere; }
+.inicio-lead .inicio-contexto { color: var(--marca); font-weight: 700; font-size: .875rem; margin: 0 0 7px; }
+.inicio-lead a.botao { min-height: 48px; display: flex; align-items: center; justify-content: center; color: #fff; margin-bottom: 6px; box-sizing: border-box; }
+.inicio-linha { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 46px; border-bottom: 1px solid var(--borda); color: var(--marca); font-weight: 650; }
+.inicio-guia { border-bottom: 0; }
+.inicio-ux .secao-titulo { gap: 8px; flex-wrap: wrap; }
+.inicio-ux .secao-titulo a { display: inline-flex; align-items: center; min-height: 44px; }
 body { min-height: 100dvh; }
 a { color: var(--marca); text-decoration: none; }
 a:hover { color: var(--marca-escura); }

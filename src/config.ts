@@ -1,15 +1,19 @@
 import { linkSeguro } from './lib/link';
+
+// A prévia nunca deve escrever em grupos nem medir visitas na produção.
+const ambienteIsolado = import.meta.env.VITE_PICO_PREVIEW === '1' || import.meta.env.MODE === 'preview';
+
 // Configuração lida das variáveis de ambiente (arquivo .env). Ver .env.example.
 export const config = {
   /** ID de afiliado do Booking.com. Vazio = link sem comissão. */
   bookingAid: import.meta.env.VITE_BOOKING_AID ?? '',
   /** Domínio cadastrado no Plausible (métrica de usuário ativo). Vazio = sem métrica. */
-  plausibleDomain: import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? '',
+  plausibleDomain: ambienteIsolado ? '' : (import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? ''),
   /** Link de afiliado de um comparador de seguro viagem. Vazio = o app mostra só as dicas, sem botão. */
   seguroUrl: import.meta.env.VITE_SEGURO_URL ?? '',
   /** Supabase (grupos e conta). Vazio = modo demonstração, tudo no aparelho. A chave "anon" é pública; nunca use a "service_role" aqui. */
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? '',
-  supabaseAnon: import.meta.env.VITE_SUPABASE_ANON_KEY ?? '',
+  supabaseUrl: ambienteIsolado ? '' : (import.meta.env.VITE_SUPABASE_URL ?? ''),
+  supabaseAnon: ambienteIsolado ? '' : (import.meta.env.VITE_SUPABASE_ANON_KEY ?? ''),
   /** Mapa de fundo. Padrão: OpenStreetMap (uso leve). Antes do lançamento, troque por um provedor com chave (ver .env.example). */
   /** Chave da Google Maps Embed API (grátis). Vazio = incorporação clássica do Google Maps. */
   googleMapsKey: import.meta.env.VITE_GOOGLE_MAPS_KEY ?? '',

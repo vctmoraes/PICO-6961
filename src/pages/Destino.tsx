@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { buscarDestino, nivelLabel, type Destino as TDestino } from '../data/destinos';
 import { checklistDoDestino } from '../data/checklist';
-import { buscarClima, descricaoTempo, diaCurto, resumoCondicao, type Clima } from '../lib/clima';
+import { buscarClima, descricaoTempo, diaCurto, type Clima } from '../lib/clima';
 import { checklistMarcados, perfil, perfilViajante, relatos, salvos, viagens, visitados, type Relato } from '../lib/storage';
 import { combinar } from '../lib/combina';
 import { custoDoDia, formatarFaixa, formatarReal } from '../lib/custo';
@@ -13,11 +13,12 @@ import { medir } from '../lib/medir';
 import { Seguro } from '../components/Seguro';
 import { linksNavegacao } from '../components/MapaPreguicoso';
 import { MapaGoogle } from '../components/MapaGoogle';
-import { emReal, useCotacoes } from '../lib/moeda';
+import { useCotacoes } from '../lib/moeda';
 import { linkHospedagem, linkOficial } from '../config';
 import { rota } from '../lib/rota';
 import { Icone } from '../components/Icone';
 import { Paisagem } from '../components/Paisagem';
+import '../destino-ux.css';
 
 type Aba = 'geral' | 'dicas' | 'checklist' | 'avaliacoes';
 const abas: { id: Aba; rotulo: string }[] = [
@@ -29,16 +30,28 @@ const abas: { id: Aba; rotulo: string }[] = [
 
 const corNivel = { iniciante: 'var(--ini-texto)', intermediario: 'var(--int-texto)', avancado: 'var(--ava-texto)' };
 
-function precoPasse(d: TDestino): string {
-  if (d.passe.valor == null) return d.passeInfo ? 'Dinâmico' : 'Consultar';
-  const simbolo = { USD: 'US$', CLP: 'CLP$', ARS: 'AR$' }[d.passe.moeda];
-  return `${simbolo} ${d.passe.valor.toLocaleString('pt-BR')}*`;
-}
+// O hash anterior é o contexto desta visita, não parte do link compartilhado.
+let origem: { atual: string; href: string; rotulo: string } | undefined;
+window.addEventListener('hashchange', ({ oldURL, newURL }) => {
+  const atual = new URL(newURL).hash;
+  const href = new URL(oldURL).hash;
+  const rotas: Record<string, string> = {
+    '': 'Voltar ao início', '#inicio': 'Voltar ao início', '#buscar': 'Voltar à busca',
+    '#buscar-iniciantes': 'Voltar à busca para iniciantes',
+    '#roteiros': 'Voltar para meus roteiros', '#guia': 'Voltar ao guia', '#mapa': 'Voltar ao mapa',
+    '#planejar': 'Voltar ao planejador', '#perfil': 'Voltar ao perfil', '#comparar': 'Voltar à comparação'
+  };
+  const rotulo = rotas[href] ?? (/^#comparar-[\w-]+$/.test(href) ? 'Voltar à comparação'
+    : /^#roteiro-[\w-]+$/.test(href) ? 'Voltar ao roteiro'
+    : /^#grupo-[\w-]+$/.test(href) ? 'Voltar ao grupo' : undefined);
+  origem = rotulo ? { atual, href: href || rota.inicio, rotulo } : undefined;
+});
 
-function melhorEpoca(d: TDestino): string {
-  if (d.lat > 0) return 'Dez – Mar'; // hemisfério norte
-  return d.temporada.toLowerCase().includes('outubro') ? 'Jun – Out' : 'Jun – Set';
-}
+const publicoNivel = {
+  iniciante: 'Para quem está começando',
+  intermediario: 'Para quem já esquia ou pratica snowboard',
+  avancado: 'Para praticantes experientes'
+};
 
 export function Destino({ id, abaInicial }: { id: string; abaInicial?: string }) {
   const d = buscarDestino(id);
@@ -46,6 +59,8 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
   const [salvo, setSalvo] = useState(() => salvos.tem(id));
   const [painel, setPainel] = useState(false);
   const [painelGrupo, setPainelGrupo] = useState(false);
+  const [previsaoAberta, setPrevisaoAberta] = useState(false);
+  const volta = origem?.atual === window.location.hash ? origem : undefined;
   useEffect(() => {
     const d0 = buscarDestino(id);
     if (d0) medir('Destino aberto', { destino: d0.id, pais: d0.pais });
@@ -63,11 +78,11 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
   }
 
   return (
-    <div className="detalhe">
+    <main className="detalhe destino-ux">
       <div className="hero">
         <Paisagem destino={d} />
         <div className="sombra" />
-        <a className="botao-redondo esq" href={rota.buscar} aria-label="Voltar">
+        <a className="botao-redondo esq" href={volta?.href ?? rota.buscar} aria-label={volta?.rotulo ?? 'Voltar à busca'}>
           <Icone nome="voltar" tamanho={18} />
         </a>
         <button
@@ -87,29 +102,36 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         </div>
       </div>
 
-      <div className="blocos">
-        <div className="bloco">
-          <small>Nível</small>
-          <strong style={{ color: corNivel[d.nivel] }}>{nivelLabel[d.nivel]}</strong>
+      <section className="destino-decisao" aria-label="Resumo para decidir">
+        <dl className="destino-fatos">
+          <div><dt>Época típica</dt><dd>{d.temporada}</dd></div>
+          <div>
+            <dt>Nível predominante</dt>
+            <dd><strong style={{ color: corNivel[d.nivel] }}>{nivelLabel[d.nivel]}</strong></dd>
+            <dd className="legenda">{publicoNivel[d.nivel]}</dd>
+          </div>
+        </dl>
+        <CustoDoDia d={d} />
+        {emRoteiros > 0 && <p className="legenda">{emRoteiros === 1 ? 'Este destino está em 1 roteiro.' : `Este destino está em ${emRoteiros} roteiros.`}</p>}
+        <button type="button" className="botao" aria-haspopup="dialog" onClick={() => setPainel(true)}>
+          {emRoteiros ? 'Adicionar a outro roteiro' : 'Adicionar ao roteiro'}
+        </button>
+        <div className="destino-links-tempo">
+          <button type="button" className="botao contorno curto" aria-expanded={previsaoAberta} aria-controls="destino-previsao" onClick={() => setPrevisaoAberta(!previsaoAberta)}>
+            Previsão dos próximos dias
+          </button>
+          {linkOficial(d.montanha?.boletim) && (
+            <a className="botao contorno curto" href={linkOficial(d.montanha?.boletim)!} target="_blank" rel="noopener">Boletim oficial</a>
+          )}
         </div>
-        <div className="bloco">
-          <small>Melhor época</small>
-          <strong>{melhorEpoca(d)}</strong>
+        <div id="destino-previsao" hidden={!previsaoAberta}>
+          {previsaoAberta && <Previsao d={d} />}
         </div>
-        <div className="bloco">
-          <small>Passe (dia)</small>
-          <strong>{precoPasse(d)}</strong>
-          <PrecoEmReal d={d} />
-        </div>
-      </div>
-
-      <CustoDoDia d={d} />
-
-      <CombinaComVoce d={d} />
+      </section>
 
       <div className="acoes">
         {linkOficial(d.passe.urlOficial) && (
-        <a className="acao primaria" href={linkOficial(d.passe.urlOficial)!} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'passe', destino: d.id })}>
+        <a className="acao secundaria" href={linkOficial(d.passe.urlOficial)!} target="_blank" rel="noopener sponsored" onClick={() => medir('Link de afiliado', { tipo: 'passe', destino: d.id })}>
           <Icone nome="ticket" tamanho={18} cor="#D9480F" />
           <div>
             <div className="t">Comprar passe</div>
@@ -202,14 +224,9 @@ export function Destino({ id, abaInicial }: { id: string; abaInicial?: string })
         {aba === 'avaliacoes' && <Avaliacoes d={d} />}
       </div>
 
-      <div className="rodape-cta">
-        <button type="button" className="botao" onClick={() => setPainel(true)}>
-          {emRoteiros ? `No roteiro ✓ · Adicionar a outro` : 'Adicionar ao roteiro'}
-        </button>
-      </div>
       {painel && <AdicionarAoRoteiro destino={d} aoFechar={() => setPainel(false)} />}
       {painelGrupo && <MandarParaGrupo cartao={{ tipo: 'destino', id: d.id }} titulo={`Mandar ${d.nome} para um grupo`} aoFechar={() => setPainelGrupo(false)} />}
-    </div>
+    </main>
   );
 }
 
@@ -222,54 +239,63 @@ function CustoDoDia({ d }: { d: TDestino }) {
   const temPerfil = p.equipamento !== undefined || p.esporte !== undefined;
   return (
     <section className="custo-dia" aria-labelledby="titulo-custo-dia">
-      <h2 id="titulo-custo-dia">Quanto custa 1 dia na montanha</h2>
-      <p className="legenda">Por pessoa{temPerfil ? ', ajustado ao seu perfil' : ''}.</p>
-      <dl>
-        {c.linhas.map((l) => (
-          <div key={l.rotulo} className={l.semValor ? 'sem-valor' : ''}>
-            <dt>{l.rotulo}</dt>
-            <dd>
-              {l.valor}
-              {l.real && <small>≈ {formatarReal(l.real[0], l.real[1])}</small>}
-            </dd>
-          </div>
-        ))}
-        {c.total && (
-          <div className="total">
-            <dt>Total{c.parcial ? ' (sem os itens a consultar)' : ''}</dt>
-            <dd>≈ {formatarReal(c.total[0], c.total[1])}</dd>
-          </div>
-        )}
-      </dl>
-      {p.equipamento === 'tudo' && <p className="legenda">Você tem todo o equipamento: o aluguel ficou fora da conta.</p>}
-      {a?.dica && <p className="dica-custo">{a.dica}</p>}
-      <p className="aviso">
-        {a ? (
-          <>
-            Aluguel: valor médio de referência ({a.onde}, {new Date(`${a.verificadoEm}-15T12:00:00`).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })}).{' '}
-            {a.confianca === 'baixa' && 'A fonte não confirma a data do preço. '}
-            Fonte:{' '}
-            {a.fontes.map((f, i) => (
-              <span key={f.url}>
-                {i > 0 && ' · '}
-                <a href={f.url} target="_blank" rel="noopener">
-                  {f.nome}
-                </a>
-              </span>
-            ))}
-            . O preço muda com a loja e com a data.
-          </>
-        ) : (
-          'Ainda não temos o valor médio do aluguel deste destino. Consulte as lojas da região.'
-        )}
-        {!cot && ' O valor em real aparece com a cotação do dia.'}
-        {!temPerfil && (
-          <>
-            {' '}
-            <a href={rota.questionario}>Ajuste ao seu perfil</a>.
-          </>
-        )}
-      </p>
+      <h2 id="titulo-custo-dia">1 dia na montanha · por pessoa</h2>
+      <strong className="destino-faixa">
+        {c.total ? `${c.parcial ? 'Estimativa parcial: ' : '≈ '}${formatarReal(...c.total)}`
+          : c.linhas.some((l) => !l.semValor) ? 'Conversão para reais indisponível.' : 'Preço sob consulta.'}
+      </strong>
+      <p className="legenda">{c.linhas.map((l) => l.rotulo).join(' + ')}{temPerfil ? ', conforme seu perfil' : ''}.</p>
+      <p className="legenda">Não inclui hospedagem, transporte ou aulas.</p>
+      <details>
+        <summary>Valores, fontes e o que falta</summary>
+        <dl>
+          {c.linhas.map((l) => (
+            <div key={l.rotulo} className={l.semValor ? 'sem-valor' : ''}>
+              <dt>{l.rotulo}</dt>
+              <dd>
+                {l.valor}
+                {l.real && <small>≈ {formatarReal(l.real[0], l.real[1])}</small>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {c.parcial && <p className="aviso">Itens sob consulta ou com preço dinâmico não entram na estimativa.</p>}
+        <p className="aviso">
+          Passe: {d.passe.valor == null ? (d.passeInfo ?? 'sem preço de referência.') : d.passe.verificadoEm
+            ? `referência verificada em ${new Date(`${d.passe.verificadoEm}T12:00:00`).toLocaleDateString('pt-BR')}.`
+            : 'estimativa sem data de verificação.'}{' '}
+          {linkOficial(d.passe.urlOficial) && <a href={linkOficial(d.passe.urlOficial)!} target="_blank" rel="noopener">Consulte o preço no site oficial</a>}
+        </p>
+        {p.equipamento === 'tudo' && <p className="legenda">Você tem todo o equipamento: o aluguel ficou fora da conta.</p>}
+        {a?.dica && <p className="dica-custo">{a.dica}</p>}
+        <p className="aviso">
+          {a ? (
+            <>
+              Aluguel: valor médio de referência ({a.onde}, {new Date(`${a.verificadoEm}-15T12:00:00`).toLocaleDateString('pt-BR', { month: 'short', year: 'numeric' })}).{' '}
+              {a.confianca === 'baixa' && 'A fonte não confirma a data do preço. '}
+              Fonte:{' '}
+              {a.fontes.map((f, i) => (
+                <span key={f.url}>
+                  {i > 0 && ' · '}
+                  <a href={f.url} target="_blank" rel="noopener">
+                    {f.nome}
+                  </a>
+                </span>
+              ))}
+              . O preço muda com a loja e com a data.
+            </>
+          ) : (
+            'Ainda não temos o valor médio do aluguel deste destino. Consulte as lojas da região.'
+          )}
+          {cot && <> Câmbio: AwesomeAPI, consulta em {new Date(cot.em).toLocaleString('pt-BR')}.</>}
+          {!temPerfil && (
+            <>
+              {' '}
+              <a href={rota.questionario}>Ajuste ao seu perfil</a>.
+            </>
+          )}
+        </p>
+      </details>
     </section>
   );
 }
@@ -284,7 +310,7 @@ function CombinaComVoce({ d }: { d: TDestino }) {
     <div className="combina-bloco">
       {c ? (
         <div className={`combina-cartao ${c.nota >= 70 ? 'alta' : c.nota >= 45 ? 'media' : 'baixa'}`}>
-          <strong>Combina {c.nota}% com você</strong>
+          <strong>Pontos a considerar para seu perfil</strong>
           {c.aFavor.length > 0 && (
             <ul>
               {c.aFavor.slice(0, 3).map((t) => (
@@ -336,15 +362,10 @@ function BuscaVoo({ d }: { d: TDestino }) {
   );
 }
 
-function PrecoEmReal({ d }: { d: TDestino }) {
-  const cot = useCotacoes();
-  const r = d.passe.valor != null ? emReal(d.passe.valor, d.passe.moeda, cot) : null;
-  return r ? <small className="em-real">{r}</small> : null;
-}
-
-function CondicaoAgora({ d }: { d: TDestino }) {
+function Previsao({ d }: { d: TDestino }) {
   const [clima, setClima] = useState<Clima | null>(null);
   const [erro, setErro] = useState(false);
+  const [tentativa, setTentativa] = useState(0);
 
   useEffect(() => {
     let vivo = true;
@@ -356,19 +377,20 @@ function CondicaoAgora({ d }: { d: TDestino }) {
     return () => {
       vivo = false;
     };
-  }, [d]);
+  }, [d, tentativa]);
 
   if (erro) {
     return (
       <div className="condicao erro">
-        <div className="manchete">Não foi possível carregar a condição agora. Confira a conexão e abra o destino de novo.</div>
+        <p className="manchete" role="status">Previsão da Open-Meteo indisponível. Confira a conexão e tente de novo.</p>
+        <button className="botao contorno curto" type="button" onClick={() => { setErro(false); setTentativa((n) => n + 1); }}>Tentar novamente</button>
       </div>
     );
   }
   if (!clima) {
     return (
       <div className="condicao" aria-busy="true">
-        <div className="manchete">Carregando a condição da montanha…</div>
+        <div className="manchete">Carregando a previsão meteorológica…</div>
       </div>
     );
   }
@@ -379,7 +401,7 @@ function CondicaoAgora({ d }: { d: TDestino }) {
           Dados de exemplo. A pré-visualização não acessa a API de tempo. No app publicado, o dado é real.
         </div>
       )}
-      <div className="manchete">Condição agora: {resumoCondicao(clima)}</div>
+      <h3 className="manchete">Condições estimadas pelo modelo</h3>
       <div className="grade">
         <div>
           <small>Topo ({d.altitudeTopo} m)</small>
@@ -412,6 +434,7 @@ function CondicaoAgora({ d }: { d: TDestino }) {
           <strong>{Math.round(clima.topo.sensacao)}°C</strong>
         </div>
       </div>
+      <h3 className="manchete">Próximos dias no topo</h3>
       <div className="previsao" aria-label="Previsão no topo">
         {clima.previsao.map((p) => (
           <div key={p.data}>
@@ -435,7 +458,7 @@ function CondicaoAgora({ d }: { d: TDestino }) {
         <a href="https://open-meteo.com/" target="_blank" rel="noopener">
           Open-Meteo.com
         </a>{' '}
-        (CC BY 4.0).
+        (CC BY 4.0). {!clima.exemplo && `Consulta em ${new Date(clima.atualizadoEm).toLocaleString('pt-BR')}.`}
       </div>
     </div>
   );
@@ -444,8 +467,8 @@ function CondicaoAgora({ d }: { d: TDestino }) {
 function VisaoGeral({ d }: { d: TDestino }) {
   return (
     <>
-      <CondicaoAgora d={d} />
       <p>{d.resumo}</p>
+      <CombinaComVoce d={d} />
       {d.destaques.map((t) => (
         <div key={t} className="dica">
           {t}
@@ -536,23 +559,6 @@ function VisaoGeral({ d }: { d: TDestino }) {
         <p className="aviso">
           <strong>Dados em conferência:</strong> altitude, pistas e temporada são valores de referência. Confira no site oficial
           antes de viajar.
-        </p>
-      )}
-      {d.passe.valor != null ? (
-        <p className="aviso">
-          <strong>* Preço do passe:</strong>{' '}
-          {d.passe.verificadoEm
-            ? `valor de referência, verificado em ${new Date(d.passe.verificadoEm).toLocaleDateString('pt-BR')}.`
-            : 'valor estimado, ainda não confirmado no site oficial.'}{' '}
-          O preço muda com a data e a temporada. Confira no site oficial antes de comprar.
-        </p>
-      ) : d.passeInfo ? (
-        <p className="aviso">
-          <strong>Preço do passe:</strong> {d.passeInfo}
-        </p>
-      ) : (
-        <p className="aviso">
-          <strong>Preço do passe:</strong> ainda sem valor de referência. Consulte o centro de ski.
         </p>
       )}
       <p className="aviso">

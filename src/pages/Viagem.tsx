@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { buscarDestino, gruposDeDestinos } from '../data/destinos';
 import { CabecalhoVolta } from '../components/Nav';
 import { viagens, type Atividade, type DiaViagem, type Viagem as TViagem } from '../lib/storage';
@@ -12,6 +12,7 @@ import { MapaPreguicoso, linkRotaGoogle } from '../components/MapaPreguicoso';
 import { linkDoRoteiro, linkWhatsApp } from '../lib/compartilhar';
 import { medir } from '../lib/medir';
 import { hemisferioDe, lotacaoNasDatas } from '../data/lotacao';
+import '../destino-ux.css';
 
 /** Quando o roteiro é de um grupo: de onde vem, onde salva e para onde volta. */
 export interface FonteExterna {
@@ -26,6 +27,9 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
   const [copiado, setCopiado] = useState<'' | 'ok' | 'erro'>('');
   const cot = useCotacoes();
+  const idaRef = useRef<HTMLInputElement>(null);
+  const diaADiaRef = useRef<HTMLHeadingElement>(null);
+  const compartilharRef = useRef<HTMLHeadingElement>(null);
 
   if (!v) {
     return (
@@ -73,10 +77,24 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
 
   const custo = custoPasses(v);
   const datasInvalidas = v.ida && v.volta && v.volta < v.ida;
+  const irPara = (elemento: HTMLElement | null) => {
+    elemento?.focus({ preventScroll: true });
+    elemento?.scrollIntoView({ block: 'center' });
+  };
 
   return (
-    <main className="conteudo">
-      {!externo && <CabecalhoVolta titulo="Roteiro" href={rota.roteiros} />}
+    <main className={`conteudo${externo ? '' : ' roteiro-local'}`}>
+      {!externo && (
+        <>
+          <CabecalhoVolta titulo="Seu roteiro" href={rota.roteiros} />
+          <p className="legenda">Roteiro pessoal, salvo neste aparelho. Sem cadastro.</p>
+          {(!v.ida || !v.volta) && <p className="legenda">Adicione as datas de ida e volta para montar o dia a dia.</p>}
+          <nav className="roteiro-etapas" aria-label="Atalhos do roteiro">
+            <button type="button" onClick={() => irPara(v.dias.length ? diaADiaRef.current : idaRef.current)}>{v.dias.length ? 'Ir para o dia a dia' : 'Preencher datas'}</button>
+            <button type="button" onClick={() => irPara(compartilharRef.current)}>Ir para compartilhamento</button>
+          </nav>
+        </>
+      )}
 
       <section className="form" aria-label="Dados da viagem">
         <label>
@@ -86,7 +104,7 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
         <div className="linha-form">
           <label>
             Ida
-            <input type="date" value={v.ida} onChange={(e) => atualizar({ ida: e.target.value })} />
+            <input ref={idaRef} type="date" value={v.ida} onChange={(e) => atualizar({ ida: e.target.value })} />
           </label>
           <label>
             Volta
@@ -198,7 +216,7 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
       </div>
 
       <div className="secao-titulo">
-        <h2>Dia a dia</h2>
+        <h2 ref={diaADiaRef} tabIndex={-1} className="roteiro-atalho-foco">Dia a dia</h2>
         {v.dias.length > 0 && <span className="legenda">{v.dias.length} dias</span>}
       </div>
       {v.dias.length === 0 ? (
@@ -283,25 +301,29 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
         maxLength={2000}
       />
 
-      <a
-        className="botao whatsapp"
-        href={linkWhatsApp(`${textoDoRoteiro(v)}\n\nAbra no app e salve uma cópia: ${linkDoRoteiro(v)}`)}
-        target="_blank"
-        rel="noopener"
-        onClick={() => medir('Compartilhar', { canal: 'whatsapp', item: 'roteiro' })}
-      >
-        Mandar no WhatsApp
-      </a>
-      <button type="button" className="botao contorno" onClick={copiar}>
-        Copiar roteiro em texto
-      </button>
-      {copiado === 'ok' && <p className="legenda" role="status">Roteiro copiado. Cole no WhatsApp ou no e-mail.</p>}
-      {copiado === 'erro' && (
-        <div role="status">
-          <p className="legenda">Este navegador não deixou copiar. Selecione o texto abaixo e copie:</p>
-          <textarea className="campo" readOnly value={textoDoRoteiro(v)} onFocus={(e) => e.target.select()} />
-        </div>
-      )}
+      <section className="roteiro-compartilhar" aria-labelledby="compartilhar-roteiro">
+        <h2 id="compartilhar-roteiro" ref={compartilharRef} tabIndex={-1} className="roteiro-atalho-foco">Compartilhar roteiro</h2>
+        <p className="legenda">Quem receber pode salvar uma cópia. Mudanças posteriores não são sincronizadas.</p>
+        <a
+          className="botao whatsapp"
+          href={linkWhatsApp(`${textoDoRoteiro(v)}\n\nAbra no app e salve uma cópia: ${linkDoRoteiro(v)}`)}
+          target="_blank"
+          rel="noopener"
+          onClick={() => medir('Compartilhar', { canal: 'whatsapp', item: 'roteiro' })}
+        >
+          Enviar cópia pelo WhatsApp
+        </a>
+        <button type="button" className="botao contorno" onClick={copiar}>
+          Copiar roteiro em texto
+        </button>
+        {copiado === 'ok' && <p className="legenda" role="status">Roteiro copiado. Cole no WhatsApp ou no e-mail.</p>}
+        {copiado === 'erro' && (
+          <div role="status">
+            <p className="legenda">Este navegador não deixou copiar. Selecione o texto abaixo e copie:</p>
+            <textarea className="campo" aria-label="Texto do roteiro" readOnly value={textoDoRoteiro(v)} onFocus={(e) => e.target.select()} />
+          </div>
+        )}
+      </section>
 
       {externo ? null : confirmarExclusao ? (
         <div className="confirmar">
@@ -327,7 +349,6 @@ export function Viagem({ id, externo }: { id: string; externo?: FonteExterna }) 
           Excluir roteiro
         </button>
       )}
-      {!externo && <p className="aviso">O roteiro fica salvo só neste aparelho.</p>}
     </main>
   );
 }

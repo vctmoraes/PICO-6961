@@ -1,0 +1,38 @@
+.descoberta .campo-busca:focus-within { outline: 2px solid var(--marca); outline-offset: 2px; }
+.filtros-descoberta { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.filtros-descoberta select { width: 100%; min-width: 0; min-height: 44px; }
+.descoberta .acoes-montanha { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.resumo-busca { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.descoberta .chip { min-height: 44px; white-space: normal; }
+.selecao-descoberta, .seletor-descoberta { display: grid; gap: 8px; }
+.descoberta p.legenda { margin: 0; }
+.itens-selecao { display: flex; flex-wrap: wrap; gap: 6px; }
+.itens-selecao .chip { max-width: 100%; overflow-wrap: anywhere; }
+.resultado-descoberta { display: flex; flex-direction: column; background: var(--cartao); border: 1px solid var(--borda); border-radius: var(--raio); }
+.resultado-descoberta .card { border-color: transparent; }
+.resultado-descoberta .card .linha { flex-wrap: wrap; }
+.resultado-descoberta .card .nome { overflow-wrap: anywhere; }
+.resultado-descoberta .chip { align-self: flex-end; margin: 0 12px 10px; color: var(--marca); }
+.resultado-descoberta .chip[aria-pressed='true'] { background: var(--marca); color: white; }
+.resultado-descoberta .chip:disabled { opacity: .55; cursor: default; }
+
+.opcoes-descoberta { list-style: none; padding: 0; margin: 0; max-height: 220px; overflow-y: auto; overscroll-behavior: contain; border: 1px solid var(--borda); border-radius: 12px; background: var(--cartao); }
+.opcoes-descoberta li + li { border-top: 1px solid var(--borda); }
+.opcoes-descoberta button { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; width: 100%; padding: 8px 12px; border: 0; background: transparent; color: var(--marca); text-align: left; }
+.opcoes-descoberta button:focus-visible { outline-offset: -3px; }
+.opcoes-descoberta small { display: block; color: var(--texto-2); }
+.tabela-descoberta { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; line-height: 1.4; }
+.tabela-descoberta caption { padding: 10px; text-align: left; color: var(--texto-2); font-size: 12px; }
+.tabela-descoberta th, .tabela-descoberta td { text-align: left; vertical-align: top; padding: 6px 8px; overflow-wrap: anywhere; }
+.tabela-descoberta thead th { background: var(--marca); padding: 0; }
+.tabela-descoberta thead a { display: block; padding: 9px 8px; min-height: 44px; color: white; }
+.tabela-descoberta thead a:focus-visible { outline: 2px solid white; outline-offset: -3px; }
+.tabela-descoberta tbody th { background: var(--fundo); color: var(--texto-2); border-top: 1px solid var(--borda); }
+.tabela-descoberta tbody small { display: block; color: var(--texto-2); }
+.tabela-descoberta .badge { display: inline-block; max-width: 100%; padding-inline: 4px; white-space: normal; }
+.texto-longo .guia-escolhas { display: grid; gap: 0; list-style: none; padding: 0; margin: 0; }
+.guia-escolhas li { padding-block: 8px; border-bottom: 1px solid var(--borda); }
+.guia-escolhas a { display: inline-flex; min-height: 44px; align-items: center; font-weight: 700; }
+.guia-escolhas p { margin: 0; }
+.guia-acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+.guia-acoes a { max-width: 100%; }

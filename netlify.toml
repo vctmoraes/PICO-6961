@@ -6,6 +6,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
+[context.PontoPe.environment]
+  VITE_PICO_PREVIEW = "1"
+
+[context.deploy-preview.environment]
+  VITE_PICO_PREVIEW = "1"
+
 # ───────── Segurança ─────────
 # Content-Security-Policy (CSP): lista os únicos serviços externos que o app pode usar.
 # ATENÇÃO: ao ligar um serviço novo (outro provedor de mapa, outro analytics, outra API),

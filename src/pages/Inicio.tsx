@@ -1,103 +1,64 @@
-import { buscarDestino, destinos, type Destino } from '../data/destinos';
-import { destaquesEua } from '../data/eua-curados';
+import { buscarDestino, type Destino } from '../data/destinos';
 import { DestinoCard } from '../components/DestinoCard';
 import { Icone } from '../components/Icone';
 import { Logo } from '../components/Logo';
-import { perfil } from '../lib/storage';
+import { perfil, perfilViajante, viagens } from '../lib/storage';
 import { NeveNosDestinos } from '../components/NeveNosDestinos';
 import { ParaVoce } from '../components/ParaVoce';
 import { Avisos } from '../components/Avisos';
 import { rota } from '../lib/rota';
+import { dataCurta } from '../lib/viagem';
 
-const esportesEmBreve = ['Surf', 'Escalada', 'Mountain bike', 'Kite', 'Parapente'];
-
-function saudacao(): string {
-  const h = new Date().getHours();
-  if (h < 12) return 'Bom dia';
-  if (h < 18) return 'Boa tarde';
-  return 'Boa noite';
-}
+const destaques = ['el-colorado', 'valle-nevado', 'cerro-catedral'];
 
 export function Inicio() {
   const nome = perfil.nome();
+  const hoje = new Date();
+  const dataLocal = `${hoje.getFullYear()}-${String(hoje.getMonth() + 1).padStart(2, '0')}-${String(hoje.getDate()).padStart(2, '0')}`;
+  const roteiros = viagens.listar();
+  const comDatas = roteiros.filter((v) => v.ida && v.volta >= dataLocal).sort((a, b) => a.ida.localeCompare(b.ida));
+  const proximo = comDatas[0] ?? roteiros.find((v) => !v.volta);
+  const personalizado = perfilViajante.temRespostas(perfilViajante.ler());
+
   return (
-    <main className="conteudo">
+    <main className="conteudo inicio-ux">
       <div className="topo">
         <Logo />
         <a className="avatar" href={rota.perfil} aria-label="Perfil">
-          {nome ? nome[0].toUpperCase() : <Icone nome="pessoa" tamanho={18} cor="#fff" />}
+          {nome ? [...nome][0].toLocaleUpperCase('pt-BR') : <Icone nome="pessoa" tamanho={18} cor="#fff" />}
         </a>
       </div>
 
-      <div className="saudacao">
-        <small>{saudacao()}</small>
-        <h1>{nome ? `Oi, ${nome}` : 'Para onde vai a próxima viagem?'}</h1>
-      </div>
+      <section className="inicio-lead" aria-labelledby="inicio-titulo">
+        <p className="inicio-contexto">Ski e snowboard</p>
+        <h1 id="inicio-titulo">Planeje sua viagem para a neve</h1>
+        {proximo ? (
+          <>
+            <p>Próximo roteiro: <strong>{proximo.nome}</strong>{proximo.ida && proximo.volta ? ` · ${dataCurta(proximo.ida)} a ${dataCurta(proximo.volta)}` : ''}</p>
+            <a className="botao" href={rota.viagem(proximo.id)}>Retomar roteiro</a>
+            <a className="inicio-linha" href={rota.planejar}>Planejar outra viagem <Icone nome="seta" tamanho={16} /></a>
+          </>
+        ) : (
+          <>
+            <p>Encontre uma montanha para o seu nível, compare o custo em reais e monte seu roteiro.</p>
+            <a className="botao" href={rota.planejar}>Planejar viagem</a>
+          </>
+        )}
+        <a className="inicio-linha" href={rota.buscar}>Buscar montanha <Icone nome="busca" tamanho={18} /></a>
+        <a className="inicio-linha inicio-guia" href={rota.guia}>Primeira vez na neve? <Icone nome="seta" tamanho={16} /></a>
+      </section>
 
-      <a className="campo-busca" href={rota.buscar}>
-        <Icone nome="busca" tamanho={18} />
-        Buscar destino de ski ou snowboard
-      </a>
-
-      <div className="chips" role="group" aria-label="Esportes">
-        <span className="chip ativo">Ski e snowboard</span>
-        {esportesEmBreve.map((e) => (
-          <span key={e} className="chip" aria-disabled="true">
-            {e} · em breve
-          </span>
-        ))}
-      </div>
-
-      <a className="acao primaria" href={rota.planejar}>
-        <Icone nome="calendario" tamanho={18} cor="#D9480F" />
-        <div>
-          <div className="t">Monte minha viagem</div>
-          <div className="s">Datas e orçamento → roteiro pronto, com custo em real</div>
-        </div>
-        <Icone nome="seta" tamanho={16} cor="#5B6660" />
-      </a>
-
-      <Avisos />
-
-      <ParaVoce />
-
-      <NeveNosDestinos />
-
-      <a className="acao secundaria" href={rota.guia}>
-        <Icone nome="livro" tamanho={18} cor="#13394A" />
-        <div>
-          <div className="t">Primeira vez na neve?</div>
-          <div className="s">Guia para iniciante: destino, época, aula, roupa e custo</div>
-        </div>
-        <Icone nome="seta" tamanho={16} cor="#5B6660" />
-      </a>
-
+      {proximo && <Avisos />}
+      {personalizado && <ParaVoce />}
       <div className="secao-titulo">
-        <h2>Destinos em alta</h2>
-        <a href={rota.buscar}>Ver todos</a>
+        <h2>Montanhas para explorar</h2>
+        <a href={rota.buscar}>Ver todos os destinos</a>
       </div>
-      {destinos.slice(0, 4).map((d) => (
+      {destaques.map(buscarDestino).filter((d): d is Destino => d !== undefined).map((d) => (
         <DestinoCard key={d.id} destino={d} />
       ))}
-
-      {destaquesEua.some((id) => buscarDestino(id)) && (
-        <>
-          <div className="secao-titulo">
-            <h2>Em alta nos EUA</h2>
-            <a href="#buscar">Ver todos</a>
-          </div>
-          {destaquesEua
-            .map(buscarDestino)
-            .filter((d): d is Destino => d !== undefined)
-            .map((d) => (
-              <DestinoCard key={d.id} destino={d} />
-            ))}
-        </>
-      )}
-
-      <p className="legenda" style={{ textAlign: 'center' }}>
-        Mais esportes em breve · Esta versão é só de ski e snowboard
-      </p>
+      {!proximo && <Avisos />}
+      <NeveNosDestinos />
     </main>
   );
 }

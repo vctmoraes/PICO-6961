@@ -1,116 +1,123 @@
-// "Monte minha viagem": sugere roteiros prontos a partir das datas, do orçamento e do perfil.
-// Só sugere destinos com conteúdo revisado (curados), para não indicar área pequena sem informação.
+// Sugestões de um destino revisado por vez, pela temporada típica e pelo perfil.
 import { destinos, type Destino, type Pais } from '../data/destinos';
 import { hemisferioDe, lotacaoNasDatas } from '../data/lotacao';
 import { combinar, mesesDeTemporada } from './combina';
 import { custoDoDia } from './custo';
 import type { Cotacoes } from './moeda';
-import type { PerfilViajante } from './storage';
-import { datasEntre } from './viagem';
+import type { NivelViajante, PerfilViajante } from './storage';
+import { datasEntre, MAX_DIAS } from './viagem';
 
 export interface PedidoViagem {
   ida: string;
   volta: string;
   pessoas: number;
-  /** Teto por pessoa para a montanha (passe + aluguel), em reais. 0 = sem limite. */
+  /** Teto por pessoa para passe e aluguel, em reais. 0 = sem teto. */
   orcamentoPessoa: number;
   pais: Pais | '';
-  quantosDestinos: 1 | 2;
+  nivel?: NivelViajante | '';
 }
 
-export interface Plano {
-  destinos: Destino[];
-  nota: number;
+type FaixaReal = [number, number];
+export type Orcamento = 'dentro' | 'pode-passar' | 'incompleto' | 'fora' | 'sem-teto';
+
+export interface Sugestao {
+  destino: Destino;
   motivos: string[];
   atencao: string[];
-  /** Custo de montanha por pessoa (passe + aluguel), em reais, para todos os dias de ski. */
-  custoPessoa?: [number, number];
-  custoParcial: boolean;
+}
+
+export interface Plano extends Sugestao {
+  /** Passe e aluguel por pessoa, para os dias de ski; pode ser subtotal. */
+  custoPessoa?: FaixaReal;
+  orcamento: Orcamento;
+  semPreco: string[];
+  semCotacao: boolean;
   diasSki: number;
   lotacao: string[];
 }
 
-export interface Resultado {
-  planos: Plano[];
-  /** Por que alguns destinos ficaram de fora (para explicar ao usuário). */
+interface Resultado<T> {
+  planos: T[];
   avisos: string[];
 }
 
-const curado = (d: Destino) => d.fonteDados !== 'openskimap' || !!d.revisadoEm;
+export function classificarOrcamento(custo: FaixaReal | undefined, incompleto: boolean, teto: number): Orcamento {
+  if (!teto) return 'sem-teto';
+  // Mesmo um subtotal conhecido pode ser suficiente para descartar um destino.
+  if (custo && custo[0] > teto) return 'fora';
+  if (!custo || incompleto) return 'incompleto';
+  return custo[1] > teto ? 'pode-passar' : 'dentro';
+}
 
-export function planejar(pedido: PedidoViagem, perfil: PerfilViajante, cot: Cotacoes | null): Resultado {
-  const dias = datasEntre(pedido.ida, pedido.volta);
-  if (!dias.length) return { planos: [], avisos: ['Escolha a data de ida e a de volta.'] };
-  const diasSki = Math.max(1, dias.length - 2);
-  const meses = [...new Set(dias.map((d) => Number(d.slice(5, 7))))];
-  const p: PerfilViajante = { ...perfil, meses };
+const mesLongo = new Intl.DateTimeFormat('pt-BR', { month: 'long', timeZone: 'UTC' });
+
+function sugerir(meses: number[], pais: Pais | '', perfil: PerfilViajante) {
+  const periodo = meses.map((m) => mesLongo.format(Date.UTC(2024, m - 1, 1))).join(', ');
   const avisos: string[] = [];
+  const avaliados = destinos
+    .filter((d) => (d.fonteDados !== 'openskimap' || !!d.revisadoEm) && (!pais || d.pais === pais))
+    .filter((d) => {
+      const temporada = mesesDeTemporada(d);
+      return meses.every((m) => temporada.includes(m));
+    })
+    .filter((d) => {
+      if (d.pais !== 'Estados Unidos' || (perfil.vistoEua !== false && perfil.passaporte !== false)) return true;
+      if (!avisos.length) avisos.push('As opções nos EUA não aparecem porque seu perfil indica que falta passaporte ou visto americano.');
+      return false;
+    })
+    .map((destino) => {
+      const { nota, aFavor, atencao } = combinar(destino, { ...perfil, meses });
+      const motivos = aFavor.filter((m) => !m.startsWith('Temporada de neve') && m !== 'Opção mais em conta');
+      return { sugestao: { destino, motivos: [`Temporada típica: ${periodo}`, ...motivos.slice(0, 2)], atencao }, nota };
+    });
+  if (!avaliados.length && !avisos.length) avisos.push('Nenhum destino revisado está na temporada típica durante todo o período escolhido. Tente mudar o período ou o país.');
+  return { avaliados, avisos };
+}
 
-  let candidatos = destinos.filter(curado);
-  if (pedido.pais) candidatos = candidatos.filter((d) => d.pais === pedido.pais);
-  if (perfil.vistoEua === false || perfil.passaporte === false) {
-    const antes = candidatos.length;
-    candidatos = candidatos.filter((d) => d.pais !== 'Estados Unidos');
-    if (antes !== candidatos.length) avisos.push('Tirei os destinos dos EUA: o seu perfil diz que você ainda não tem passaporte ou visto americano.');
-  }
-  const naEpoca = candidatos.filter((d) => meses.some((m) => mesesDeTemporada(d).includes(m)));
-  if (!naEpoca.length) return { planos: [], avisos: [...avisos, 'Nenhum destino tem temporada de neve nessas datas. No Chile e na Argentina, a temporada vai de junho a setembro. Nos EUA, de dezembro a março.'] };
+export function explorarMes(mes: number, pais: Pais | '', perfil: PerfilViajante): Resultado<Sugestao> {
+  if (!Number.isInteger(mes) || mes < 1 || mes > 12) return { planos: [], avisos: ['Escolha um mês para explorar.'] };
+  const { avaliados, avisos } = sugerir([mes], pais, perfil);
+  return { avisos, planos: avaliados.sort((a, b) => b.nota - a.nota).slice(0, 3).map((a) => a.sugestao) };
+}
 
-  const avaliado = naEpoca.map((d) => {
-    const c = combinar(d, p);
-    const dia = custoDoDia(d, perfil, cot);
-    const custo = dia.total ? ([dia.total[0] * diasSki, dia.total[1] * diasSki] as [number, number]) : undefined;
-    const lot = lotacaoNasDatas(pedido.ida, pedido.volta, hemisferioDe(d.lat)).map((l) => l.nome);
-    // Preferência pequena para destino com custo conhecido: o usuário recebe a informação completa.
-    return { d, c, custo, parcial: dia.parcial, lot, nota: c.nota - (lot.length ? 3 : 0) + (custo && !dia.parcial ? 3 : 0) };
+const prioridade: Record<Orcamento, number> = { dentro: 0, 'sem-teto': 0, 'pode-passar': 1, incompleto: 2, fora: 3 };
+
+export function planejar(pedido: PedidoViagem, perfil: PerfilViajante, cot: Cotacoes | null): Resultado<Plano> {
+  const dias = datasEntre(pedido.ida, pedido.volta);
+  if (!dias.length || dias[0] !== pedido.ida) return { planos: [], avisos: ['Escolha datas válidas de ida e volta.'] };
+  if (dias.at(-1) !== pedido.volta) return { planos: [], avisos: [dias.length === MAX_DIAS ? `O roteiro pode ter até ${MAX_DIAS} dias.` : 'Escolha datas válidas de ida e volta.'] };
+  // Assim como no roteiro salvo, a ida e a volta são dias de viagem.
+  const ski = dias.slice(1, -1);
+  if (!ski.length) return { planos: [], avisos: ['Escolha pelo menos 3 dias: ida, um dia de ski e volta.'] };
+  const meses = [...new Set(ski.map((d) => Number(d.slice(5, 7))))];
+  const nivel = pedido.nivel === '' ? undefined : pedido.nivel ?? perfil.nivel;
+  const { avaliados, avisos } = sugerir(meses, pedido.pais, { ...perfil, nivel });
+  const calculados = avaliados.map(({ sugestao, nota }) => {
+    const { destino } = sugestao;
+    const { linhas } = custoDoDia(destino, perfil, cot);
+    const semPreco = linhas.filter((l) => l.semValor).map((l) => l.rotulo);
+    const faixas = linhas.flatMap((l) => l.real?.every(Number.isFinite) ? [l.real] : []);
+    const semCotacao = faixas.length < linhas.length - semPreco.length;
+    const custoDia = faixas.reduce<FaixaReal>((acc, [min, max]) => [acc[0] + min, acc[1] + max], [0, 0]);
+    const custoPessoa: FaixaReal | undefined = faixas.length ? [custoDia[0] * ski.length, custoDia[1] * ski.length] : undefined;
+    const lotacao = lotacaoNasDatas(ski[0], ski[ski.length - 1], hemisferioDe(destino.lat)).map((l) => l.nome);
+    const orcamento = classificarOrcamento(custoPessoa, semPreco.length > 0 || semCotacao, pedido.orcamentoPessoa);
+    const plano: Plano = { ...sugestao, semPreco, semCotacao, custoPessoa, orcamento, diasSki: ski.length, lotacao };
+    return { plano, nota: nota - (lotacao.length ? 3 : 0) };
   });
-
-  const dentro = pedido.orcamentoPessoa
-    ? avaliado.filter((a) => !a.custo || a.custo[0] <= pedido.orcamentoPessoa)
-    : avaliado;
-  if (pedido.orcamentoPessoa && dentro.length < avaliado.length) avisos.push('Tirei os destinos com custo de montanha acima do seu orçamento.');
-
-  const ordenar = <T extends { nota: number; custo?: [number, number] }>(l: T[]) =>
-    [...l].sort((a, b) => b.nota - a.nota || (a.custo?.[0] ?? Infinity) - (b.custo?.[0] ?? Infinity));
-
-  if (pedido.quantosDestinos === 1) {
-    return {
-      avisos,
-      planos: ordenar(dentro)
-        .slice(0, 3)
-        .map((a) => ({
-          destinos: [a.d],
-          nota: Math.max(0, a.nota),
-          motivos: a.c.aFavor.slice(0, 3),
-          atencao: a.c.atencao,
-          custoPessoa: a.custo,
-          custoParcial: a.parcial || !a.custo,
-          diasSki,
-          lotacao: a.lot
-        }))
-    };
+  const elegiveis = calculados.filter(({ plano }) => plano.orcamento !== 'fora');
+  if (elegiveis.length < calculados.length) {
+    avisos.push(elegiveis.length
+      ? 'Alguns destinos ficaram de fora porque até o mínimo conhecido passa do teto.'
+      : 'O mínimo conhecido de todas as opções passa do teto. Experimente aumentar o teto ou reduzir os dias de ski.');
   }
-
-  // 2 destinos: pares que chegam pelo mesmo aeroporto (ex.: Valle Nevado + La Parva, Bariloche + Cerro Bayo).
-  const top = ordenar(dentro).slice(0, 12);
-  const pares: Plano[] = [];
-  for (let i = 0; i < top.length; i++) {
-    for (let j = i + 1; j < top.length; j++) {
-      const a = top[i], b = top[j];
-      if (!a.d.aeroporto || a.d.aeroporto !== b.d.aeroporto) continue;
-      const custo = a.custo && b.custo ? ([(a.custo[0] + b.custo[0]) / 2, (a.custo[1] + b.custo[1]) / 2] as [number, number]) : undefined;
-      pares.push({
-        destinos: [a.d, b.d],
-        nota: Math.max(0, Math.round((a.nota + b.nota) / 2)),
-        motivos: [...new Set([...a.c.aFavor, ...b.c.aFavor])].slice(0, 3),
-        atencao: [...new Set([...a.c.atencao, ...b.c.atencao])],
-        custoPessoa: custo,
-        custoParcial: a.parcial || b.parcial || !custo,
-        diasSki,
-        lotacao: [...new Set([...a.lot, ...b.lot])]
-      });
-    }
-  }
-  if (!pares.length) avisos.push('Não achei 2 destinos perto um do outro com essas opções. Veja as sugestões de 1 destino.');
-  return { avisos, planos: pares.sort((x, y) => y.nota - x.nota).slice(0, 3) };
+  return {
+    avisos,
+    planos: elegiveis
+      .sort((a, b) => prioridade[a.plano.orcamento] - prioridade[b.plano.orcamento]
+        || b.nota - a.nota
+        || Number(!!(a.plano.semPreco.length || a.plano.semCotacao)) - Number(!!(b.plano.semPreco.length || b.plano.semCotacao))
+        || (a.plano.custoPessoa?.[0] ?? Infinity) - (b.plano.custoPessoa?.[0] ?? Infinity))
+      .slice(0, 3).map(({ plano }) => plano)
+  };
 }
