@@ -20,7 +20,8 @@ export type Evento =
   | 'Entrou em grupo'
   | 'Mensagem enviada'
   | 'Monte minha viagem'
-  | 'Aviso tocado';
+  | 'Aviso tocado'
+  | 'Consultor de equipamento';
 
 export function medir(evento: Evento, props?: Props): void {
   try {

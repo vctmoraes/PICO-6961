@@ -26,6 +26,7 @@
 - Calendário de lotação (aproximado) no destino, no roteiro, nos avisos e no "Monte minha viagem".
 - Avisos para você no Início: visto americano, lembrete do passe (4 semanas antes nos EUA), lotação e neve prevista durante a viagem.
 - "Monte minha viagem": datas, pessoas, orçamento, país e 1 ou 2 destinos → até 3 roteiros prontos, com custo de montanha em real e criação do roteiro em 1 toque.
+- Consultor de equipamento (`#equipamento`): ski ou prancha por estilo e nível, tamanho de partida (altura e peso, sem guardar), o que pedir na loja, cor de pista e destinos com terreno confirmado (snowpark, fora de pista, mogul, árvores, área de iniciante) em 21 resorts, com link oficial por fato. Falta pesquisar Lagunillas e Antillanca e confirmar o snowpark de Las Leñas e o Ski Pucón (Centro Pillán).
 - Proposta do agente de atualização: `docs/agente-atualizacao.md`.
 - Lista de fotos para verificar: `docs/fotos-e-licencas.md`.
 

@@ -45,6 +45,7 @@ export function Inicio() {
           </>
         )}
         <a className="inicio-linha" href={rota.buscar}>Buscar montanha <Icone nome="busca" tamanho={18} /></a>
+        <a className="inicio-linha" href={rota.equipamento}>Ski ou prancha para você <Icone nome="seta" tamanho={16} /></a>
         <a className="inicio-linha inicio-guia" href={rota.guia}>Primeira vez na neve? <Icone nome="seta" tamanho={16} /></a>
       </section>
 

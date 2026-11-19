@@ -15,6 +15,7 @@ import { Grupos } from './pages/Grupos';
 import { Grupo } from './pages/Grupo';
 import { Convite } from './pages/Convite';
 import { Planejar } from './pages/Planejar';
+import { Equipamento } from './pages/Equipamento';
 import { Creditos, Termos } from './pages/Termos';
 
 export function App() {
@@ -86,7 +87,8 @@ export function App() {
     mapa: <MapaDestinos />,
     questionario: <Questionario />,
     grupos: <Grupos />,
-    planejar: <Planejar />
+    planejar: <Planejar />,
+    equipamento: <Equipamento />
   };
   const navAtual = ['termos', 'creditos', 'questionario'].includes(pagina) ? 'perfil' : pagina === 'mapa' ? 'buscar' : pagina === 'inicio' ? '' : pagina;
 

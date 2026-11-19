@@ -25,6 +25,7 @@ O app também conta automaticamente as telas visitadas e os cliques em links de 
 | Mensagem enviada | Mensagem no chat do grupo | `tipo`: texto ou cartão |
 | Monte minha viagem | O usuário pede sugestões | `sugestoes`, `destinos`, `pais` |
 | Aviso tocado | Toque num aviso do Início | `tipo` |
+| Consultor de equipamento | Primeira recomendação de ski ou prancha na tela | `modalidade`, `nivel`, `estilo` (nunca altura, peso ou calçado) |
 
 **Regra:** nunca mande e-mail, nome, texto de mensagem ou outro dado pessoal nas propriedades.
 

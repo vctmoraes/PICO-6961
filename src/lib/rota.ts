@@ -56,6 +56,7 @@ export const rota = {
   creditos: '#creditos',
   viagem: (id: string) => `#roteiro-${id}`,
   guia: '#guia',
+  equipamento: '#equipamento',
   planejar: '#planejar',
   grupos: '#grupos',
   grupo: (id: string) => `#grupo-${id}`,
